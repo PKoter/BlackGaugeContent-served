@@ -236,5 +236,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-appsettings.json
-appsettings.development.json
+BlackGaugeContent/appsettings.json
+BlackGaugeContent/appsettings.development.json

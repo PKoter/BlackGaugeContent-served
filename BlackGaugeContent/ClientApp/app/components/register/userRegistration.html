@@ -1,0 +1,127 @@
+﻿<h2>Register</h2>
+
+<div class="row">
+	<div class="main-topic form-topic">
+		<form asp-route-returnUrl="getReturnUrl()" method="post" #registerForm="ngForm"
+			  class="">
+			<h4>Create a new account.</h4>
+			<hr />
+			<!-- user name -->
+			<div class="form-group">
+				<label>
+					User name
+					<span *ngIf="!name.valid || name.pristine" style="color: red;">*</span>
+					<input type="text" class="form-control form-input" name="name" required
+						   [(ngModel)]="model.name" #name="ngModel" minlength="5" maxlength="128" (blur)="onCompleteUniqueCheck(name.value, 'name')"/>
+					<!-- shows that name is valid and unique -->
+					<span class="form-value-info" *ngIf="name.valid && nameUnique">
+						<span class="glyphicon glyphicon-ok"></span>
+					</span>
+				</label>
+				<!-- shows validation errors -->
+				<div *ngIf="!name.pristine">
+					<div *ngIf="name.errors && name.errors.required" class="text-error">
+						Name is required.
+					</div>
+					<div *ngIf="name.errors && name.errors.minlength" class="text-error">
+						Name must be at least 5 characters long.
+					</div>
+					<div *ngIf="!nameUnique" class="text-error">
+						Name has been already taken.
+					</div>
+				</div>
+			</div>
+			<hr />
+			<!-- user email -->
+			<div class="form-group">
+				<label >Email 
+					<span *ngIf="!email.valid || email.pristine" style="color: red;">*</span>
+					<input type="email" class="form-control form-input" name="email" required 
+						   [(ngModel)]="model.email" #email="ngModel" [email]="true" maxlength="100" (blur)="onCompleteUniqueCheck(email.value, 'email')"/>
+					<!-- shows that email is valid and unique -->
+					<span class="form-value-info" *ngIf="email.valid && emailUnique">
+						<span class="glyphicon glyphicon-ok"></span>
+					</span>
+				</label>
+				<!-- shows validation errors -->
+				<div *ngIf="!email.valid && !email.pristine" class="text-error">
+					Email is invalid.
+				</div>
+				<div *ngIf="!emailUnique" class="text-error">
+					Email has been used before.
+				</div>
+			</div>
+			<hr/>
+			<!-- passwords -->
+			<div class="form-group">
+				<label >Password
+					<span *ngIf="!pass.valid || pass.pristine" style="color: red;">*</span>
+					<input type="password" class="form-control" name="password" required 
+						   [(ngModel)]="Password" #pass="ngModel" [minlength]="8" [maxlength]="50" bgcDistinctChars="6" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"/>
+					<!-- shows password rules // edit : validation already does it ( shows errors)-->
+					<!--<span *ngIf="pass.pristine || pass.invalid" class="pass-rule-info">
+						<span class="glyphicon glyphicon-info-sign"></span>
+					</span>
+					<!-- shows password strength cue -->
+					<span *ngIf="pass.dirty && pass.valid" class="pass-strength-cue">
+						<span [ngClass]="'pass-strength-'+passwordStrength"></span>
+					</span>
+
+				</label>
+				<!-- shows validation errors -->
+				<div *ngIf="!pass.pristine">
+					<div *ngIf="pass.errors && pass.errors.required" class="text-error">
+						Password is required.
+					</div>
+					<div *ngIf="pass.errors && pass.errors.minlength" class="text-error">
+						Password must be at least 8 characters long.
+					</div>
+					<div *ngIf="pass.errors && pass.errors.bgcDistinctChars" class="text-error">
+						Password must contain at least 6 distinct characters.
+					</div>
+					<div *ngIf="pass.errors && pass.errors.pattern" class="text-error">
+						Password must contain upper and lower case letter and digit.
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label>Confirm password
+					<span *ngIf="!pass2.valid || pass2.pristine" style="color: red;">*</span>
+					<input type="password" class="form-control" name="confirmPassword" required [(ngModel)]="ConfirmPassword" #pass2="ngModel" [minlength]="8" [maxlength]="50" bgcEqualModel="{{pass.value}}"/>
+				</label>
+				<!-- shows validation errors -->
+				<div *ngIf="pass2.touched || pass2.dirty">
+					<div *ngIf="pass2.errors && pass2.errors.bgcNotEqual" class="text-error">
+						Passwords doesn't match.
+					</div>
+				</div>
+			</div>
+			
+			<hr/>
+			<div class="form-group">
+				<label>
+					Gender
+					<span [hidden]="model.genderId > 0" style="color: red;">*</span>
+					<bgc-select [items]="genders"
+								[require]="true" 
+								[modelToString]="genderToString"
+								[title]="'Select appropriate gender'" 
+								(selected)="onGenderSelected($event)">
+						<ng-template let-item>
+							<!-- render gender selection entry -->
+							<span>{{item.genderName}}</span> -
+							<i style="font-weight: lighter; font-size: 0.8em;">{{item.description}}
+							</i>
+						</ng-template>
+					</bgc-select>
+					
+				</label>
+				<!-- shows validation errors -->
+			</div>
+
+			<hr />
+			<button [disabled]="email.errors || pass.errors || pass2.errors || model.genderId == 0" type="submit" class="btn btn-default">Register</button>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,66 @@
+﻿.text-error {
+	color: red;
+	border-bottom: 1px red solid;
+	padding-top: 10px;
+}
+
+.ng-invalid.ng-dirty {
+	border-color: red;
+}
+
+.main-topic {
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 60%;
+}
+
+.form-topic div.form-group {
+	width: 90%;
+	max-width: 400px;
+}
+.form-topic label, div.form-group {
+	width: 100%;
+	display: block;
+}
+
+/* displays indication that ie. value is valid and unique (name, email)*/
+.form-value-info {
+	display: block;
+	width: 34px;
+	height: 34px;
+	float: right;
+	top: -34px;
+	border: 1px lightblue hidden;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	position: relative;
+	padding-left: 10px;
+	padding-top: 8px;
+	background-color: #b0c4de;
+	opacity: 0.35;
+}
+
+.pass-strength-cue {
+	display: block;
+	height: 4px;
+	background-color: darkgrey;
+}
+.pass-strength-cue > span {
+	height: inherit;
+	display: inherit;
+}
+
+.pass-strength-1 {
+	background-color: palevioletred;
+	width: 33%;
+}
+
+.pass-strength-2 {
+	background-color:darkgoldenrod;
+	width: 66%;
+}
+
+.pass-strength-3 {
+	background-color:limegreen;
+	width: 100%;
+}

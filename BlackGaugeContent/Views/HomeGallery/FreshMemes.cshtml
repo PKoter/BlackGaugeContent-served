@@ -1,0 +1,13 @@
+﻿@using System.Collections.Generic
+@model IList<Memstore.Models.GalleryMeme>
+
+<h2>Memes reach main page, when they get at least two Nicey votes.</h2>
+@{
+	ViewData["MemeSectionTitle"] = "Fresh Memes";
+	Html.RenderPartial("MemeGallery");
+}
+
+@section MemesHotInfo{
+	<span class="space-hide-text-sm">@ViewData["MemeSectionTitle"]</span>
+	<span id="mem-count" class="badge">@Model.Count</span>
+}

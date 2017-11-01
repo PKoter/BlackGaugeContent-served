@@ -1,0 +1,9 @@
+﻿<h3>Meme list</h3>
+<bgc-loading-spinner *ngIf="!memes"></bgc-loading-spinner>
+
+<div *ngIf="memes" class="meme-list">
+	<div *ngFor="let meme of memes">
+		<hr/>
+		<meme-wrapping [meme]="meme"></meme-wrapping>
+	</div>
+</div>

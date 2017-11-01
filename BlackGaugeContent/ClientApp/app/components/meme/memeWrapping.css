@@ -1,0 +1,16 @@
+﻿div.meme {
+	display: block;
+	padding: 20px 40px;
+	background-color: white;
+	border-radius: 5px;
+	border: 2px solid darkslategrey;
+	width: 70%;
+}
+.meme-list-style {
+	width: calc(100% - 40px);
+	margin-left: 20px;
+}
+.meme-hotness {
+	display: inline-block;
+	padding-left: 50px;
+}

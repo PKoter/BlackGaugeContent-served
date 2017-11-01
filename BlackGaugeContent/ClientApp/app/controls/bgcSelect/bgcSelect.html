@@ -1,0 +1,19 @@
+﻿<input type="text" class="form-control" placeholder="Choose one..." value="{{ShowValue}}" 
+	   [required]="required? 'required' : null" (focus)="turnSelecting(true)" />
+	
+<div class="select-modal" [@selectState]="shelfState">
+	<div class="select-title">
+		<h4 class="">{{title}}</h4>
+		<button type="button" class="bgc-button bgc-button-blend"
+				(click)="turnSelecting(false)" style="float: right;">
+			Cancel <span class="glyphicon glyphicon-remove"></span>
+		</button>
+	</div>
+	<div class="select-body">
+		<button type="button" *ngFor="let item of items" (click)="select(item, index)"
+				class="select-entry bgc-button">
+			<ng-template [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{$implicit:item}">
+			</ng-template>
+		</button>
+	</div>
+</div>
