@@ -1,0 +1,34 @@
+﻿/* basic button layout*/
+.bgc-button {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	touch-action: auto;
+	cursor: pointer;
+	border: 2px black solid;
+	padding: 6px 20px;
+	font-weight: normal;
+	font-size: 1em;
+}
+
+/* button style used mostly informatively - not to agree, confirm or select things that are important somehow */
+.bgc-button-inform {
+	background-color: rgb(50, 100, 170);
+	border: none !important;
+}
+
+	.bgc-button-inform:hover {
+		background-color: rgb(60, 120, 200);
+	}
+
+/* used to put on title bars or somewhere where we don't want background */
+.bgc-button-blend {
+	border: none !important;
+	background: rgba(0, 0, 0, 0);
+	text-shadow: 1px 1px black;
+	padding: 0;
+}
+
+	.bgc-button-blend:hover {
+		color: burlywood;
+	}

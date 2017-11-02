@@ -32,12 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
     <None Remove="ClientApp\app\viewApi\stringSelect.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSwitch\bgcSwitch.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\viewApi\stringSelect.ts" />

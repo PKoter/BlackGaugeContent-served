@@ -1,0 +1,16 @@
+﻿<div class="side-panel-modal" [@drawnState]="shelfState" 
+	 [ngClass]="{'panel-width-big' : big }">
+	<div class="side-panel-title">
+		<h4 class="">{{title}}</h4>
+		<button type="button" class="bgc-button bgc-button-blend"
+				(click)="Draw = false" style="float: right;">
+			{{closeText}} <span class="glyphicon glyphicon-remove"></span>
+		</button>
+	</div>
+	<div class="side-panel-body">
+		<!-- pane content goes here -->
+		<ng-content>
+			
+		</ng-content>
+	</div>
+</div>
