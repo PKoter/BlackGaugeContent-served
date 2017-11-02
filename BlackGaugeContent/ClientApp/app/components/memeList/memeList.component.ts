@@ -1,5 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import { Title } from '@angular/platform-browser';
 
 import { Meme } from '../meme/meme.component';
 
@@ -12,7 +13,9 @@ import { Meme } from '../meme/meme.component';
 export class MemeListComponent {
 	public memes: Meme[];
 
-	constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+	constructor(http: Http, @Inject('BASE_URL') baseUrl: string, titleService: Title) {
+		titleService.setTitle("BGC official memes");
+
 		http.get(baseUrl + 'api/MemeList/ListAll').subscribe(result => {
 			this.memes = result.json() as Meme[];
 		}, error => console.error(`something is fucked up: ${error}`));

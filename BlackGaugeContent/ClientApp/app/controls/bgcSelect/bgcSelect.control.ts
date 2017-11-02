@@ -1,4 +1,4 @@
-﻿import { Component, Injectable, Input, Output, EventEmitter, ContentChild, TemplateRef, ViewChild } from '@angular/core';
+﻿import { Component, Injectable, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Injectable()

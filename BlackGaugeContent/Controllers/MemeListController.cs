@@ -18,7 +18,6 @@ namespace Bgc.Controllers
 		[HttpGet("[action]")]
 		public IEnumerable<Memes> ListAll()
 		{
-			ViewData["Title"] = "official memes";
 			return _context.Memes.ToList();
 		}
 	}

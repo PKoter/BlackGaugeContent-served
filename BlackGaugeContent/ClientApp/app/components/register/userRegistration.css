@@ -5,13 +5,13 @@
 }
 
 .ng-invalid.ng-dirty {
-	border-color: red;
+	border-color: red !important;
 }
 
 .main-topic {
 	padding-left: 15px;
 	padding-right: 15px;
-	width: 60%;
+	width: 55%;
 }
 
 .form-topic div.form-group {
@@ -21,6 +21,11 @@
 .form-topic label, div.form-group {
 	width: 100%;
 	display: block;
+}
+
+.form-topic input {
+	border: 1px rgb(50, 100, 170) solid;
+	border-radius: 2px;
 }
 
 /* displays indication that ie. value is valid and unique (name, email)*/

@@ -1,5 +1,6 @@
 ﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import { Title } from '@angular/platform-browser';
 import { RegistrationModel, UniqueRegisterValue, GenderModel } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
 
@@ -20,11 +21,14 @@ export class RegistrationComponent implements OnInit {
 	private emailUnique: boolean;
 	private genders: GenderModel[];
 	private genderToString = (item: GenderModel) => item.genderName;
+	private openedTerms: boolean = true;
+	private agreedToTerms: boolean;
 
-	constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
+	constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, titleService: Title) {
 		this.model       = new RegistrationModel(0, '', '', '', 0);
 		this.nameUnique  = true;
 		this.emailUnique = true;
+		titleService.setTitle("BGC registration");
 
 		this.http.get(baseUrl + 'api/User/GetGenders').subscribe(result => {
 			this.genders = result.json() as GenderModel[];
@@ -65,6 +69,10 @@ export class RegistrationComponent implements OnInit {
 
 	onGenderSelected(gender: SelectionEntry<GenderModel>) {
 		this.model.genderId = gender.item.id;
+	}
+
+	onTermsAgreedSwitched(value: boolean) {
+		this.agreedToTerms = value;
 	}
 
 	onSubmit() { this.submitted = true; }

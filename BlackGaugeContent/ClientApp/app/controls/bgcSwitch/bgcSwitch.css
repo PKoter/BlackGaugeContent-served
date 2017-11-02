@@ -1,0 +1,44 @@
+﻿.switch-outline {
+	box-sizing: border-box;
+	height: 30px;
+	min-width: 100px;
+	border-radius: 2px;
+	border: 1px rgb(50, 100, 170) solid;
+	padding: 1px;
+	background-color: aliceblue;
+}
+
+.switch-button {
+	height: 27px;
+	width: 50%;
+	background-color: rgb(50, 100, 170);
+	border-radius: 2px;
+	border: none;
+	display: block;
+}
+.switch-button:hover {
+	background-color: rgb(60, 120, 200);
+}
+
+
+.value-name {
+	position: relative;
+	display: inline-block;
+	width: 49%;
+	text-align: center;
+	font-weight: normal;
+	height: 30px;
+	padding-top: 6px;
+	font-size: 1em;
+}
+.value-name:first-of-type {
+	top: -30px;
+}
+.value-name:last-child {
+	top: -30px;
+}
+
+.current {
+	font-weight: bold;
+	color:white;
+}

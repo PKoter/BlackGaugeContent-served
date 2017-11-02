@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\bgcSwitch\bgcSwitch.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\viewApi\stringSelect.ts" />
   </ItemGroup>

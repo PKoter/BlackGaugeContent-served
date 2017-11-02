@@ -121,6 +121,22 @@
 			</div>
 
 			<hr />
+			<div class="form-group">
+				<label>
+					I have read and agree to terms of service
+					<span [hidden]="agreedToTerms" style="color: red;">*</span>
+					<bgc-switch [disabled]="!openedTerms"
+								[startValue]="false"
+								[leftName]="'Yes'"
+								[rightName]="'No'"
+								(switched)="onTermsAgreedSwitched($event)">
+					</bgc-switch>
+
+				</label>
+				<!-- shows validation errors -->
+			</div>
+
+			<hr />
 			<button [disabled]="email.errors || pass.errors || pass2.errors || model.genderId == 0" type="submit" class="btn btn-default">Register</button>
 		</form>
 	</div>

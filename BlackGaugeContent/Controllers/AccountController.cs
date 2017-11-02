@@ -228,7 +228,6 @@ namespace Bgc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(RegisterModel model, string returnUrl = null)
 		{
-			ViewData["Title"] = "registration";
 			ViewData["ReturnUrl"] = returnUrl;
 			if (ModelState.IsValid)
 			{

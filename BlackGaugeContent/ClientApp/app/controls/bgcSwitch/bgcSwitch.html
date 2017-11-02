@@ -1,0 +1,6 @@
+﻿<div class="switch-outline">
+	<button type="button" class="switch-button" (click)="switch()" [@switchSide]="buttonState">
+	</button>
+	<span [ngClass]="{ 'current' : value }" class="value-name">{{leftName}}</span>
+	<span [ngClass]="{ 'current' : !value}" class="value-name">{{rightName}}</span>
+</div>
