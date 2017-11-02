@@ -126,6 +126,7 @@
 					I have read and agree to terms of service
 					<span [hidden]="agreedToTerms" style="color: red;">*</span>
 					<bgc-switch [disabled]="!openedTerms"
+								[useCheckbox]="false"
 								[startValue]="false"
 								[leftName]="'Yes'"
 								[rightName]="'No'"

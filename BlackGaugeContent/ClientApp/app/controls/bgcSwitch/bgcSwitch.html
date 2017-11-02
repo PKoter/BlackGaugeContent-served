@@ -1,6 +1,10 @@
-﻿<div class="switch-outline">
+﻿<div class="switch-outer switch-outline" *ngIf="!useCheckbox && !constType">
 	<button type="button" class="switch-button" (click)="switch()" [@switchSide]="buttonState">
 	</button>
 	<span [ngClass]="{ 'current' : value }" class="value-name">{{leftName}}</span>
 	<span [ngClass]="{ 'current' : !value}" class="value-name">{{rightName}}</span>
 </div>
+<button *ngIf="useCheckbox && !constType" type="button" class="checkbox-box switch-outer" 
+		(click)="switch()">
+	<span class="glyphicon glyphicon-ok checkbox-check" *ngIf="value"></span>
+</button>

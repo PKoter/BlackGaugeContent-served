@@ -1,11 +1,15 @@
-﻿.switch-outline {
+﻿.switch-outer {
+	display: block;
 	box-sizing: border-box;
 	height: 30px;
-	min-width: 100px;
 	border-radius: 2px;
 	border: 1px rgb(50, 100, 170) solid;
-	padding: 1px;
 	background-color: aliceblue;
+	padding: 1px;
+}
+
+.switch-outline {
+	min-width: 100px;
 }
 
 .switch-button {
@@ -41,4 +45,14 @@
 .current {
 	font-weight: bold;
 	color:white;
+}
+
+.checkbox-box {
+	width: 30px;
+}
+
+.checkbox-check {
+	padding-left: 2px;
+	font-size: 1.4em;
+	color: rgb(60, 120, 200);
 }

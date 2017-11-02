@@ -26,18 +26,31 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 export class BgcSwitchControl {
 	@Output() public switched = new EventEmitter();
 
-	@Input() public startValue: boolean;
-	@Input() public disabled: boolean;
-	@Input() public leftName: string;
-	@Input() public rightName: string;
+	@Input() public useCheckbox: boolean = false;
+	@Input() public constType:   boolean = false;
+	@Input() public startValue:  boolean;
+	@Input() public disabled:    boolean;
+	@Input() public leftName:    string;
+	@Input() public rightName:   string;
+	//@Input() public switchOrCheckbox: () => boolean;
 
 	private value: boolean;
 	private buttonState: string;
 
 	constructor() {
 		this.value = this.startValue;
+		/*if (this.switchOrCheckbox == null)
+			this.switchOrCheckbox = this.switchPredicate;
+
+		if (this.constType === false) {
+			this.useCheckbox = !this.switchOrCheckbox();
+		}*/
 		this.setSide(this.startValue);
 	}
+	/*
+	switchPredicate(): boolean {
+		return window.screen.width >= 700;
+	}*/
 
 	setSide(value: boolean) {
 		this.buttonState = value ? 'left' : 'right';
