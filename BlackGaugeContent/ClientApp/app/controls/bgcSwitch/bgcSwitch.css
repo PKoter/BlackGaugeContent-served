@@ -5,7 +5,7 @@
 	border-radius: 2px;
 	border: 1px rgb(50, 100, 170) solid;
 	background-color: aliceblue;
-	padding: 1px;
+	/*padding: 1px;*/
 }
 
 .switch-outline {
@@ -13,17 +13,16 @@
 }
 
 .switch-button {
-	height: 27px;
+	height: 28px;
 	width: 50%;
 	background-color: rgb(50, 100, 170);
 	border-radius: 2px;
 	border: none;
 	display: block;
 }
-.switch-button:hover {
+.switch-button:hover ~bgc-button-disabled {
 	background-color: rgb(60, 120, 200);
 }
-
 
 .value-name {
 	position: relative;
@@ -34,12 +33,9 @@
 	height: 30px;
 	padding-top: 6px;
 	font-size: 1em;
-}
-.value-name:first-of-type {
 	top: -30px;
-}
-.value-name:last-child {
-	top: -30px;
+	cursor: crosshair;
+	pointer-events: none;
 }
 
 .current {
@@ -49,6 +45,7 @@
 
 .checkbox-box {
 	width: 30px;
+	padding: 1px;
 }
 
 .checkbox-check {

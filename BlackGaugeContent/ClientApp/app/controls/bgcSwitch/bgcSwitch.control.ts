@@ -4,7 +4,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 @Component({
 	selector: 'bgc-switch',
 	templateUrl: 'bgcSwitch.html',
-	styleUrls: ['bgcSwitch.css'],
+	styleUrls: ['bgcSwitch.css', '../bgcButtons.css'],
 	animations: [
 		trigger('switchSide', [
 			state('left',

@@ -7,7 +7,7 @@ import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
 @Component({
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
-	styleUrls: ['./userRegistration.css']
+	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css']
 })
 
 export class RegistrationComponent implements OnInit {
@@ -21,8 +21,10 @@ export class RegistrationComponent implements OnInit {
 	private emailUnique: boolean;
 	private genders: GenderModel[];
 	private genderToString = (item: GenderModel) => item.genderName;
-	private openedTerms: boolean = true;
+	private openedTerms: boolean;
+	private hideTerms: boolean = true;
 	private agreedToTerms: boolean;
+	private termsOfService: string;
 
 	constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, titleService: Title) {
 		this.model       = new RegistrationModel(0, '', '', '', 0);
@@ -69,6 +71,20 @@ export class RegistrationComponent implements OnInit {
 
 	onGenderSelected(gender: SelectionEntry<GenderModel>) {
 		this.model.genderId = gender.item.id;
+	}
+
+	openTerms() {
+		if (this.termsOfService == null) {
+			this.http.get(this.baseUrl + 'api/AppMeta/GetTermsOfService')
+				.subscribe(result => {
+					this.termsOfService = result.json().terms;
+				});
+		}
+		this.hideTerms = false;
+	}
+
+	termsCalled(value: boolean) {
+		this.openedTerms = this.openedTerms || value;
 	}
 
 	onTermsAgreedSwitched(value: boolean) {

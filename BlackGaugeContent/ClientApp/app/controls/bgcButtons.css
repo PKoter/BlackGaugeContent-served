@@ -5,10 +5,12 @@
 	vertical-align: middle;
 	touch-action: auto;
 	cursor: pointer;
-	border: 2px black solid;
-	padding: 6px 20px;
+	border: 1px black solid;
+	border-radius: 2px;
+	padding: 4px 20px;
 	font-weight: normal;
 	font-size: 1em;
+	background-color: aliceblue;
 }
 
 /* button style used mostly informatively - not to agree, confirm or select things that are important somehow */
@@ -32,3 +34,20 @@
 	.bgc-button-blend:hover {
 		color: burlywood;
 	}
+
+.bgc-button-affirm {
+	background-color: rgb(220, 185, 130);
+	border: 1px rgb(200, 170, 120) solid !important;
+}
+
+	.bgc-button-affirm:hover {
+		background-color: rgb(240, 195, 140);
+	}
+
+	.bgc-button-affirm:disabled {
+		background-color: rgb(220, 185, 130);
+	}
+
+.bgc-button-disabled, button:disabled {
+	cursor: no-drop !important;
+}

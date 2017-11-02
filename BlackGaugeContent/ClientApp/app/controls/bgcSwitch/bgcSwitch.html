@@ -1,5 +1,7 @@
-﻿<div class="switch-outer switch-outline" *ngIf="!useCheckbox && !constType">
-	<button type="button" class="switch-button" (click)="switch()" [@switchSide]="buttonState">
+﻿<div class="switch-outer switch-outline" *ngIf="!useCheckbox && !constType" >
+	<button type="button" class="switch-button" (click)="switch()" 
+			[@switchSide]="buttonState" 
+			[ngClass]="{'bgc-button-disabled' : disabled}">
 	</button>
 	<span [ngClass]="{ 'current' : value }" class="value-name">{{leftName}}</span>
 	<span [ngClass]="{ 'current' : !value}" class="value-name">{{rightName}}</span>

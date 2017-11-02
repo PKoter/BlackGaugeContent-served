@@ -121,24 +121,38 @@
 			</div>
 
 			<hr />
+			<bgc-side-panel [title]="'Terms of Service'"
+							[closeText]="'Close'"
+							[big]="true"
+							[Draw]="!hideTerms" 
+							(called)="termsCalled($event)">
+				<p>{{termsOfService}}</p>
+			</bgc-side-panel>
 			<div class="form-group">
 				<label>
-					I have read and agree to terms of service
+					I have read and agree to <a (click)="openTerms()">Terms of Service</a>
 					<span [hidden]="agreedToTerms" style="color: red;">*</span>
-					<bgc-switch [disabled]="!openedTerms"
-								[useCheckbox]="false"
-								[startValue]="false"
-								[leftName]="'Yes'"
-								[rightName]="'No'"
-								(switched)="onTermsAgreedSwitched($event)">
-					</bgc-switch>
-
 				</label>
+				<bgc-switch [disabled]="!openedTerms"
+							[useCheckbox]="false"
+							[startValue]="false"
+							[leftName]="'Yes'"
+							[rightName]="'No'"
+							(switched)="agreedToTerms = $event" >
+				</bgc-switch>
+				
 				<!-- shows validation errors -->
 			</div>
 
 			<hr />
-			<button [disabled]="email.errors || pass.errors || pass2.errors || model.genderId == 0" type="submit" class="btn btn-default">Register</button>
+			<div class="form-group">
+				<button [disabled]=
+						"email.errors || pass.errors || pass2.errors || model.genderId == 0" type="submit" 
+						class="bgc-button bgc-button-affirm" 
+						style="width: 50%;">
+					Register
+				</button>
+			</div>
 		</form>
 	</div>
 </div>
