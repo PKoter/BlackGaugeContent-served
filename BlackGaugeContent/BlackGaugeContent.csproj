@@ -34,14 +34,19 @@
   <ItemGroup>
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
+    <None Remove="ClientApp\app\services\dataFlow.service.ts" />
+    <None Remove="ClientApp\app\services\user.service.ts" />
     <None Remove="ClientApp\app\viewApi\stringSelect.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSwitch\bgcSwitch.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\dataFlow.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\user.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\viewApi\stringSelect.ts" />
   </ItemGroup>
 

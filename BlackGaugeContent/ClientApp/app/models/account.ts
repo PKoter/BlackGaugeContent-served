@@ -13,6 +13,7 @@ export class RegistrationModel {
 
 	constructor(
 		public id: number,
+		public name: string,
 		public email: string,
 		public password: string,
 		public confirmPassword: string,
@@ -27,4 +28,11 @@ export class UniqueRegisterValue {
 		public valueType: string,
 		public unique: boolean)
 	{ }
+}
+
+export class RegistrationFeedback {
+	constructor(
+		public type: string,
+		public message: string) {
+	}
 }

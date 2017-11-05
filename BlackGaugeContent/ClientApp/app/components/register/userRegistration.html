@@ -2,8 +2,7 @@
 
 <div class="row">
 	<div class="main-topic form-topic">
-		<form asp-route-returnUrl="getReturnUrl()" method="post" #registerForm="ngForm"
-			  class="">
+		<form #registerForm="ngForm" class="">
 			<h4>Create a new account.</h4>
 			<hr />
 			<!-- user name -->
@@ -11,7 +10,7 @@
 				<label>
 					User name
 					<span *ngIf="!name.valid || name.pristine" style="color: red;">*</span>
-					<input type="text" class="form-control form-input" name="name" required
+					<input type="text" class="form-control" name="name" required
 						   [(ngModel)]="model.name" #name="ngModel" minlength="5" maxlength="128" (blur)="onCompleteUniqueCheck(name.value, 'name')"/>
 					<!-- shows that name is valid and unique -->
 					<span class="form-value-info" *ngIf="name.valid && nameUnique">
@@ -26,7 +25,7 @@
 					<div *ngIf="name.errors && name.errors.minlength" class="text-error">
 						Name must be at least 5 characters long.
 					</div>
-					<div *ngIf="!nameUnique" class="text-error">
+					<div *ngIf="!nameUnique && nameDone" class="text-error">
 						Name has been already taken.
 					</div>
 				</div>
@@ -36,7 +35,7 @@
 			<div class="form-group">
 				<label >Email 
 					<span *ngIf="!email.valid || email.pristine" style="color: red;">*</span>
-					<input type="email" class="form-control form-input" name="email" required 
+					<input type="email" class="form-control" name="email" required 
 						   [(ngModel)]="model.email" #email="ngModel" [email]="true" maxlength="100" (blur)="onCompleteUniqueCheck(email.value, 'email')"/>
 					<!-- shows that email is valid and unique -->
 					<span class="form-value-info" *ngIf="email.valid && emailUnique">
@@ -44,11 +43,13 @@
 					</span>
 				</label>
 				<!-- shows validation errors -->
-				<div *ngIf="!email.valid && !email.pristine" class="text-error">
-					Email is invalid.
-				</div>
-				<div *ngIf="!emailUnique" class="text-error">
-					Email has been used before.
+				<div *ngIf="!email.pristine">
+					<div *ngIf="!email.valid" class="text-error">
+						Email is invalid.
+					</div>
+					<div *ngIf="!emailUnique && emailDone" class="text-error">
+						Email has been used before.
+					</div>
 				</div>
 			</div>
 			<hr/>
@@ -146,10 +147,11 @@
 
 			<hr />
 			<div class="form-group">
-				<button [disabled]=
-						"email.errors || pass.errors || pass2.errors || model.genderId == 0" type="submit" 
+				<button type="submit" 
+						[disabled]="email.errors || pass.errors || pass2.errors || model.genderId == 0 || agreedToTerms == false" 
 						class="bgc-button bgc-button-affirm" 
-						style="width: 50%;">
+						style="width: 50%;" (click)="onSubmit()"
+						>
 					Register
 				</button>
 			</div>

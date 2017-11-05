@@ -6,9 +6,9 @@ namespace Bgc.Models
 	{
 		public virtual DbSet<Blacklist>   Blacklists   { get; set; }
 		public virtual DbSet<Exclusive>   Exclusive    { get; set; }
-		public virtual DbSet<Gender>     Genders      { get; set; }
+		public virtual DbSet<Gender>      Genders      { get; set; }
 		public virtual DbSet<MemeComment> MemeComments { get; set; }
-		public virtual DbSet<Memes>       Memes        { get; set; }
+		public virtual DbSet<Meme>        Memes        { get; set; }
 		public virtual DbSet<AspUser>     Users        { get; set; }
 
 		public BgcContext(DbContextOptions<BgcContext> options) : base(options) {}
@@ -110,7 +110,7 @@ namespace Bgc.Models
 					.HasConstraintName("FK_MemeComments_Users");
 			});
 
-			modelBuilder.Entity<Memes>(entity =>
+			modelBuilder.Entity<Meme>(entity =>
 			{
 				entity.ToTable("Memes", "BGC");
 
@@ -128,6 +128,35 @@ namespace Bgc.Models
 					.IsRequired()
 					.HasMaxLength(int.MaxValue)
 					.IsUnicode(false);
+			});
+
+			modelBuilder.Entity<AspUser>(entity =>
+			{
+				entity.ToTable("Users", "dbo");
+
+				entity.Property(e => e.Id)
+					.ValueGeneratedNever();
+
+				entity.Property(e => e.Respek)
+					.HasColumnName("Respek").IsRequired();
+
+				entity.Property(e => e.UserName)
+					.HasColumnType("nvarchar(128)")
+					.HasColumnName("Name").IsRequired();
+
+				entity.Property(e => e.Motto)
+					.HasColumnType("nvarchar(256)");
+
+				entity.Property(e => e.Email)
+					.HasColumnType("nvarchar(256)").IsRequired();
+
+				entity.Property(e => e.DogeCoins).IsRequired();
+
+				entity.HasOne(d => d.Gender)
+					.WithMany(p => p.Users)
+					.HasForeignKey(d => d.GenderId)
+					.HasConstraintName("FK_Users_Genders");
+
 			});
 		}
 	}

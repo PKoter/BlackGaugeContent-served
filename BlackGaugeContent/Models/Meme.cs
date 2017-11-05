@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Bgc.Models
 {
-	public partial class Memes
+	public partial class Meme
 	{
-		public Memes()
+		public Meme()
 		{
 			MemeComments = new HashSet<MemeComment>();
 		}

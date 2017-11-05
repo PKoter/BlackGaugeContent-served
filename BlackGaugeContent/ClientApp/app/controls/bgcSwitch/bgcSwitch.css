@@ -1,6 +1,5 @@
 ﻿.switch-outer {
 	display: block;
-	box-sizing: border-box;
 	height: 30px;
 	border-radius: 2px;
 	border: 1px rgb(50, 100, 170) solid;

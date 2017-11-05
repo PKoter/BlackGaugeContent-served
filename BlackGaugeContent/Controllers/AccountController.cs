@@ -7,6 +7,7 @@ using Bgc.Data;
 using Bgc.Models;
 using Bgc.Models.AccountViewModels;
 using Bgc.Services;
+using Bgc.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.Logging;
 namespace Bgc.Controllers
 {
 	[Authorize]
-	[Route("[controller]/[action]")]
+	[Route("api/[controller]/[action]")]
 	public class AccountController : Controller
 	{
 		private readonly UserManager<AspUser> _userManager;
@@ -225,31 +226,55 @@ namespace Bgc.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Register(RegisterModel model, string returnUrl = null)
+		//[ValidateAntiForgeryToken]
+		public async Task<JsonResult> Register([FromBody] RegisterModel model)
 		{
-			ViewData["ReturnUrl"] = returnUrl;
+			ViewData["ReturnUrl"] = null;
 			if (ModelState.IsValid)
 			{
-				var user = new AspUser { UserName = model.Email, Email = model.Email };
-				var result = await _userManager.CreateAsync(user, model.Password);
-				if (result.Succeeded)
+				try
 				{
-					_logger.LogInformation("User created a new account with password.");
+					var user = new AspUser
+					{
+						UserName = model.Name, 
+						Email = model.Email,
+						GenderId = (byte)model.GenderId,
+					};
+					var result = await _userManager.CreateAsync(user, model.Password);
+					if (result.Succeeded)
+					{
+						_logger.LogInformation("User created a new account with password.");
 
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-					await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+						var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+						var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+						await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-					//await _signInManager.SignInAsync(user, isPersistent: false);
-					_logger.LogInformation("User created a new account with password.");
-					return RedirectToLocal(returnUrl);
+						//await _signInManager.SignInAsync(user, isPersistent: false);
+						_logger.LogInformation("User created a new account with password.");
+						return Json(new RegisterFeedback()
+						{
+							Type = "redirect",
+							Message = "Your account has been successfully created. You've been sent an  email to activate your account."
+						});
+					}
+					AddErrors(result);
 				}
-				AddErrors(result);
+				catch (Exception e)
+				{
+					return Json(new RegisterFeedback()
+					{
+						Type = "error",
+						Message = "Something went wrong. Make sure you passed valid email."
+					});
+				}
 			}
 
 			// If we got this far, something failed, redisplay form
-			return View(model);
+			return Json(new RegisterFeedback()
+			{
+				Type = "error",
+				Message = "Something went wrong. Given values do not satisfy validation rules."
+			});
 		}
 
 		[HttpPost]
@@ -473,7 +498,8 @@ namespace Bgc.Controllers
 		#endregion
 
 		#region Uniqueness check
-		[HttpGet]
+		[HttpGet("[action]")]
+		[Produces("Application/json")]
 		[AllowAnonymous]
 		public RegisterValueUniqueness CheckUniqueness(string value, string type)
 		{

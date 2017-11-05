@@ -9,7 +9,7 @@
 		public int Upvotes { get; set; }
 		public int Downvotes { get; set; }
 
-		public Memes Meme { get; set; }
+		public Meme Meme { get; set; }
 		public AspUser User { get; set; }
 	}
 }

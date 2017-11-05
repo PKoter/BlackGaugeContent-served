@@ -12,14 +12,16 @@ import { MemeListComponent}     from './components/memeList/memeList.component';
 import { MemeComponent}         from './components/meme/meme.component';
 import { RegistrationComponent} from './components/register/registration.component';
 
-import { BgcSelectControl}    from './controls/bgcSelect/bgcSelect.control';
-import { BgcSwitchControl}    from './controls/bgcSwitch/bgcSwitch.control';
-import { BgcSidePanelControl} from './controls/bgcSidePanel/bgcSidePanel.control';
+import { BgcSelectControl}		from './controls/bgcSelect/bgcSelect.control';
+import { BgcSwitchControl}		from './controls/bgcSwitch/bgcSwitch.control';
+import { BgcSidePanelControl}	from './controls/bgcSidePanel/bgcSidePanel.control';
 
 import { BgcLoadingSpinnerHelper} from './viewApi/bgcLoadingSpinner.helper';
 
 import { BgcDistinctValidator} from './directives/bgcDistinctChars.validator';
-import { BgcEqualValidator } from './directives/bgcEqual.validator';
+import { BgcEqualValidator}    from './directives/bgcEqual.validator';
+
+import { DataFlowService} from './services/dataFlow.service';
 
 @NgModule({
 	declarations: [
@@ -52,7 +54,8 @@ import { BgcEqualValidator } from './directives/bgcEqual.validator';
 			{ path: 'registration', component: RegistrationComponent },
 			{ path: '**', redirectTo: 'home' }
 		])
-	]
+	],
+	providers: [DataFlowService]
 })
 export class AppModuleShared {
 }

@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
 using Bgc.Models;
+using Bgc.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bgc.Controllers
 {
@@ -19,10 +23,31 @@ namespace Bgc.Controllers
 
 		[HttpGet("[action]")]
 		[AllowAnonymous]
-		public IEnumerable<Gender> GetGenders()
+		public async Task<IEnumerable<Gender>> GetGenders()
 		{
-			return _context.Genders.ToList();
+			return await _context.Genders.ToListAsync();
 		}
 
+		[HttpGet("[action]")]
+		[Produces("application/json")]
+		[AllowAnonymous]
+		public async Task<RegisterValueUniqueness> CheckUniqueness(string value, string type)
+		{
+			var result = new RegisterValueUniqueness() { ValueType = type };
+			IQueryable<string> query;
+			if ("name".Equals(type))
+			{
+				query = _context.Users.Select(u => u.UserName);
+			}
+			else if ("email".Equals(type))
+			{
+				query = _context.Users.Select(u => u.Email);
+			}
+			else
+				throw new SecurityException();
+
+			result.Unique = await query.FirstOrDefaultAsync(u => u == value) == null;
+			return result;
+		}
 	}
 }

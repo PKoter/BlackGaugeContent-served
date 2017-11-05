@@ -16,7 +16,7 @@ namespace Bgc.Controllers
 		}
 
 		[HttpGet("[action]")]
-		public IEnumerable<Memes> ListAll()
+		public IEnumerable<Meme> ListAll()
 		{
 			return _context.Memes.ToList();
 		}

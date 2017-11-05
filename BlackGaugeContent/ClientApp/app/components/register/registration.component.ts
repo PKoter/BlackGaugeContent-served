@@ -1,13 +1,15 @@
 ﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Title } from '@angular/platform-browser';
-import { RegistrationModel, UniqueRegisterValue, GenderModel } from '../../models/account';
+import { RegistrationModel, UniqueRegisterValue, GenderModel, RegistrationFeedback } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
+import { UserService } from '../../services/user.service';
 
 @Component({
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
-	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css']
+	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css'],
+	providers: [UserService]
 })
 
 export class RegistrationComponent implements OnInit {
@@ -16,25 +18,27 @@ export class RegistrationComponent implements OnInit {
 	private submitted: boolean = false;
 	private passwordStrength: number;
 	private notMatch: boolean = true;
-	private passwordErrors: number;
-	private nameUnique: boolean;
-	private emailUnique: boolean;
+
+	private nameUnique: boolean = false;
+	private emailUnique: boolean = false;
+	private nameDone: boolean;
+	private emailDone: boolean;
+
 	private genders: GenderModel[];
 	private genderToString = (item: GenderModel) => item.genderName;
+
 	private openedTerms: boolean;
 	private hideTerms: boolean = true;
-	private agreedToTerms: boolean;
+	private agreedToTerms: boolean = false;
 	private termsOfService: string;
 
-	constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string, titleService: Title) {
-		this.model       = new RegistrationModel(0, '', '', '', 0);
-		this.nameUnique  = true;
-		this.emailUnique = true;
+	constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string,
+		titleService: Title, private userServis: UserService)
+	{
+		this.model = new RegistrationModel(0,'', '', '', '', 0);
 		titleService.setTitle("BGC registration");
 
-		this.http.get(baseUrl + 'api/User/GetGenders').subscribe(result => {
-			this.genders = result.json() as GenderModel[];
-		});
+		this.userServis.getGenders().subscribe(data => this.genders = data);
 	}
 
 	ngOnInit() {
@@ -57,14 +61,16 @@ export class RegistrationComponent implements OnInit {
 	}
 
 	onCompleteUniqueCheck(value: string, type: string) {
-		this.http.get(
-			this.baseUrl + `api/Account/CheckUniqueness?value=${value},type=${type}`)
-			.subscribe(result => {
-				const uniqueness = result.json() as UniqueRegisterValue;
-				if (uniqueness.valueType === 'name')
+		this.userServis
+			.get<UniqueRegisterValue>(`api/User/CheckUniqueness?value=${value}&type=${type}`)
+			.subscribe(uniqueness => {
+				if (uniqueness.valueType === 'name') {
 					this.nameUnique = uniqueness.unique;
-				else
+					this.nameDone = true;
+				} else {
 					this.emailUnique = uniqueness.unique;
+					this.emailDone = true;
+				}
 			}, error => console.error(`something is fucked up: ${error}`));
 
 	}
@@ -75,9 +81,9 @@ export class RegistrationComponent implements OnInit {
 
 	openTerms() {
 		if (this.termsOfService == null) {
-			this.http.get(this.baseUrl + 'api/AppMeta/GetTermsOfService')
+			this.userServis.getAny('api/AppMeta/GetTermsOfService')
 				.subscribe(result => {
-					this.termsOfService = result.json().terms;
+					this.termsOfService = result.terms;
 				});
 		}
 		this.hideTerms = false;
@@ -91,5 +97,13 @@ export class RegistrationComponent implements OnInit {
 		this.agreedToTerms = value;
 	}
 
-	onSubmit() { this.submitted = true; }
+	onSubmit() {
+		if (this.submitted)
+			return;
+		this.submitted = true;
+		this.userServis.post('api/Account/Register', this.model)
+			.subscribe(result => { console.log(result.json()); }
+				, errors => console.warn(errors)
+			);
+	}
 }

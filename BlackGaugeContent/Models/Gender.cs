@@ -1,4 +1,6 @@
-﻿namespace Bgc.Models
+﻿using System.Collections.Generic;
+
+namespace Bgc.Models
 {
 	public partial class Gender
 	{
@@ -6,6 +8,6 @@
 		public string GenderName { get; set; }
 		public string Description { get; set; }
 
-		public AspUser Users { get; set; }
+		public ICollection<AspUser> Users { get; set; }
 	}
 }
