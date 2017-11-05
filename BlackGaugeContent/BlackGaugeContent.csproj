@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\registrationRedirect\registrationRedirect.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />

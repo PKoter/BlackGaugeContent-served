@@ -4,6 +4,8 @@ import { Title } from '@angular/platform-browser';
 import { RegistrationModel, UniqueRegisterValue, GenderModel, RegistrationFeedback } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
 import { UserService } from '../../services/user.service';
+import { DataFlowService } from '../../services/dataFlow.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'user-registration',
@@ -32,8 +34,9 @@ export class RegistrationComponent implements OnInit {
 	private agreedToTerms: boolean = false;
 	private termsOfService: string;
 
-	constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string,
-		titleService: Title, private userServis: UserService)
+	private redirecting: boolean = false;
+
+	constructor(private router: Router, titleService: Title, private userServis: UserService, private dataService: DataFlowService)
 	{
 		this.model = new RegistrationModel(0,'', '', '', '', 0);
 		titleService.setTitle("BGC registration");
@@ -101,9 +104,15 @@ export class RegistrationComponent implements OnInit {
 		if (this.submitted)
 			return;
 		this.submitted = true;
+		this.redirecting = true;
 		this.userServis.post('api/Account/Register', this.model)
-			.subscribe(result => { console.log(result.json()); }
-				, errors => console.warn(errors)
+			.subscribe(result => {
+					let feedback = result.json() as RegistrationFeedback;
+					this.dataService.save('RegistrationRedirect', feedback);
+					this.redirecting = false;
+					this.router.navigate(['/registration/message']);
+				}, 
+				errors => console.warn(errors)
 			);
 	}
 }

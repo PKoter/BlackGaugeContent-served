@@ -6,8 +6,11 @@ import 'rxjs/add/operator/map';
 export class RequestHandler {
 
 	protected http: Http;
-	constructor(http: Http, protected baseUrl: string) {
+	protected baseUrl: string;
+
+	constructor(http: Http, baseUrl: string) {
 		this.http = http;
+		this.baseUrl = baseUrl;
 	}
 
 	public get<T>(route: string): Observable<T> {

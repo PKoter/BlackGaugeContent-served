@@ -10,7 +10,9 @@ import { HomeComponent}         from './components/home/home.component';
 import { FetchDataComponent}    from './components/fetchdata/fetchdata.component';
 import { MemeListComponent}     from './components/memeList/memeList.component';
 import { MemeComponent}         from './components/meme/meme.component';
-import { RegistrationComponent} from './components/register/registration.component';
+import { RegistrationComponent } from './components/register/registration.component';
+import { RegistrationRedirectComponent } from './components/registrationRedirect/registrationRedirect.component';
+
 
 import { BgcSelectControl}		from './controls/bgcSelect/bgcSelect.control';
 import { BgcSwitchControl}		from './controls/bgcSwitch/bgcSwitch.control';
@@ -32,6 +34,7 @@ import { DataFlowService} from './services/dataFlow.service';
 		MemeListComponent,
 		MemeComponent,
 		RegistrationComponent,
+		RegistrationRedirectComponent,
 
 		BgcSelectControl,
 		BgcSwitchControl,
@@ -52,6 +55,7 @@ import { DataFlowService} from './services/dataFlow.service';
 			{ path: 'fetchdata', component: FetchDataComponent },
 			{ path: 'memelist', component: MemeListComponent },
 			{ path: 'registration', component: RegistrationComponent },
+			{ path: 'registration/message', component: RegistrationRedirectComponent },
 			{ path: '**', redirectTo: 'home' }
 		])
 	],

@@ -2,6 +2,7 @@ import { NgModule}                from '@angular/core';
 import { BrowserModule}           from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpModule}              from '@angular/http';
+import { RouterModule, Routes}	  from '@angular/router';
 import { AppModuleShared}         from './app.module.shared';
 import { AppComponent}            from './components/app/app.component';
 

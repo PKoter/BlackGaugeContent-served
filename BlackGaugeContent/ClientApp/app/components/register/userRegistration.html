@@ -127,7 +127,7 @@
 							[big]="true"
 							[Draw]="!hideTerms" 
 							(called)="termsCalled($event)">
-				<p>{{termsOfService}}</p>
+				<pre style="padding: 20px;">{{termsOfService}}</pre>
 			</bgc-side-panel>
 			<div class="form-group">
 				<label>
@@ -151,10 +151,12 @@
 						[disabled]="email.errors || pass.errors || pass2.errors || model.genderId == 0 || agreedToTerms == false" 
 						class="bgc-button bgc-button-affirm" 
 						style="width: 50%;" (click)="onSubmit()"
-						>
+				>
 					Register
 				</button>
 			</div>
+			<bgc-loading-spinner *ngIf="redirecting">
+			</bgc-loading-spinner>
 		</form>
 	</div>
 </div>
