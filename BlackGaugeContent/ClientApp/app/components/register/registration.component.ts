@@ -1,7 +1,7 @@
 ﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Title } from '@angular/platform-browser';
-import { RegistrationModel, UniqueRegisterValue, GenderModel, RegistrationFeedback } from '../../models/account';
+import { RegistrationModel, UniqueRegisterValue, GenderModel, RegisterFeedback } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
 import { UserService } from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
@@ -107,7 +107,7 @@ export class RegistrationComponent implements OnInit {
 		this.redirecting = true;
 		this.userServis.post('api/Account/Register', this.model)
 			.subscribe(result => {
-					let feedback = result.json() as RegistrationFeedback;
+					let feedback = result.json() as RegisterFeedback;
 					this.dataService.save('RegistrationRedirect', feedback);
 					this.redirecting = false;
 					this.router.navigate(['/registration/message']);

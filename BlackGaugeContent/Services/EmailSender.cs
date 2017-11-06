@@ -27,7 +27,7 @@ namespace Bgc.Services
 			var client = new SendGridClient(_options.SendGridApiKey);
 			var msg = new SendGridMessage()
 			{
-				From = new EmailAddress("emhryr@gmail.com", "Emhryr"),
+				From = new EmailAddress("blackgaugecontent@gmail.com", "BlackGaugeContent.com"),
 				Subject = subject,
 				PlainTextContent = message,
 				HtmlContent = message

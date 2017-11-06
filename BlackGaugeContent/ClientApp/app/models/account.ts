@@ -30,7 +30,7 @@ export class UniqueRegisterValue {
 	{ }
 }
 
-export class RegistrationFeedback {
+export class RegisterFeedback {
 	constructor(
 		public type: string,
 		public message: string) {

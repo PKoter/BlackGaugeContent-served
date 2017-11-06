@@ -56,6 +56,7 @@ import { DataFlowService} from './services/dataFlow.service';
 			{ path: 'memelist', component: MemeListComponent },
 			{ path: 'registration', component: RegistrationComponent },
 			{ path: 'registration/message', component: RegistrationRedirectComponent },
+			{ path: 'account/confirmEmail', component: RegistrationRedirectComponent},
 			{ path: '**', redirectTo: 'home' }
 		])
 	],

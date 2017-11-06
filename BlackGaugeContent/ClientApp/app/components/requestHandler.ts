@@ -1,7 +1,8 @@
-﻿import { Inject } from '@angular/core';
+﻿import { Injectable, Inject } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+
 
 export class RequestHandler {
 
@@ -13,6 +14,10 @@ export class RequestHandler {
 		this.baseUrl = baseUrl;
 	}
 
+	/**
+	 * performs http get from given route.
+	 * @param route
+	 */
 	public get<T>(route: string): Observable<T> {
 		return this.http.get(this.baseUrl + route).map((result: Response) => result.json() as T);
 	}

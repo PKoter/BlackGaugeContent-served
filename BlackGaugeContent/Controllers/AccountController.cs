@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using Bgc.Data;
 using Bgc.Models;
 using Bgc.Models.AccountViewModels;
@@ -246,6 +247,7 @@ namespace Bgc.Controllers
 						_logger.LogInformation("User created a new account with password.");
 
 						var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+						code = HttpUtility.UrlEncode(code);
 						var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
 						await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
@@ -376,10 +378,23 @@ namespace Bgc.Controllers
 			var user = await _userManager.FindByIdAsync(userId);
 			if (user == null)
 			{
-				throw new ApplicationException($"Unable to load user with ID '{userId}'.");
+				return Json(new RegisterFeedback() {Type = "error", Message = "User doesn't exist."});
 			}
+			code = HttpUtility.UrlDecode(code).Replace(' ', '+');
 			var result = await _userManager.ConfirmEmailAsync(user, code);
-			return View(result.Succeeded ? "ConfirmEmail" : "Error");
+			string type = result.Succeeded ? "success" : "error";
+			string message;
+			if (result.Succeeded)
+			{
+				type = "success";
+				message = "Email successfully confirmed";
+			}
+			else
+			{
+				type = "error";
+				message = "An error occured while trying to confirm an email.";
+			}
+			return Json(new RegisterFeedback() {Type = type, Message = message});
 		}
 
 		[HttpGet]
