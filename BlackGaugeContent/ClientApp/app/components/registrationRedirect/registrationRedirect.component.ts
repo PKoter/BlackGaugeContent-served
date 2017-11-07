@@ -1,11 +1,11 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { RequestHandler } from '../requestHandler';
+//import { RequestHandler } from '../requestHandler';
 import { DataFlowService } from '../../services/dataFlow.service';
-import { RegisterFeedback } from '../../models/account';
+import { AccountFeedback } from '../../models/account';
 import 'rxjs/add/operator/switchMap';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 
 @Component({
 	selector: 'registration-redirect',
@@ -27,25 +27,25 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 
 export class RegistrationRedirectComponent implements OnInit {
 	private message: string = 'Wait...';
-	private data: RegisterFeedback;
+	private data: AccountFeedback;
 	private posting: boolean = true;
 
 	constructor(private router: Router, private route: ActivatedRoute,
 		private userService: UserService, private dataService: DataFlowService, private http: Http)
 	{
-		this.data = this.dataService.getOnce('RegistrationRedirect') as RegisterFeedback;
-
+		this.data = this.dataService.getOnce('RegistrationRedirect') as AccountFeedback;
 	}
 
 	ngOnInit() {
 		if (this.data == null) {
 			let userId = this.route.snapshot.queryParams['userId'];
-			let code   = this.route.snapshot.queryParams['code'];
-			this.userService
-			//this.http
-				.get<RegisterFeedback>(`api/Account/ConfirmEmail?userId=${userId}&code=${code}`)
+			let code = this.route.snapshot.queryParams['code'];
+			//@hack: this should be handled by userService, but only this way works properly.
+			//this.userService
+			this.http
+				.get(`api/Account/ConfirmEmail?userId=${userId}&code=${code}`)
 				.subscribe(result => {
-					this.data    = result;
+					this.data = result.json() as AccountFeedback;
 					this.message = this.data.message;
 					this.posting = false;
 				});

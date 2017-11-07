@@ -2,11 +2,12 @@
 using Bgc.Data;
 using Bgc.Models;
 using Bgc.Services;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +73,8 @@ namespace Bgc
 				options.SlidingExpiration = true;
 			});
 
+			services.AddAntiforgery(options => options.HeaderName = "X-XSRF-Token");
+
 			// Register no-op EmailSender used by account confirmation and password reset during development
 			// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
 			services.AddTransient<IEmailSender, EmailSender>();
@@ -81,8 +84,9 @@ namespace Bgc
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
 		{
+			ConfigureAntiforgery(app, antiforgery);
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -111,8 +115,22 @@ namespace Bgc
 					defaults: new { controller = "Home", action = "Index" });
 			});
 
-			var options = new RewriteOptions().AddRedirectToHttps();
-			app.UseRewriter(options);
+			/*var options = new RewriteOptions().AddRedirectToHttps();
+			app.UseRewriter(options);*/
+		}
+
+		public void ConfigureAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
+		{
+			app.Use(next => context => 
+			{
+				if (context.Request.Path == "/")
+				{
+					//send the request token as a JavaScript-readable cookie, and Angular will use it by default
+					var tokens = antiforgery.GetAndStoreTokens(context);
+					context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions {HttpOnly = false});
+				}
+				return next(context);
+			});
 		}
 	}
 }

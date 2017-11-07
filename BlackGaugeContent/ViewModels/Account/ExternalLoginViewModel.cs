@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Bgc.Models.AccountViewModels
+namespace Bgc.ViewModels.Account
 {
 	public class ExternalLoginViewModel
 	{

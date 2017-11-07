@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Bgc.Api;
 
-namespace Bgc.Models.AccountViewModels
+namespace Bgc.ViewModels.Account
 {
 	public class RegisterModel
 	{

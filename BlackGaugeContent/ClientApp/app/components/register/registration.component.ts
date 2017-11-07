@@ -1,11 +1,11 @@
 ﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
-import { Http } from '@angular/http';
 import { Title } from '@angular/platform-browser';
-import { RegistrationModel, UniqueRegisterValue, GenderModel, RegisterFeedback } from '../../models/account';
+import { RegistrationModel, UniqueRegisterValue, GenderModel, AccountFeedback } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
 import { UserService } from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
 import { Router } from '@angular/router';
+
 
 @Component({
 	selector: 'user-registration',
@@ -14,38 +14,36 @@ import { Router } from '@angular/router';
 	providers: [UserService]
 })
 
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent {
 
-	private model: RegistrationModel;
-	private submitted: boolean = false;
+	private model:            RegistrationModel;
+	private submitted:        boolean = false;
 	private passwordStrength: number;
-	private notMatch: boolean = true;
+	private notMatch:         boolean = true;
 
-	private nameUnique: boolean = false;
+	private nameUnique:  boolean = false;
 	private emailUnique: boolean = false;
-	private nameDone: boolean;
-	private emailDone: boolean;
+	private nameDone:    boolean;
+	private emailDone:   boolean;
 
 	private genders: GenderModel[];
 	private genderToString = (item: GenderModel) => item.genderName;
 
-	private openedTerms: boolean;
-	private hideTerms: boolean = true;
-	private agreedToTerms: boolean = false;
+	private openedTerms:    boolean;
+	private hideTerms:      boolean = true;
+	private agreedToTerms:  boolean = false;
 	private termsOfService: string;
 
 	private redirecting: boolean = false;
 
-	constructor(private router: Router, titleService: Title, private userServis: UserService, private dataService: DataFlowService)
+	constructor(private router: Router, titleService: Title, private userServis: UserService,
+		private dataService: DataFlowService
+	)
 	{
 		this.model = new RegistrationModel(0,'', '', '', '', 0);
 		titleService.setTitle("BGC registration");
 
 		this.userServis.getGenders().subscribe(data => this.genders = data);
-	}
-
-	ngOnInit() {
-		
 	}
 
 	public set Password(value: string) {
@@ -103,11 +101,11 @@ export class RegistrationComponent implements OnInit {
 	onSubmit() {
 		if (this.submitted)
 			return;
-		this.submitted = true;
+		this.submitted   = true;
 		this.redirecting = true;
 		this.userServis.post('api/Account/Register', this.model)
 			.subscribe(result => {
-					let feedback = result.json() as RegisterFeedback;
+					let feedback = result.json() as AccountFeedback;
 					this.dataService.save('RegistrationRedirect', feedback);
 					this.redirecting = false;
 					this.router.navigate(['/registration/message']);

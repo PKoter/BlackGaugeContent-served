@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using Bgc.Models;
-using Bgc.Models.AccountViewModels;
+using Bgc.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

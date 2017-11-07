@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Bgc.Data;
 using Bgc.Models;
-using Bgc.Models.AccountViewModels;
 using Bgc.Services;
 using Bgc.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -58,27 +57,31 @@ namespace Bgc.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+		//[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login([FromBody] LoginModel model, string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
 			if (ModelState.IsValid)
 			{
 				var user = await _userManager.FindByEmailAsync(model.Email);
-				if(user != null)
-					if (!await _userManager.IsEmailConfirmedAsync(user))
+				if (user == null)
+					return NoSuchUserError;
+				
+				if (!await _userManager.IsEmailConfirmedAsync(user))
+				{
+					return Json(new AccountFeedback()
 					{
-						ModelState.AddModelError(string.Empty, "You must have a confirmed email to log in.");
-						return View(model);
-					}
+						Message = "You must have a confirmed email to log in."
+					});
+				}
 
 				// This doesn't count login failures towards account lockout
 				// To enable password failures to trigger account lockout, set lockoutOnFailure: true
-				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+				var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 				if (result.Succeeded)
 				{
-					_logger.LogInformation("User logged in.");
-					return RedirectToLocal(returnUrl);
+					_logger.LogInformation($"User {model.Email} logged in.");
+					return Json(new AccountFeedback() {Result = FeedResult.Success});
 				}
 				if (result.RequiresTwoFactor)
 				{
@@ -89,15 +92,36 @@ namespace Bgc.Controllers
 					_logger.LogWarning("User account locked out.");
 					return RedirectToAction(nameof(Lockout));
 				}
-				else
+				
+				return Json(new AccountFeedback()
 				{
-					ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-					return View(model);
-				}
+					Message = "Wrong username or password"
+				});
 			}
+			return ValidationFail;
+		}
 
-			// If we got this far, something failed, redisplay form
-			return View(model);
+		/// <summary>
+		/// If we got this far, something failed, send validation error
+		/// </summary>
+		private JsonResult ValidationFail {
+			get
+			{
+				return Json(new AccountFeedback()
+				{
+					Message = "Something went wrong. Given values do not satisfy validation rules."
+				});
+			}
+		}
+
+		/// <summary>
+		/// If we got this far, something failed, send validation error
+		/// </summary>
+		private JsonResult NoSuchUserError {
+			get
+			{
+				return Json(new AccountFeedback() {Message = "User doesn't exist."});
+			}
 		}
 
 		[HttpGet]
@@ -227,7 +251,7 @@ namespace Bgc.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		//[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public async Task<JsonResult> Register([FromBody] RegisterModel model)
 		{
 			ViewData["ReturnUrl"] = null;
@@ -244,39 +268,31 @@ namespace Bgc.Controllers
 					var result = await _userManager.CreateAsync(user, model.Password);
 					if (result.Succeeded)
 					{
-						_logger.LogInformation("User created a new account with password.");
+						
 
 						var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 						code = HttpUtility.UrlEncode(code);
 						var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
 						await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-						//await _signInManager.SignInAsync(user, isPersistent: false);
-						_logger.LogInformation("User created a new account with password.");
-						return Json(new RegisterFeedback()
+						_logger.LogInformation($"User {user.UserName} created a new account with password.");
+						return Json(new AccountFeedback()
 						{
-							Type = "redirect",
-							Message = "Your account has been successfully created. You've been sent an  email to activate your account."
+							Result = FeedResult.Redirect,
+							Message = "Your account has been successfully created. You've been sent an email to activate your account."
 						});
 					}
 					AddErrors(result);
 				}
 				catch (Exception e)
 				{
-					return Json(new RegisterFeedback()
+					return Json(new AccountFeedback()
 					{
-						Type = "error",
 						Message = "Something went wrong. Make sure you passed valid email."
 					});
 				}
 			}
-
-			// If we got this far, something failed, redisplay form
-			return Json(new RegisterFeedback()
-			{
-				Type = "error",
-				Message = "Something went wrong. Given values do not satisfy validation rules."
-			});
+			return ValidationFail;
 		}
 
 		[HttpPost]
@@ -378,23 +394,24 @@ namespace Bgc.Controllers
 			var user = await _userManager.FindByIdAsync(userId);
 			if (user == null)
 			{
-				return Json(new RegisterFeedback() {Type = "error", Message = "User doesn't exist."});
+				return NoSuchUserError;
 			}
+			// thanks to angular replacing + with spaces, need to be reversed.
 			code = HttpUtility.UrlDecode(code).Replace(' ', '+');
 			var result = await _userManager.ConfirmEmailAsync(user, code);
-			string type = result.Succeeded ? "success" : "error";
+			FeedResult type;
 			string message;
 			if (result.Succeeded)
 			{
-				type = "success";
+				type = FeedResult.Success;
 				message = "Email successfully confirmed";
 			}
 			else
 			{
-				type = "error";
-				message = "An error occured while trying to confirm an email.";
+				type = FeedResult.Error;
+				message = "An error occurred while trying to confirm an email.";
 			}
-			return Json(new RegisterFeedback() {Type = type, Message = message});
+			return Json(new AccountFeedback() {Result = type, Message = message});
 		}
 
 		[HttpGet]

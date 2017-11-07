@@ -2,8 +2,9 @@
 	constructor(
 		public id: number,
 		public genderName: string,
-		public description: string) {
-	}
+		public description: string
+	)
+	{ }
 
 	toString() : string { return this.genderName; }
 }
@@ -22,17 +23,35 @@ export class RegistrationModel {
 	{ }
 }
 
+export class LoginModel {
+
+	constructor(
+		public email: string,
+		public password: string,
+		public rememberMe: boolean
+	)
+	{ }
+}
+
 export class UniqueRegisterValue {
 
 	constructor(
 		public valueType: string,
-		public unique: boolean)
+		public unique: boolean
+	)
 	{ }
 }
 
-export class RegisterFeedback {
+export class AccountFeedback {
 	constructor(
-		public type: string,
-		public message: string) {
-	}
+		public result: FeedResult,
+		public message: string
+	)
+	{ }
+}
+
+export enum FeedResult {
+	error    = 0,
+	success  = 1,
+	redirect = 2
 }

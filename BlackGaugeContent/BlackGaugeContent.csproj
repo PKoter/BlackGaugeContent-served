@@ -6,6 +6,7 @@
 	<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
 	<IsPackable>false</IsPackable>
 	  <UserSecretsId>a283c3a8-0f71-4c9a-8684-a533173791ce</UserSecretsId>
+	  <RootNamespace>Bgc</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
     <None Remove="ClientApp\app\services\dataFlow.service.ts" />
@@ -40,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\registrationRedirect\registrationRedirect.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />

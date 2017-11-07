@@ -12,6 +12,7 @@ import { MemeListComponent}     from './components/memeList/memeList.component';
 import { MemeComponent}         from './components/meme/meme.component';
 import { RegistrationComponent } from './components/register/registration.component';
 import { RegistrationRedirectComponent } from './components/registrationRedirect/registrationRedirect.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 import { BgcSelectControl}		from './controls/bgcSelect/bgcSelect.control';
@@ -35,6 +36,7 @@ import { DataFlowService} from './services/dataFlow.service';
 		MemeComponent,
 		RegistrationComponent,
 		RegistrationRedirectComponent,
+		LoginComponent,
 
 		BgcSelectControl,
 		BgcSwitchControl,
@@ -51,16 +53,17 @@ import { DataFlowService} from './services/dataFlow.service';
 		FormsModule,
 		RouterModule.forRoot([
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },
-			{ path: 'home', component: HomeComponent },
-			{ path: 'fetchdata', component: FetchDataComponent },
-			{ path: 'memelist', component: MemeListComponent },
-			{ path: 'registration', component: RegistrationComponent },
+			{ path: 'home',                 component: HomeComponent },
+			{ path: 'fetchdata',            component: FetchDataComponent },
+			{ path: 'memelist',             component: MemeListComponent },
+			{ path: 'registration',         component: RegistrationComponent },
+			{ path: 'login',                component: LoginComponent },
 			{ path: 'registration/message', component: RegistrationRedirectComponent },
-			{ path: 'account/confirmEmail', component: RegistrationRedirectComponent},
+			{ path: 'account/confirmEmail', component: RegistrationRedirectComponent },
 			{ path: '**', redirectTo: 'home' }
 		])
 	],
 	providers: [DataFlowService]
 })
-export class AppModuleShared {
+export class AppModuleShared                {
 }
