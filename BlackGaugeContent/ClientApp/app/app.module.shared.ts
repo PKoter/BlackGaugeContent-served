@@ -4,15 +4,14 @@ import { FormsModule }  from '@angular/forms';
 import { HttpModule }   from '@angular/http';
 import { RouterModule } from '@angular/router';
 
-import { AppComponent}          from './components/app/app.component';
-import { NavMenuComponent}      from './components/navmenu/navmenu.component';
-import { HomeComponent}         from './components/home/home.component';
-import { FetchDataComponent}    from './components/fetchdata/fetchdata.component';
-import { MemeListComponent}     from './components/memeList/memeList.component';
-import { MemeComponent}         from './components/meme/meme.component';
-import { RegistrationComponent } from './components/register/registration.component';
-import { RegistrationRedirectComponent } from './components/registrationRedirect/registrationRedirect.component';
-import { LoginComponent } from './components/login/login.component';
+import { AppComponent}             from './components/app/app.component';
+import { NavMenuComponent}         from './components/navmenu/navmenu.component';
+import { HomeComponent}            from './components/home/home.component';
+import { MemeListComponent}        from './components/memeList/memeList.component';
+import { MemeComponent}            from './components/meme/meme.component';
+import { RegisterComponent}        from './components/register/register.component';
+import { RegisterMessageComponent} from './components/registerMessage/registerMessage.component';
+import { LoginComponent}           from './components/login/login.component';
 
 
 import { BgcSelectControl}		from './controls/bgcSelect/bgcSelect.control';
@@ -24,18 +23,20 @@ import { BgcLoadingSpinnerHelper} from './viewApi/bgcLoadingSpinner.helper';
 import { BgcDistinctValidator} from './directives/bgcDistinctChars.validator';
 import { BgcEqualValidator}    from './directives/bgcEqual.validator';
 
-import { DataFlowService} from './services/dataFlow.service';
+import { DataFlowService}          from './services/dataFlow.service';
+import { UserService}              from './services/user.service';
+import { AuthGuard}                from './auth/auth.guard';
+import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		NavMenuComponent,
-		FetchDataComponent,
 		HomeComponent,
 		MemeListComponent,
 		MemeComponent,
-		RegistrationComponent,
-		RegistrationRedirectComponent,
+		RegisterComponent,
+		RegisterMessageComponent,
 		LoginComponent,
 
 		BgcSelectControl,
@@ -52,18 +53,22 @@ import { DataFlowService} from './services/dataFlow.service';
 		HttpModule,
 		FormsModule,
 		RouterModule.forRoot([
-			{ path: '', redirectTo: 'home', pathMatch: 'full' },
-			{ path: 'home',                 component: HomeComponent },
-			{ path: 'fetchdata',            component: FetchDataComponent },
-			{ path: 'memelist',             component: MemeListComponent },
-			{ path: 'registration',         component: RegistrationComponent },
-			{ path: 'login',                component: LoginComponent },
-			{ path: 'registration/message', component: RegistrationRedirectComponent },
-			{ path: 'account/confirmEmail', component: RegistrationRedirectComponent },
-			{ path: '**', redirectTo: 'home' }
+			{ path: '', redirectTo: Routes.Home,  pathMatch: 'full' },
+			{ path: Routes.Home,                  component: HomeComponent },
+			{ path: Routes.MemeList,              component: MemeListComponent },
+			{ path: Routes.Register,              component: RegisterComponent },
+			{ path: Routes.Login,                 component: LoginComponent },
+			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
+			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
+			{ path: '**', redirectTo: Routes.Home }
 		])
 	],
-	providers: [DataFlowService]
+	providers: [
+		DataFlowService,
+		UserService,
+		ApiRoutesService,
+		AuthGuard
+	]
 })
-export class AppModuleShared                {
+export class AppModuleShared {
 }

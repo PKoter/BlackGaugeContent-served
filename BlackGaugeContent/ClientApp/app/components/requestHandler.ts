@@ -18,8 +18,8 @@ export class RequestHandler {
 	 * performs http get from given route.
 	 * @param route
 	 */
-	public get<T>(route: string): Observable<T> {
-		return this.http.get(this.baseUrl + route).map((result: Response) => result.json() as T);
+	public get<T>(route: string, options?: RequestOptions): Observable<T> {
+		return this.http.get(this.baseUrl + route, options).map((result: Response) => result.json() as T);
 	}
 
 	public getAny(route: string): Observable<any> {

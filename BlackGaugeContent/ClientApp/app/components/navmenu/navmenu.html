@@ -18,23 +18,23 @@
 					</a>
 				</li>
 				<li [routerLinkActive]="['link-active']">
-					<a [routerLink]="['/fetchdata']">
-						<span class="glyphicon glyphicon-th-list"></span> Fetch data
-					</a>
-				</li>
-				<li [routerLinkActive]="['link-active']">
 					<a [routerLink]="['/memelist']">
 						<span class="glyphicon glyphicon-th-list"></span> Meme list
 					</a>
 				</li>
-				<li [routerLinkActive]="['link-active']">
-					<a [routerLink]="['/registration']">
+				<li  *ngIf="userName == ''" [routerLinkActive]="['link-active']">
+					<a [routerLink]="registerRoute">
 						<span class="glyphicon glyphicon-th-list"></span> Register
 					</a>
 				</li>
-				<li [routerLinkActive]="['link-active']">
-					<a [routerLink]="['/login']">
+				<li  *ngIf="userName == ''" [routerLinkActive]="['link-active']">
+					<a [routerLink]="loginRoute">
 						<span class="glyphicon glyphicon-th-list"></span> Login
+					</a>
+				</li>
+				<li *ngIf="userName != ''">
+					<a>
+						Welcome, <span style="color:burlywood">{{userName}} :)</span>
 					</a>
 				</li>
 			</ul>

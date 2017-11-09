@@ -25,7 +25,7 @@ import { Http } from '@angular/http';
 	providers: [UserService]
 })
 
-export class RegistrationRedirectComponent implements OnInit {
+export class RegisterMessageComponent implements OnInit {
 	private message: string = 'Wait...';
 	private data: AccountFeedback;
 	private posting: boolean = true;

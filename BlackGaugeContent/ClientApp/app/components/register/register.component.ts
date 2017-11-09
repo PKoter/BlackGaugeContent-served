@@ -1,20 +1,20 @@
-﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
+﻿import { Component, } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RegistrationModel, UniqueRegisterValue, GenderModel, AccountFeedback } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
 import { UserService } from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
-import { Router } from '@angular/router';
+import { ApiRoutesService, Routes, ApiRoutes } from '../../services/apiRoutes.service';
 
 
 @Component({
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
-	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css'],
-	providers: [UserService]
+	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css']
+	//providers: [UserService]
 })
 
-export class RegistrationComponent {
+export class RegisterComponent {
 
 	private model:            RegistrationModel;
 	private submitted:        boolean = false;
@@ -36,14 +36,16 @@ export class RegistrationComponent {
 
 	private redirecting: boolean = false;
 
-	constructor(private router: Router, titleService: Title, private userServis: UserService,
+	constructor(private router: ApiRoutesService,
+		titleService: Title,
+		private userService: UserService,
 		private dataService: DataFlowService
 	)
 	{
 		this.model = new RegistrationModel(0,'', '', '', '', 0);
 		titleService.setTitle("BGC registration");
 
-		this.userServis.getGenders().subscribe(data => this.genders = data);
+		this.userService.getGenders().subscribe(data => this.genders = data);
 	}
 
 	public set Password(value: string) {
@@ -62,7 +64,7 @@ export class RegistrationComponent {
 	}
 
 	onCompleteUniqueCheck(value: string, type: string) {
-		this.userServis
+		this.userService
 			.get<UniqueRegisterValue>(`api/User/CheckUniqueness?value=${value}&type=${type}`)
 			.subscribe(uniqueness => {
 				if (uniqueness.valueType === 'name') {
@@ -82,7 +84,7 @@ export class RegistrationComponent {
 
 	openTerms() {
 		if (this.termsOfService == null) {
-			this.userServis.getAny('api/AppMeta/GetTermsOfService')
+			this.userService.getAny('api/AppMeta/GetTermsOfService')
 				.subscribe(result => {
 					this.termsOfService = result.terms;
 				});
@@ -103,12 +105,12 @@ export class RegistrationComponent {
 			return;
 		this.submitted   = true;
 		this.redirecting = true;
-		this.userServis.post('api/Account/Register', this.model)
+		this.userService.post(ApiRoutes.Register, this.model)
 			.subscribe(result => {
 					let feedback = result.json() as AccountFeedback;
 					this.dataService.save('RegistrationRedirect', feedback);
 					this.redirecting = false;
-					this.router.navigate(['/registration/message']);
+					this.router.redirect(Routes.RegisterMessage);
 				}, 
 				errors => console.warn(errors)
 			);

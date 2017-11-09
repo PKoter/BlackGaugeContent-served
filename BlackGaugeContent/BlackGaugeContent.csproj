@@ -16,10 +16,13 @@
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
+	  <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.1.4" />
 	  <PackageReference Include="SendGrid" Version="9.9.0" />
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,22 +36,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\auth\auth.guard.ts" />
+    <None Remove="ClientApp\app\auth\authorizeRoute.guard.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
+    <None Remove="ClientApp\app\services\apiRoutes.service.ts" />
     <None Remove="ClientApp\app\services\dataFlow.service.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
     <None Remove="ClientApp\app\viewApi\stringSelect.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\auth\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\app\auth\authorizeRoute.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\registrationRedirect\registrationRedirect.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\registerMessage\registerMessage.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSwitch\bgcSwitch.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\apiRoutes.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\dataFlow.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\user.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\viewApi\stringSelect.ts" />

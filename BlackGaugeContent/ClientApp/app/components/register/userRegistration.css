@@ -1,7 +1,7 @@
 ﻿.text-error {
 	color: red;
 	border-bottom: 1px red solid;
-	padding-top: 10px;
+	padding: 10px 5px 5px 5px;
 }
 
 .ng-invalid.ng-dirty {

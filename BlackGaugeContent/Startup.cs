@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Text;
+using Bgc.Api;
 using Bgc.Data;
 using Bgc.Models;
 using Bgc.Services;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,14 +16,18 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Bgc
 {
 	public class Startup
 	{
+		private SecurityKey _signinKey;
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+			_signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["SymmetricSecurityKey"]));
 		}
 
 		public IConfiguration Configuration { get; }
@@ -81,6 +89,15 @@ namespace Bgc
 
 			services.Configure<MvcOptions>(options => options.Filters.Add(new RequireHttpsAttribute()));
 			services.Configure<AuthMessageSenderOptions>(Configuration);
+
+			services.AddAuthorization(options => 
+			{
+				options.AddPolicy("BgcUser", policy => 
+					//policy.RequireClaim(R.AuthTags.Role, R.AuthTags.ApiAccess)
+					policy.RequireClaim(R.AuthTags.Role, R.AuthTags.ApiAccess)
+				);
+			});
+			ConfigureJwtAuthServices(services);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,7 +136,7 @@ namespace Bgc
 			app.UseRewriter(options);*/
 		}
 
-		public void ConfigureAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
+		private void ConfigureAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
 		{
 			app.Use(next => context => 
 			{
@@ -131,6 +148,49 @@ namespace Bgc
 				}
 				return next(context);
 			});
+		}
+
+		/// <summary>
+		/// Configures authentication and authorization using Json Web Tokens
+		/// </summary>
+		/// <param name="services"></param>
+		private void ConfigureJwtAuthServices(IServiceCollection services)
+		{
+			services.AddSingleton<IJwtFactory, JwtFactory>();
+			var jwtOptionsConfig = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+			services.Configure<JwtIssuerOptions>(options => 
+			{
+				options.Issuer   = jwtOptionsConfig[nameof(JwtIssuerOptions.Issuer)];
+				options.Audience = jwtOptionsConfig[nameof(JwtIssuerOptions.Audience)];
+				options.SigningCredentials = new SigningCredentials(_signinKey, SecurityAlgorithms.HmacSha256);
+			});
+
+			var tokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuer = true,
+				ValidIssuer = jwtOptionsConfig[nameof(JwtIssuerOptions.Issuer)],
+
+				ValidateAudience = true,
+				ValidAudience = jwtOptionsConfig[nameof(JwtIssuerOptions.Audience)],
+
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = _signinKey,
+
+				RequireExpirationTime = false,
+				ValidateLifetime = false,
+				ClockSkew = TimeSpan.Zero
+			};
+
+			services.AddAuthorization(options => 
+			{
+				options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
+			});
+			services.AddAuthentication(options => 
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options => options.TokenValidationParameters = tokenValidationParameters);
 		}
 	}
 }

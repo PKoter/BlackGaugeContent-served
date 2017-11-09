@@ -2,16 +2,16 @@
 import { Title } from '@angular/platform-browser';
 import { LoginModel, AccountFeedback, FeedResult } from '../../models/account';
 
-import { UserService } from '../../services/user.service';
+import { UserService }     from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
-import { Router } from '@angular/router';
+import { ApiRoutes }       from '../../services/apiRoutes.service';
 
 
 @Component({
 	selector: 'user-login',
 	templateUrl: './userLogin.html',
-	styleUrls: ['../register/userRegistration.css', '../../controls/bgcButtons.css'],
-	providers: [UserService]
+	styleUrls: ['../register/userRegistration.css', '../../controls/bgcButtons.css']
+	//providers: [UserService]
 })
 
 export class LoginComponent {
@@ -21,7 +21,7 @@ export class LoginComponent {
 	private submitted:   boolean = false;
 	private redirecting: boolean = false;
 
-	constructor(private router: Router, titleService: Title, private userServis: UserService,
+	constructor(titleService: Title, private userService: UserService,
 		private dataService: DataFlowService
 	)
 	{
@@ -36,13 +36,13 @@ export class LoginComponent {
 		this.error = '';
 		this.submitted   = true;
 		this.redirecting = true;
-		this.userServis.post<LoginModel>('api/Account/Login', this.model)
+		this.userService.post<LoginModel>(ApiRoutes.Login, this.model)
 			.subscribe(result =>
 				{
 					let feedback = result.json() as AccountFeedback;
 					this.redirecting = false;
-					if (feedback.result !== FeedResult.error)
-						this.router.navigate(['']);
+					if (feedback.result === FeedResult.success)
+						this.userService.logIn(result);
 					else {
 						this.submitted = false;
 						this.error = feedback.message;

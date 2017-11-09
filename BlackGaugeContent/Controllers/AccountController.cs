@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Extensions.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Bgc.Controllers
 {
@@ -21,24 +22,31 @@ namespace Bgc.Controllers
 	[Route("api/[controller]/[action]")]
 	public class AccountController : Controller
 	{
-		private readonly UserManager<AspUser> _userManager;
+		private readonly UserManager<AspUser>   _userManager;
 		private readonly SignInManager<AspUser> _signInManager;
-		private readonly IEmailSender _emailSender;
-		private readonly ILogger _logger;
-		private readonly ApplicationDbContext _context;
+		private readonly IEmailSender           _emailSender;
+		private readonly ILogger                _logger;
+		private readonly IJwtFactory            _jwtFactory;
+		private readonly JwtIssuerOptions       _jwtOptions;
+		private readonly ApplicationDbContext   _context;
 
 		public AccountController(
-			UserManager<AspUser> userManager,
-			SignInManager<AspUser> signInManager,
-			IEmailSender emailSender,
+			UserManager<AspUser>       userManager,
+			SignInManager<AspUser>     signInManager,
+			IEmailSender               emailSender,
 			ILogger<AccountController> logger,
-			ApplicationDbContext context)
+			IOptions<JwtIssuerOptions> optionsIssuer,
+			IJwtFactory                jwtFactory,
+			ApplicationDbContext       context
+		)
 		{
-			_userManager = userManager;
+			_userManager   = userManager;
 			_signInManager = signInManager;
-			_emailSender = emailSender;
-			_logger = logger;
-			_context = context;
+			_emailSender   = emailSender;
+			_logger        = logger;
+			_context       = context;
+			_jwtOptions    = optionsIssuer.Value;
+			_jwtFactory    = jwtFactory;
 		}
 
 		[TempData]
@@ -81,7 +89,8 @@ namespace Bgc.Controllers
 				if (result.Succeeded)
 				{
 					_logger.LogInformation($"User {model.Email} logged in.");
-					return Json(new AccountFeedback() {Result = FeedResult.Success});
+
+					return JwtAuth(user);
 				}
 				if (result.RequiresTwoFactor)
 				{
@@ -101,6 +110,7 @@ namespace Bgc.Controllers
 			return ValidationFail;
 		}
 
+		#region Error properties
 		/// <summary>
 		/// If we got this far, something failed, send validation error
 		/// </summary>
@@ -122,6 +132,25 @@ namespace Bgc.Controllers
 			{
 				return Json(new AccountFeedback() {Message = "User doesn't exist."});
 			}
+		}
+		#endregion
+
+		/// <summary>
+		/// Returns Jwt token when user logged successfully.
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		private IActionResult JwtAuth(AspUser user)
+		{
+			var identity = _jwtFactory.GenerateClaimsIdentity(user.UserName, user.Id.ToString());
+
+			return Json(new {
+				Result     = FeedResult.Success,
+				userId     = user.Id,
+				userName   = user.UserName,
+				auth_token = _jwtFactory.GenerateEncodedToken(user.UserName, identity),
+				expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
+			});
 		}
 
 		[HttpGet]
@@ -552,5 +581,12 @@ namespace Bgc.Controllers
 			return result;
 		}
 		#endregion
+
+		[HttpGet]
+		[Authorize(policy: "BgcUser")]
+		public IActionResult GetAuth()
+		{
+			return Json(new {Message = "some bgc data"});
+		}
 	}
 }
