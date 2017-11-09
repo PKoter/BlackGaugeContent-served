@@ -13,12 +13,12 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li [routerLinkActive]="['link-active']">
-					<a [routerLink]="['/home']">
+					<a [routerLink]="homeRoute">
 						<span class="glyphicon glyphicon-home"></span> Home
 					</a>
 				</li>
 				<li [routerLinkActive]="['link-active']">
-					<a [routerLink]="['/memelist']">
+					<a [routerLink]="memeListRoute">
 						<span class="glyphicon glyphicon-th-list"></span> Meme list
 					</a>
 				</li>
@@ -35,6 +35,11 @@
 				<li *ngIf="userName != ''">
 					<a>
 						Welcome, <span style="color:burlywood">{{userName}} :)</span>
+					</a>
+				</li>
+				<li *ngIf="userName != ''">
+					<a (click)="logout()">
+						<span> Logout</span>
 					</a>
 				</li>
 			</ul>

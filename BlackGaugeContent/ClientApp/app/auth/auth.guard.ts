@@ -21,10 +21,26 @@ export class AuthGuard {
 			: { id: 0, name: '' };
 	}
 
+	public logOut() {
+		localStorage.removeItem(this.AuthToken);
+		this.loginInfo = new LoginResult();
+	}
+
 	/**
 	 * Returns headers for authorized get using JwtBearer.
 	 */
 	public authGetHeaders(): RequestOptions {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Authorization', 'Bearer ' + this.loginInfo.auth_token);
+		let options = new RequestOptions({ headers: headers });
+		return options;
+	}
+
+	/**
+	 * Returns headers for authorized post using JwtBearer.
+	 */
+	public authPostHeaders(): RequestOptions {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Authorization', 'Bearer ' + this.loginInfo.auth_token);

@@ -30,6 +30,13 @@ export class UserService extends RequestHandler {
 		this.logged.emit(true);
 	}
 
+	public logOut() {
+		this.authorizedPost(ApiRoutes.Logout).subscribe();
+		this.auth.logOut();
+		this.router.redirect(Routes.Home);
+		this.logged.emit(false);
+	}
+
 	public getUserIds(): { id: number, name: string } {
 		return this.auth.getLoggedUserIds();
 	}
@@ -37,5 +44,10 @@ export class UserService extends RequestHandler {
 	private authorizedGet<T>(route: string): Observable<T> {
 		let options = this.auth.authGetHeaders();
 		return this.get<T>(route, options);
+	}
+
+	private authorizedPost(route: string): Observable<Response> {
+		let options = this.auth.authPostHeaders();
+		return this.postWithHeaders(route, options);
 	}
 }

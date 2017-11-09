@@ -29,6 +29,7 @@ export class Routes {
  */
 export class ApiRoutes {
 	public static ConfirmEmail = 'api/Account/ConfirmEmail';
-	public static Login        = 'api/Account/Login';
+	public static Login = 'api/Account/Login';
+	public static Logout = 'api/Account/Logout';
 	public static Register     = 'api/Account/Register';
 }

@@ -10,6 +10,8 @@ import { UserService } from '../../services/user.service';
 export class NavMenuComponent implements OnInit {
 	private registerRoute = [`/${Routes.Register}`];
 	private loginRoute = [`/${Routes.Login}`];
+	private memeListRoute = [`/${Routes.MemeList}`];
+	private homeRoute = [`/${Routes.Home}`];
 
 	private userName = '';
 
@@ -23,5 +25,9 @@ export class NavMenuComponent implements OnInit {
 
 	private userLogged(really: boolean) {
 		this.userName = really ? this.userService.getUserIds().name : '';
+	}
+
+	private logout() {
+		this.userService.logOut();
 	}
 }

@@ -32,4 +32,16 @@ export class RequestHandler {
 		let options = new RequestOptions({ headers: headers });
 		return this.http.post(this.baseUrl + route, body, options);
 	}
+
+	public postEmpty(route: string): Observable<Response> {
+		let body = JSON.stringify({});
+		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let options = new RequestOptions({ headers: headers });
+		return this.http.post(this.baseUrl + route, body, options);
+	}
+
+	public postWithHeaders(route: string, options: RequestOptions): Observable<Response> {
+		let body = JSON.stringify({});
+		return this.http.post(this.baseUrl + route, body, options);
+	}
 }
