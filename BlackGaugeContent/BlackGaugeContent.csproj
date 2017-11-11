@@ -12,9 +12,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	<Optimize>true</Optimize>
 	<OutputPath>bin\Debug\</OutputPath>
+	<DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS;NETCOREAPP2_0</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />

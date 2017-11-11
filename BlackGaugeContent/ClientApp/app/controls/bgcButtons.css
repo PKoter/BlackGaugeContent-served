@@ -17,6 +17,7 @@
 .bgc-button-inform {
 	background-color: rgb(50, 100, 170);
 	border: none !important;
+	color: antiquewhite;
 }
 
 	.bgc-button-inform:hover {
@@ -38,6 +39,8 @@
 .bgc-button-affirm {
 	background-color: rgb(220, 185, 130);
 	border: 1px rgb(200, 170, 120) solid !important;
+	color: black;
+	font-weight: bold;
 }
 
 	.bgc-button-affirm:hover {

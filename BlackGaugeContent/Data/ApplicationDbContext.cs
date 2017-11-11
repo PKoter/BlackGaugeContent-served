@@ -14,7 +14,7 @@ namespace Bgc.Data
 														 AspRoleClaim, 
 														 AspUserToken>
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+		public ApplicationDbContext(DbContextOptions options)
 			: base(options)
 		{
 		}
@@ -29,12 +29,13 @@ namespace Bgc.Data
 			builder.Entity<AspUserLogin>().ToTable("AspUserLogins");
 			builder.Entity<AspUserClaim>().ToTable("AspUserClaims");
 			builder.Entity<AspRoleClaim>().ToTable("AspRoleClaims");
-			/*
+
 			builder.Entity<AspUser>().Property(b => b.Id)
 				.HasColumnType("int")
 				.IsRequired()
+				//.ValueGeneratedOnAdd();
 				.ValueGeneratedNever();
-*/
+
 			builder.Entity<AspUser>(b => b.Property(p => p.UserName).HasColumnName("Name"));
 			// Customize the ASP.NET Identity model and override the defaults if needed.
 			// For example, you can rename the ASP.NET Identity table names and more.

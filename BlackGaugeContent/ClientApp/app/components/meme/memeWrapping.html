@@ -1,18 +1,23 @@
 ﻿<div class="meme">
 	<p *ngIf="meme.title"><em>{{meme.title}}</em></p>
-	<img class="img-responsive meme-list-style" [src]="_sanitizer.bypassSecurityTrustUrl(meme.base64)" alt="meme"/>
-	<div class="well meme-list-style">
-		<div class="btn-group" data-toggle="buttons" set="{0}">
-			<label class="btn btn-primary">
-				<input type="radio" name="vote" value="nicey" autocomplete="off"/>
+	<img class="img-responsive meme-list-style" [src]="getMemeSrc()" alt="meme"/>
+
+	<div class="meme-list-style">
+		<div>
+			<div class="bgc-button bgc-button-inform vote-buttons" 
+				 [ngClass]="{'bgc-button-affirm' : meme.vote > 0}"
+				 (click)="voted(true)">
+				<input type="radio" name="vote" value="nicey" autocomplete="off" hidden="true"/>
 				<span class="glyphicon glyphicon-thumbs-up"></span>
-				<span class="space-hide-text"> Nicey</span>
-			</label>
-			<label class="btn btn-primary">
-				<input type="radio" name="vote" value="nope" autocomplete="off"/>
+				<span > Nicey</span>
+			</div><!-- remove annoying whitespace between
+		--><div class="bgc-button bgc-button-inform vote-buttons" 
+				   [ngClass]="{'bgc-button-affirm' : meme.vote < 0}"
+				   (click)="voted(false)">
+				<input type="radio" name="vote" value="nope" autocomplete="off" hidden="true"/>
 				<span class="glyphicon glyphicon-thumbs-down"></span>
-				<span class="space-hide-text"> Nope</span>
-			</label>
+				<span > Nope</span>
+			</div>
 		</div>
 		<div class="meme-hotness">
 			<span class="glyphicon glyphicon-fire"></span> <span class="badge">

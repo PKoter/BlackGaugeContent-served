@@ -2,7 +2,8 @@
 {
 	public class R
 	{
-		public const int MaxGendersCount = 255;
+		public const int MaxGendersCount  = 255;
+		public const int MemesOnPageCount = 10;
 
 		public struct AuthTags
 		{

@@ -1,21 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bgc.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Bgc.Models
+namespace Bgc.Data
 {
-	public partial class BgcContext : DbContext
+	public class BgcFullContext : ApplicationDbContext
 	{
 		//public virtual DbSet<Blacklist>   Blacklists   { get; set; }
 		//public virtual DbSet<Exclusive>   Exclusive    { get; set; }
-		public virtual DbSet<Gender>      Genders      { get; set; }
+		public virtual DbSet<Gender>     Genders      { get; set; }
 		//public virtual DbSet<MemeComment> MemeComments { get; set; }
-		public virtual DbSet<Meme>        Memes        { get; set; }
-		public virtual DbSet<MemeRating>  MemeRatings  { get; set; }
-		public virtual DbSet<AspUser>     Users        { get; set; }
+		public virtual DbSet<Meme>       Memes        { get; set; }
+		public virtual DbSet<MemeRating> MemeRatings  { get; set; }
 
-		public BgcContext(DbContextOptions<BgcContext> options) : base(options) {}
+		public BgcFullContext(DbContextOptions<BgcFullContext> options) : base(options) {}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			base.OnModelCreating(modelBuilder);
+
 			var isSqlServer = Database.IsSqlServer();
 			/*
 			modelBuilder.Entity<Blacklist>(entity =>
@@ -201,6 +203,8 @@ namespace Bgc.Models
 					.HasColumnType("nvarchar(256)").IsRequired();
 
 				entity.Property(e => e.DogeCoins).IsRequired();
+
+				entity.Property(e => e.GenderId).HasDefaultValue(1);
 
 				entity.HasOne(d => d.Gender)
 					.WithMany(p => p.Users)

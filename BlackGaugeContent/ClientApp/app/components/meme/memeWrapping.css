@@ -1,16 +1,33 @@
 ﻿div.meme {
 	display: block;
 	padding: 20px 40px;
-	background-color: white;
-	border-radius: 5px;
-	border: 2px solid darkslategrey;
+	background-color: aliceblue;
+	border-radius: 2px;
+	border: 2px solid burlywood;
 	width: 70%;
+	min-width: 520px;
 }
 .meme-list-style {
+	padding-top: 10px;
 	width: calc(100% - 40px);
 	margin-left: 20px;
+	white-space: nowrap;
 }
+.meme-list-style div {
+	display: inline-block;
+}
+
 .meme-hotness {
 	display: inline-block;
-	padding-left: 50px;
+}
+
+.vote-buttons {
+	height:30px;
+	width:100px;
+	margin-right: 10px;
+	margin-left: 0;
+}
+
+.voted {
+	background-color: burlywood !important;
 }

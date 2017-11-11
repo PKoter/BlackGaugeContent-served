@@ -2,6 +2,9 @@
 using System.Text;
 using Bgc.Api;
 using Bgc.Data;
+using Bgc.Data.Contracts;
+using Bgc.Data.Implementations;
+using Bgc.Extensions;
 using Bgc.Models;
 using Bgc.Services;
 using Microsoft.AspNetCore.Antiforgery;
@@ -12,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,21 +39,12 @@ namespace Bgc
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-			services.AddDbContext<BgcContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			AddDataServices(services);
 
-			services.AddIdentity<AspUser, AspRole>(config => config.SignIn.RequireConfirmedEmail = true)
+			services.AddIdentity<AspUser, AspRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			services.AddMvc()
-				.AddRazorPagesOptions(options =>
-				{
-					options.Conventions.AuthorizeFolder("/Account/Manage");
-					options.Conventions.AuthorizePage("/Account/Logout");
-				});
 
 			services.Configure<IdentityOptions>(options =>
 			{
@@ -66,6 +61,7 @@ namespace Bgc
 				options.Lockout.MaxFailedAccessAttempts = 10;
 				options.Lockout.AllowedForNewUsers = true;
 
+				options.SignIn.RequireConfirmedEmail = true;
 				// User settings
 				options.User.RequireUniqueEmail = true;
 			});
@@ -81,10 +77,27 @@ namespace Bgc
 				options.SlidingExpiration = true;
 			});
 
-			services.AddAntiforgery(options => options.HeaderName = "X-XSRF-Token");
 
-			// Register no-op EmailSender used by account confirmation and password reset during development
-			// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+			services.AddAntiforgery(options =>
+				{
+					options.HeaderName = "X-XSRF-TOKEN";
+					options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+					options.SuppressXFrameOptionsHeader = false;
+				});
+
+			services.AddMvc(options =>
+				{
+					options.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
+				})
+				.AddRazorPagesOptions(options =>
+				{
+					options.Conventions.AuthorizeFolder("/Account/Manage");
+					options.Conventions.AuthorizePage("/Account/Logout");
+				});
+
+			services.AddTransient<AntiforgeryCookieResultFilter>();
+			
+
 			services.AddTransient<IEmailSender, EmailSender>();
 
 			services.Configure<MvcOptions>(options => options.Filters.Add(new RequireHttpsAttribute()));
@@ -100,10 +113,22 @@ namespace Bgc
 			ConfigureJwtAuthServices(services);
 		}
 
+		/// <summary>
+		/// Configures servies to provide data providers for dependency injection.
+		/// </summary>
+		/// <param name="services"></param>
+		private void AddDataServices(IServiceCollection services)
+		{
+			services.AddDbContext<BgcFullContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddTransient<IBgcMemeRepository, BgcMemeRepo>();
+		}
+
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
 		{
-			ConfigureAntiforgery(app, antiforgery);
+			//ConfigureAntiforgery(app, antiforgery);
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -132,19 +157,20 @@ namespace Bgc
 					defaults: new { controller = "Home", action = "Index" });
 			});
 
-			/*var options = new RewriteOptions().AddRedirectToHttps();
-			app.UseRewriter(options);*/
+			var options = new RewriteOptions().AddRedirectToHttps();
+			app.UseHttpStrictTransportSecurity(sts => { sts.MaxAge = TimeSpan.FromDays(90); });
+			app.UseRewriter(options);
 		}
 
 		private void ConfigureAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
 		{
-			app.Use(next => context => 
+			app.Use(next => (context) => 
 			{
 				if (context.Request.Path == "/")
 				{
 					//send the request token as a JavaScript-readable cookie, and Angular will use it by default
 					var tokens = antiforgery.GetAndStoreTokens(context);
-					context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions {HttpOnly = false});
+					context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions {HttpOnly = false, Secure = true});
 				}
 				return next(context);
 			});

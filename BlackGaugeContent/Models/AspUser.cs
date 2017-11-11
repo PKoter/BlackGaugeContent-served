@@ -16,6 +16,6 @@ namespace Bgc.Models
 		public ICollection<Blacklist> BlacklistsUser { get; set; }
 		public ICollection<Exclusive> Exclusive { get; set; }
 		public ICollection<MemeComment> MemeComments { get; set; }
-		
+		public ICollection<MemeRating> MemeRatings { get; set; }
 	}
 }

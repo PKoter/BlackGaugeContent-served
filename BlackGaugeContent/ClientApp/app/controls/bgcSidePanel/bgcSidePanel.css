@@ -25,7 +25,6 @@
 }
 
 .side-panel-body {
-	box-sizing: border-box;
 	width: 100%;
 	border: 2px dimgrey solid;
 	height: calc(100% - 40px);

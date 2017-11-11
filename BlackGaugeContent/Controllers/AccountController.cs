@@ -8,6 +8,7 @@ using Bgc.Data;
 using Bgc.Models;
 using Bgc.Services;
 using Bgc.ViewModels.Account;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -54,6 +55,7 @@ namespace Bgc.Controllers
 
 		[HttpGet]
 		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(string returnUrl = null)
 		{
 			// Clear the existing external cookie to ensure a clean login process
@@ -65,7 +67,7 @@ namespace Bgc.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		//[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login([FromBody] LoginModel model, string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
@@ -140,7 +142,7 @@ namespace Bgc.Controllers
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns></returns>
-		private IActionResult JwtAuth(AspUser user)
+		private IActionResult JwtAuth([NotNull] AspUser user)
 		{
 			var identity = _jwtFactory.GenerateClaimsIdentity(user.UserName, user.Id.ToString());
 
@@ -270,14 +272,6 @@ namespace Bgc.Controllers
 			return View();
 		}
 
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult Register(string returnUrl = null)
-		{
-			ViewData["ReturnUrl"] = returnUrl;
-			return View();
-		}
-
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
@@ -325,7 +319,7 @@ namespace Bgc.Controllers
 		}
 
 		[HttpPost]
-		//[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();
