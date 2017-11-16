@@ -19,16 +19,16 @@ namespace Bgc.Controllers
 			_repo = repo;
 		}
 
-		[HttpGet("{pageIndex}")]
+		[HttpGet("{pageIndex}/{userId}")]
 		[AllowAnonymous]
-		public async Task<IEnumerable<MemeModel>> PageMemes(int pageIndex)
+		public async Task<IEnumerable<MemeModel>> PageMemes(int pageIndex, int userId)
 		{
-			return await _repo.PageElements(pageIndex);
+			return await _repo.PageElements(pageIndex, userId);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		//[Authorize(policy: "BgcUser")]
+		[Authorize(policy: "BgcUser")]
 		public async Task<MemeState> MemeReaction([FromBody] MemeReaction reaction)
 		{
 			if (ModelState.IsValid)
@@ -43,7 +43,7 @@ namespace Bgc.Controllers
 					// add rating
 					if (reaction.Vote != 0)
 					{
-						meme.Rating += reaction.Vote;
+						meme.Rating += reaction.Vote - earlierRating.Vote;
 						earlierRating.Vote = reaction.Vote;
 					}
 					// remove previous, user undid his rating
@@ -58,7 +58,8 @@ namespace Bgc.Controllers
 					return new MemeState()
 					{
 						CommentCount = meme.CommentCount,
-						Rating = meme.Rating
+						Rating       = meme.Rating,
+						Vote         = reaction.Vote
 					};
 				}
 				catch (Exception e) 

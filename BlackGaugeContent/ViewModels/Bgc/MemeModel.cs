@@ -28,6 +28,7 @@ namespace Bgc.ViewModels.Bgc
 	{
 		public int Rating       {get; set;}
 		public int CommentCount {get; set;}
+		public sbyte Vote       {get; set;}
 	}
 
 	/// <summary>
@@ -35,7 +36,9 @@ namespace Bgc.ViewModels.Bgc
 	/// </summary>
 	public class MemeReaction
 	{
+		[Range(1, Int32.MaxValue)]
 		public int MemeId {get; set;}
+		[Range(1, Int32.MaxValue)]
 		public int UserId {get; set;}
 		[Range(-1, 1)]
 		public sbyte Vote {get; set;}

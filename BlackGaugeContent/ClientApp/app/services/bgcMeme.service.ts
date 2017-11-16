@@ -21,6 +21,7 @@ export class BgcMemeService extends AuthRequestHandler {
 	}
 
 	public getMemePage(pageIndex: number): Observable<MemeModel[]> {
-		return this.get<MemeModel[]>(ApiRoutes.PageMemes + `/${pageIndex}`);
+		let userId = this.auth.getLoggedUserIds().id;
+		return this.get<MemeModel[]>(ApiRoutes.PageMemes + `/${pageIndex}/${userId}`);
 	}
 }

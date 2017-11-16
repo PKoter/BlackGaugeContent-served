@@ -25,6 +25,11 @@ export class MemeComponent {
 	public set Meme(meme: MemeModel) {
 		this.meme      = meme.core;
 		this.memeState = meme.state;
+		this.vote = meme.state.vote;
+		if (this.vote !== 0) {
+			this.hasVoted = true;
+			this.lastVote = this.vote > 0;
+		}
 	}
 
 	constructor(private _sanitizer: DomSanitizer, private userService: UserService,

@@ -13,13 +13,15 @@ export interface Meme {
 
 export class MemeReaction {
 	constructor(
-		userId: number,
-		memeId: number,
-		vote: number) { }
+		public userId: number,
+		public memeId: number,
+		public vote: number) { }
 }
 
 export class MemeState {
 	constructor(
 		public rating: number,
-		public commentCount: number) { }
+		public commentCount: number,
+		public vote: number
+	) { }
 }

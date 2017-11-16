@@ -20,29 +20,34 @@ namespace Bgc.Data.Implementations
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 		}
 
-		public async Task<IEnumerable<MemeModel>> PageElements(int pageIndex)
+		public async Task<IEnumerable<MemeModel>> PageElements(int pageIndex, int userId)
 		{
 			if(pageIndex < 0)
 				throw new ArgumentOutOfRangeException();
-			return await _context.Memes
+			var page = _context.Memes
 				.Skip(R.MemesOnPageCount * pageIndex)
-				.Take(R.MemesOnPageCount)
-				.Select(m => new MemeModel()
-				{
-					Core = new MemeCore()
+				.Take(R.MemesOnPageCount);
+			return await (from meme in page
+				join rating in _context.MemeRatings
+				on meme.Id equals rating.MemeId into rt
+					from r in rt.DefaultIfEmpty()
+					where r.UserId == userId
+					select new MemeModel()
 					{
-						Id      = m.Id,
-						Title   = m.Title,
-						AddTime = m.AddTime,
-						Base64  = m.Base64
-					},
-					State = new MemeState()
-					{
-						Rating       = m.Rating,
-						CommentCount = m.CommentCount
-					}
-				})
-				.ToListAsync();
+						Core = new MemeCore()
+						{
+							Id      = meme.Id,
+							Title   = meme.Title,
+							AddTime = meme.AddTime,
+							Base64  = meme.Base64
+						},
+						State = new MemeState()
+						{
+							Rating       = meme.Rating,
+							CommentCount = meme.CommentCount,
+							Vote = r != null? r.Vote : (sbyte)0
+						}
+					}).ToListAsync();
 		}
 
 		public async Task<Meme> GetSingle(int elementId)

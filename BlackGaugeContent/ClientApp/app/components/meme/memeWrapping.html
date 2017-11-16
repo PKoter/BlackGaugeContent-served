@@ -5,14 +5,14 @@
 	<div class="meme-list-style">
 		<div>
 			<div class="bgc-button bgc-button-inform vote-buttons" 
-				 [ngClass]="{'bgc-button-affirm' : meme.vote > 0}"
+				 [ngClass]="{'bgc-button-affirm' : vote > 0}"
 				 (click)="voted(true)">
 				<input type="radio" name="vote" value="nicey" autocomplete="off" hidden="true"/>
 				<span class="glyphicon glyphicon-thumbs-up"></span>
 				<span > Nicey</span>
 			</div><!-- remove annoying whitespace between
 		--><div class="bgc-button bgc-button-inform vote-buttons" 
-				   [ngClass]="{'bgc-button-affirm' : meme.vote < 0}"
+				   [ngClass]="{'bgc-button-affirm' : vote < 0}"
 				   (click)="voted(false)">
 				<input type="radio" name="vote" value="nope" autocomplete="off" hidden="true"/>
 				<span class="glyphicon glyphicon-thumbs-down"></span>
