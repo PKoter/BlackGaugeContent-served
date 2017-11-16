@@ -12,28 +12,40 @@ namespace Testing.UnitTests.Controllers
 	public class MemeListController_Tests
 	{
 		[TestMethod]
-		public void MemeReaction_MemeRatingShouldIncrease()
+		public async Task MemeReaction_MemeRatingShouldIncrease()
 		{
 			var reaction = StubMemeReaction(1);
-			var repo = CreateMockRepository(reaction);
+			var repo = CreateMockRepository(reaction, 0);
 			var controller = new MemeListController(repo);
 
-			var result = controller.MemeReaction(reaction);
-			Assert.AreEqual(1, result.Result.Rating);
+			var result = await controller.MemeReaction(reaction);
+			Assert.AreEqual(1, result.Rating);
 		}
 
 		[TestMethod]
-		public void MemeReaction_MemeRatingShouldDecrease()
+		public async Task MemeReaction_MemeRatingShouldDecrease()
 		{
 			var reaction = StubMemeReaction(-1);
-			var repo = CreateMockRepository(reaction);
+			var repo = CreateMockRepository(reaction, 0);
 			var controller = new MemeListController(repo);
 
-			var result = controller.MemeReaction(reaction);
+			var result = await controller.MemeReaction(reaction);
 
-			Assert.AreEqual(-1, result.Result.Rating);
+			Assert.AreEqual(-1, result.Rating);
 		}
 
+		[TestMethod]
+		public async Task MemeReaction_MemeRatingShouldBeDeleted()
+		{
+			var reaction = StubMemeReaction(0);
+			var repo = CreateMockRepository(reaction, 1);
+			var controller = new MemeListController(repo);
+
+			var result = await controller.MemeReaction(reaction);
+
+			Assert.AreEqual(-1, result.Rating);
+
+		}
 		#region stub mocks
 		private MemeReaction StubMemeReaction(sbyte vote)
 		{
@@ -45,7 +57,7 @@ namespace Testing.UnitTests.Controllers
 			};
 		}
 
-		private IBgcMemeRepository CreateMockRepository(MemeReaction reaction)
+		private IBgcMemeRepository CreateMockRepository(MemeReaction reaction, sbyte vote)
 		{
 			var mockRepo = Substitute.For<IBgcMemeRepository>();
 			mockRepo.GetSingle(1)
@@ -57,8 +69,9 @@ namespace Testing.UnitTests.Controllers
 			mockRepo.GetOrMakeRating(reaction)
 				.Returns(Task.FromResult(new MemeRating()
 				{
-					MemeId = 1,
-					UserId = 1
+					MemeId = reaction.MemeId,
+					UserId = reaction.UserId,
+					Vote   = vote
 				}));
 			return mockRepo;
 		}

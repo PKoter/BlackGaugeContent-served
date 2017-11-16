@@ -1,23 +1,29 @@
-﻿import { Component, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+﻿import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { BgcMemeService } from '../../services/bgcMeme.service';
 
-import { Meme } from '../meme/meme.component';
+import { MemeModel } from '../../models/memes';
 
 @Component({
 	selector: 'meme-list',
 	templateUrl: './memeList.html',
-	styleUrls:['./memeList.css']
+	styleUrls: ['./memeList.css'],
+	providers: [BgcMemeService]
 })
 
-export class MemeListComponent {
-	public memes: Meme[];
+export class MemeListComponent implements OnInit {
+	public memes: MemeModel[];
+	private page: number;
 
-	constructor(http: Http, @Inject('BASE_URL') baseUrl: string, titleService: Title) {
+	constructor(private memeService: BgcMemeService, titleService: Title) {
 		titleService.setTitle("BGC official memes");
+		this.page = 0;
+	}
 
-		http.get(baseUrl + 'api/MemeList/ListAll').subscribe(result => {
-			this.memes = result.json() as Meme[];
-		}, error => console.error(`something is fucked up: ${error}`));
+	ngOnInit() {
+		this.memeService.getMemePage(this.page)
+			.subscribe(data => this.memes = data,
+				errors => console.warn(errors)
+			);
 	}
 }

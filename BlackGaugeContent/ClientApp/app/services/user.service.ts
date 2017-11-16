@@ -2,16 +2,18 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
 import { GenderModel } from '../models/account';
-import { RequestHandler } from '../components/requestHandler';
+import { AuthRequestHandler } from './requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class UserService extends RequestHandler {
+export class UserService extends AuthRequestHandler {
 
-	constructor(http: Http, @Inject('BASE_URL') baseUrl: string, private auth: AuthGuard, private router: ApiRoutesService) {
-		super(http, baseUrl);
+	constructor(http: Http, @Inject('BASE_URL') baseUrl: string, auth: AuthGuard,
+		private router: ApiRoutesService)
+	{
+		super(http, baseUrl, auth);
 	}
 
 	@Output() public logged = new EventEmitter();
@@ -24,14 +26,22 @@ export class UserService extends RequestHandler {
 		return this.auth.hasActiveToken();
 	}
 
-	public logIn(result: any) {
+	public logIn(result: Response) {
 		this.auth.loggedIn(result);
+		this.authGet(ApiRoutes.EnsureAuth)
+			.subscribe(() => {}, errors => console.warn(errors));
 		this.router.redirect(Routes.Home);
 		this.logged.emit(true);
 	}
 
 	public logOut() {
-		this.authorizedPost(ApiRoutes.Logout).subscribe();
+		this.authPost(ApiRoutes.Logout, { })
+			.subscribe(() => {
+					this.authGet(ApiRoutes.EnsureAuth)
+						.subscribe(() => {}, errors => console.warn(errors));
+				},
+				errors => console.warn(errors)
+			);
 		this.auth.logOut();
 		this.router.redirect(Routes.Home);
 		this.logged.emit(false);
@@ -39,15 +49,5 @@ export class UserService extends RequestHandler {
 
 	public getUserIds(): { id: number, name: string } {
 		return this.auth.getLoggedUserIds();
-	}
-
-	private authorizedGet<T>(route: string): Observable<T> {
-		let options = this.auth.authGetHeaders();
-		return this.get<T>(route, options);
-	}
-
-	private authorizedPost(route: string): Observable<Response> {
-		let options = this.auth.authPostHeaders();
-		return this.postWithHeaders(route, options);
 	}
 }

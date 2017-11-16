@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using Bgc.Data;
 using Bgc.Models;
 using Bgc.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -10,25 +11,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bgc.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/[controller]/[action]")]
 	public class UserController : Controller
 	{
-		private readonly BgcContext _context;
+		private readonly BgcFullContext _context;
 
-		public UserController(BgcContext context)
+		public UserController(BgcFullContext context)
 		{
 			_context = context;
 		}
 
 
-		[HttpGet("[action]")]
+		[HttpGet]
 		[AllowAnonymous]
 		public async Task<IEnumerable<Gender>> GetGenders()
 		{
 			return await _context.Genders.ToListAsync();
 		}
 
-		[HttpGet("[action]")]
+		[HttpGet]
 		[Produces("application/json")]
 		[AllowAnonymous]
 		public async Task<RegisterValueUniqueness> CheckUniqueness(string value, string type)

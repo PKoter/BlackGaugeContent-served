@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Bgc.Controllers;
 using Bgc.Data;
 using Bgc.Data.Implementations;
@@ -13,7 +14,7 @@ namespace Testing.IntegrationTests
 		private readonly Random _random = new Random();
 
 		[TestMethod]
-		public void MemeReaction_DbIntegration()
+		public async Task MemeReaction_DbIntegration()
 		{
 			using (var contextProvider = new EFInMemoryDbCreator.Sqlite<BgcFullContext>())
 			{
@@ -28,23 +29,18 @@ namespace Testing.IntegrationTests
 					UserId = 1,
 					Vote = (sbyte)(_random.Next(0, 10) % 2 == 0 ? -1 : 1)
 				};
-				var memeTask = repo.GetSingle(reaction.MemeId);
-				memeTask.Wait();
-				var mRating = memeTask.Result.Rating;
+				var mRating = (await repo.GetSingle(reaction.MemeId)).Rating;
+				
 
 				// act
-				var result = controller.MemeReaction(reaction);
-				result.Wait();
-				var outcome = result.Result;
+				var outcome = await controller.MemeReaction(reaction);
+				// fresh context
+				repo = new BgcMemeRepo(contextProvider.GetFreshContext());
 
 				// prepare assert
-				var memeRating = repo.GetOrMakeRating(reaction);
-				memeRating.Wait();
-				var rating = memeRating.Result;
+				var rating = await repo.GetOrMakeRating(reaction);
 
-				memeTask = repo.GetSingle(reaction.MemeId);
-				memeTask.Wait();
-				var meme2 = memeTask.Result;
+				var meme2 = await repo.GetSingle(reaction.MemeId);
 
 				// assert
 				Assert.AreEqual(reaction.Vote, rating.Vote);

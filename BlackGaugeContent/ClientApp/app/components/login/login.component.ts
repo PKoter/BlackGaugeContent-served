@@ -17,16 +17,14 @@ import { ApiRoutes }       from '../../services/apiRoutes.service';
 export class LoginComponent {
 
 	private model: LoginModel;
-	private error: string;
+	private error: string = '';
 	private submitted:   boolean = false;
 	private redirecting: boolean = false;
 
 	constructor(titleService: Title, private userService: UserService,
 		private dataService: DataFlowService
-	)
-	{
+	){
 		this.model = new LoginModel('', '', false);
-		this.error = '';
 		titleService.setTitle("BGC login");
 	}
 

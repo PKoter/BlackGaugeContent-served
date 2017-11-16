@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bgc.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/[controller]/[action]")]
 	public class MemeListController : Controller
 	{
 		private readonly IBgcMemeRepository _repo;
@@ -19,7 +19,7 @@ namespace Bgc.Controllers
 			_repo = repo;
 		}
 
-		[HttpGet]
+		[HttpGet("{pageIndex}")]
 		[AllowAnonymous]
 		public async Task<IEnumerable<MemeModel>> PageMemes(int pageIndex)
 		{
@@ -28,19 +28,30 @@ namespace Bgc.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(policy: "BgcUser")]
+		//[Authorize(policy: "BgcUser")]
 		public async Task<MemeState> MemeReaction([FromBody] MemeReaction reaction)
 		{
-			if (ModelState.IsValid && reaction.Vote != 0)
+			if (ModelState.IsValid)
 			{
 				try
 				{
 					var meme = await _repo.GetSingle(reaction.MemeId);
-					meme.Rating += reaction.Vote;
-
-					var earlierReaction = await _repo.GetOrMakeRating(reaction);
-
-					earlierReaction.Vote = reaction.Vote;
+					var earlierRating = await _repo.GetOrMakeRating(reaction);
+					// prevent forgering of likes without client
+					if (reaction.Vote == earlierRating.Vote)
+						return null;
+					// add rating
+					if (reaction.Vote != 0)
+					{
+						meme.Rating += reaction.Vote;
+						earlierRating.Vote = reaction.Vote;
+					}
+					// remove previous, user undid his rating
+					else
+					{
+						meme.Rating -= earlierRating.Vote;
+						_repo.DeleteRating(earlierRating);
+					}
 
 					_repo.SaveChanges();
 

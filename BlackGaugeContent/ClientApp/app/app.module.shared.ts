@@ -61,7 +61,7 @@ import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
 			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
 			{ path: '**', redirectTo: Routes.Home }
-		])
+		],  {enableTracing:true})
 	],
 	providers: [
 		DataFlowService,

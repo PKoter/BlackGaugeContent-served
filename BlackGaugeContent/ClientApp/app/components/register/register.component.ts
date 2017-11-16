@@ -1,4 +1,4 @@
-﻿import { Component, } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RegistrationModel, UniqueRegisterValue, GenderModel, AccountFeedback } from '../../models/account';
 import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
@@ -11,10 +11,9 @@ import { ApiRoutesService, Routes, ApiRoutes } from '../../services/apiRoutes.se
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
 	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css']
-	//providers: [UserService]
 })
 
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
 	private model:            RegistrationModel;
 	private submitted:        boolean = false;
@@ -44,8 +43,13 @@ export class RegisterComponent {
 	{
 		this.model = new RegistrationModel(0,'', '', '', '', 0);
 		titleService.setTitle("BGC registration");
+	}
 
-		this.userService.getGenders().subscribe(data => this.genders = data);
+	ngOnInit() {
+		this.userService.getGenders()
+			.subscribe(data => this.genders = data,
+				errors => console.warn(errors)
+			);
 	}
 
 	public set Password(value: string) {

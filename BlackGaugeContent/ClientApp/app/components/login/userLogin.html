@@ -5,7 +5,7 @@
 		<form #form="ngForm" class="">
 			<h4>Login to an existing account.</h4>
 			<hr />
-			<div [hidden]="error == ''" class="text-error" style="margin-bottom: 10px; padding-top: 0;">
+			<div *ngIf="error !== ''" class="text-error" style="margin-bottom: 10px; padding-top: 0;">
 				{{error}}
 			</div>
 			<!-- user email -->

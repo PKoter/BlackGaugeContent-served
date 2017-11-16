@@ -5,6 +5,7 @@ import { HttpModule}              from '@angular/http';
 import { RouterModule, Routes}	  from '@angular/router';
 import { AppModuleShared}         from './app.module.shared';
 import { AppComponent}            from './components/app/app.component';
+import { LocalStorage}            from './viewApi/localStorage';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AppComponent}            from './components/app/app.component';
 		AppModuleShared
 	],
 	providers: [
-		{ provide: 'BASE_URL', useFactory: getBaseUrl }
+		{ provide: 'BASE_URL', useFactory: getBaseUrl },
+		{ provide: LocalStorage, useValue: window.localStorage }
 	]
 })
 export class AppModule {

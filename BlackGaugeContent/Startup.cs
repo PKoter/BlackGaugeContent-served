@@ -42,7 +42,7 @@ namespace Bgc
 			AddDataServices(services);
 
 			services.AddIdentity<AspUser, AspRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddEntityFrameworkStores<BgcFullContext>()
 				.AddDefaultTokenProviders();
 
 
@@ -83,11 +83,12 @@ namespace Bgc
 					options.HeaderName = "X-XSRF-TOKEN";
 					options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 					options.SuppressXFrameOptionsHeader = false;
+					options.Cookie.HttpOnly = false;
 				});
 
 			services.AddMvc(options =>
 				{
-					options.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
+					//options.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
 				})
 				.AddRazorPagesOptions(options =>
 				{
@@ -95,12 +96,15 @@ namespace Bgc
 					options.Conventions.AuthorizePage("/Account/Logout");
 				});
 
-			services.AddTransient<AntiforgeryCookieResultFilter>();
-			
+			//services.AddTransient<AntiforgeryCookieResultFilter>();
 
 			services.AddTransient<IEmailSender, EmailSender>();
 
-			services.Configure<MvcOptions>(options => options.Filters.Add(new RequireHttpsAttribute()));
+			services.Configure<MvcOptions>(options =>
+				{
+					options.Filters.Add(new RequireHttpsAttribute());
+					//options.Filters.Add(new ValidateAntiForgeryTokenAttribute());
+				});
 			services.Configure<AuthMessageSenderOptions>(Configuration);
 
 			services.AddAuthorization(options => 
@@ -119,6 +123,8 @@ namespace Bgc
 		/// <param name="services"></param>
 		private void AddDataServices(IServiceCollection services)
 		{
+			services.AddDbContext<ApplicationDbContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDbContext<BgcFullContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -128,7 +134,10 @@ namespace Bgc
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
 		{
-			//ConfigureAntiforgery(app, antiforgery);
+			var options = new RewriteOptions().AddRedirectToHttps();
+			
+			app.UseRewriter(options);
+			app.UseHttpStrictTransportSecurity(sts => { sts.MaxAge = TimeSpan.FromDays(90); });
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -146,6 +155,7 @@ namespace Bgc
 			app.UseStaticFiles();
 
 			app.UseAuthentication();
+			app.UseMiddleware<AntiforgeryMiddleware>();
 
 			app.UseMvc(routes =>
 			{
@@ -155,24 +165,6 @@ namespace Bgc
 				routes.MapSpaFallbackRoute(
 					name: "spa-fallback",
 					defaults: new { controller = "Home", action = "Index" });
-			});
-
-			var options = new RewriteOptions().AddRedirectToHttps();
-			app.UseHttpStrictTransportSecurity(sts => { sts.MaxAge = TimeSpan.FromDays(90); });
-			app.UseRewriter(options);
-		}
-
-		private void ConfigureAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
-		{
-			app.Use(next => (context) => 
-			{
-				if (context.Request.Path == "/")
-				{
-					//send the request token as a JavaScript-readable cookie, and Angular will use it by default
-					var tokens = antiforgery.GetAndStoreTokens(context);
-					context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions {HttpOnly = false, Secure = true});
-				}
-				return next(context);
 			});
 		}
 

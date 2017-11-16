@@ -6,6 +6,7 @@ using Bgc.Api;
 using Bgc.Data.Contracts;
 using Bgc.Models;
 using Bgc.ViewModels.Bgc;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bgc.Data.Implementations
@@ -73,6 +74,11 @@ namespace Bgc.Data.Implementations
 				await _context.MemeRatings.AddAsync(rating);
 			}
 			return rating;
+		}
+
+		public void DeleteRating([NotNull] MemeRating rating)
+		{
+			_context.MemeRatings.Remove(rating);
 		}
 
 	}

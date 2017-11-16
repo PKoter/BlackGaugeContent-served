@@ -26,20 +26,10 @@ namespace Testing
 			}
 
 			[NotNull]
-			public Sqlite<T> PreconfigureContext<T2>([NotNull] Action<T2> seedAction) where T2 : DbContext
-			{
-				var options = GetOptions<T2>(_connection);
-				var context = GetContext<T2>(options);
-				EnsureSchema(context);
-				seedAction(context);
-				return this;
-			}
-
-			[NotNull]
 			public T CreateContext([NotNull] Action<T> seedAction)
 			{
 				_options = GetOptions<T>(_connection);
-				var context = GetFreshContext();
+				var context = GetContext(_options);
 				EnsureSchema(context);
 				seedAction(context);
 				return context;

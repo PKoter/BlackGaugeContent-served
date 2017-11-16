@@ -29,7 +29,7 @@ namespace Bgc.Controllers
 		private readonly ILogger                _logger;
 		private readonly IJwtFactory            _jwtFactory;
 		private readonly JwtIssuerOptions       _jwtOptions;
-		private readonly ApplicationDbContext   _context;
+		private readonly BgcFullContext         _context;
 
 		public AccountController(
 			UserManager<AspUser>       userManager,
@@ -38,7 +38,7 @@ namespace Bgc.Controllers
 			ILogger<AccountController> logger,
 			IOptions<JwtIssuerOptions> optionsIssuer,
 			IJwtFactory                jwtFactory,
-			ApplicationDbContext       context
+			BgcFullContext             context
 		)
 		{
 			_userManager   = userManager;
@@ -101,7 +101,7 @@ namespace Bgc.Controllers
 				if (result.IsLockedOut)
 				{
 					_logger.LogWarning("User account locked out.");
-					return RedirectToAction(nameof(Lockout));
+					return AccountLockoutError;
 				}
 				
 				return Json(new AccountFeedback()
@@ -135,7 +135,26 @@ namespace Bgc.Controllers
 				return Json(new AccountFeedback() {Message = "User doesn't exist."});
 			}
 		}
+
+		private JsonResult AccountLockoutError {
+			get
+			{
+				return Json(new AccountFeedback() {Message = "Account locked."});
+			}
+		}
 		#endregion
+
+		/// <summary>
+		/// Called after Login or Logout to transfer user principal, to generate actual antiforgery token.
+		/// Hack: HttpContext.AuthenticateAsync should provide principal asap AuthenticationMiddleware finishes Login etc. but this never happens. I don't have mental strength to investigate it atm.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		[AllowAnonymous]
+		public JsonResult EnsureAuthTransfer()
+		{
+			return Json(new {Success = true});
+		}
 
 		/// <summary>
 		/// Returns Jwt token when user logged successfully.
@@ -154,7 +173,7 @@ namespace Bgc.Controllers
 				expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
 			});
 		}
-
+		#region 2F/Recovery
 		[HttpGet]
 		[AllowAnonymous]
 		public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
@@ -201,7 +220,7 @@ namespace Bgc.Controllers
 			else if (result.IsLockedOut)
 			{
 				_logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-				return RedirectToAction(nameof(Lockout));
+				return AccountLockoutError;
 			}
 			else
 			{
@@ -255,7 +274,7 @@ namespace Bgc.Controllers
 			if (result.IsLockedOut)
 			{
 				_logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
-				return RedirectToAction(nameof(Lockout));
+				return AccountLockoutError;
 			}
 			else
 			{
@@ -264,13 +283,7 @@ namespace Bgc.Controllers
 				return View();
 			}
 		}
-
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult Lockout()
-		{
-			return View();
-		}
+		#endregion
 
 		[HttpPost]
 		[AllowAnonymous]
@@ -327,6 +340,7 @@ namespace Bgc.Controllers
 			return NoContent();
 		}
 
+		#region External login
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
@@ -362,7 +376,7 @@ namespace Bgc.Controllers
 			}
 			if (result.IsLockedOut)
 			{
-				return RedirectToAction(nameof(Lockout));
+				return AccountLockoutError;
 			}
 			else
 			{
@@ -405,6 +419,7 @@ namespace Bgc.Controllers
 			ViewData["ReturnUrl"] = returnUrl;
 			return View(nameof(ExternalLogin), model);
 		}
+		#endregion
 
 		[HttpGet]
 		[AllowAnonymous]
@@ -575,12 +590,5 @@ namespace Bgc.Controllers
 			return result;
 		}
 		#endregion
-
-		[HttpGet]
-		[Authorize(policy: "BgcUser")]
-		public IActionResult GetAuth()
-		{
-			return Json(new {Message = "some bgc data"});
-		}
 	}
 }

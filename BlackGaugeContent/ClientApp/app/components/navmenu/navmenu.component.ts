@@ -19,7 +19,7 @@ export class NavMenuComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.userService.logged.subscribe((input: any) => this.userName = input ? this.userService.getUserIds().name : '');
+		this.userService.logged.subscribe((input: any) => this.userLogged(input));
 		this.userName = this.userService.getUserIds().name;
 	}
 

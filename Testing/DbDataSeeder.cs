@@ -30,12 +30,30 @@ namespace Testing
 			return context;
 		}
 
+		public static BgcFullContext SeedGenders(this BgcFullContext context, int count)
+		{
+			for (int i = 1; i <= count; i++)
+			{
+				context.Genders.Add(new Gender()
+				{
+					Id = (byte)i,
+					Description = GetRandomText(i, 6),
+					GenderName = GetRandomText(i, 4)
+				});
+				//date = date.AddDays(-1);
+				context.SaveChanges();
+			}
+			return context;
+		}
+
 		public static BgcFullContext SeedUsers(this BgcFullContext context, int count)
 		{
+			context.SeedGenders(3);
 			for (int i = 1; i <= count; i++)
 			{
 				context.Users.Add(new AspUser()
 				{
+					Id = i,
 					EmailConfirmed = true,
 					UserName = GetRandomText(i, 5),
 					LockoutEnabled = false,

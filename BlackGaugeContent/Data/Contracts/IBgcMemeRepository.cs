@@ -12,5 +12,7 @@ namespace Bgc.Data.Contracts
 		[NotNull]
 		[ItemNotNull]
 		Task<MemeRating> GetOrMakeRating(MemeReaction reaction);
+
+		void DeleteRating(MemeRating rating);
 	}
 }

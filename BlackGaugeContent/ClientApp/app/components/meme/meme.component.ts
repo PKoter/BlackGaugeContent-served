@@ -1,19 +1,34 @@
 ﻿import { Component, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UserService } from '../../services/user.service';
+import { BgcMemeService } from '../../services/bgcMeme.service';
+import { MemeModel, Meme, MemeState, MemeReaction } from '../../models/memes'
+
 
 @Component({
 	selector: 'meme-wrapping',
 	templateUrl: './memeWrapping.html',
-	styleUrls: ['./memeWrapping.css', '../../controls/bgcButtons.css']
+	styleUrls: ['./memeWrapping.css', '../../controls/bgcButtons.css'],
+	providers: [BgcMemeService]
 })
 
 export class MemeComponent {
-	@Input() meme: Meme;
+	private meme: Meme;
+	private memeState: MemeState;
 	private voteUnit = 1;
+	private vote: number;
 	private hasVoted = false;
 	private lastVote: boolean;
+	private blockVote: boolean = false;
 
-	constructor(private _sanitizer: DomSanitizer) {
+	@Input()
+	public set Meme(meme: MemeModel) {
+		this.meme      = meme.core;
+		this.memeState = meme.state;
+	}
+
+	constructor(private _sanitizer: DomSanitizer, private userService: UserService,
+		private memeService: BgcMemeService) {
 		
 	}
 
@@ -22,50 +37,32 @@ export class MemeComponent {
 	}
 
 	private voted(nicey: boolean) {
+		if (this.userService.isLoggedIn() === false || this.blockVote)
+			return;
+
 		if (this.hasVoted === false) {
-			this.meme.vote = nicey ? this.voteUnit : -this.voteUnit;
-			this.meme.rating += this.meme.vote;
+			this.vote = nicey ? this.voteUnit : -this.voteUnit;
 			this.hasVoted = true;
 		}
 		else
 		{
-			this.meme.rating -= this.meme.vote;
 			if (this.lastVote === nicey) {
-				this.meme.vote = 0;
+				this.vote = 0;
 				this.hasVoted = false;
 			}
 			else {
-				this.meme.vote = nicey ? this.voteUnit : -this.voteUnit;
-				this.meme.rating += this.meme.vote;
+				this.vote = nicey ? this.voteUnit : -this.voteUnit;
 			}
 		}
 		this.lastVote = nicey;
+		this.blockVote = true;
+		let reaction =
+			new MemeReaction(this.userService.getUserIds().id, this.meme.id, this.vote);
+		this.memeService.setUserMemeReaction(reaction)
+			.subscribe(data => {
+				this.memeState = data;
+				this.blockVote = false;
+			});
 	}
 
-}
-
-export interface MemeModel {
-	core: Meme;
-	state: MemeState;
-}
-
-export interface Meme {
-	id: number;
-	base64: string;
-	title: string;
-	rating: number;
-	addTime: string;
-	commentCount: number;
-	vote: number;
-}
-
-export interface MemeReaction {
-	userId: number;
-	memeId: number;
-	vote: number;
-}
-
-export interface MemeState {
-	rating: number;
-	commentCount: number;
 }
