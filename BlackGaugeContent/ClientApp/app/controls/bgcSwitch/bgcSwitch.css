@@ -12,12 +12,14 @@
 }
 
 .switch-button {
-	height: 28px;
+	height: 30px;
 	width: 50%;
 	background-color: rgb(50, 100, 170);
 	border-radius: 2px;
 	border: none;
 	display: block;
+	position: relative;
+	top: -1px;
 }
 .switch-button:hover ~bgc-button-disabled {
 	background-color: rgb(60, 120, 200);

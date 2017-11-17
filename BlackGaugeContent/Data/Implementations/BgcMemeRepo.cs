@@ -27,27 +27,27 @@ namespace Bgc.Data.Implementations
 			var page = _context.Memes
 				.Skip(R.MemesOnPageCount * pageIndex)
 				.Take(R.MemesOnPageCount);
-			return await (from meme in page
-				join rating in _context.MemeRatings
-				on meme.Id equals rating.MemeId into rt
-					from r in rt.DefaultIfEmpty()
-					where r.UserId == userId
-					select new MemeModel()
-					{
-						Core = new MemeCore()
-						{
-							Id      = meme.Id,
-							Title   = meme.Title,
-							AddTime = meme.AddTime,
-							Base64  = meme.Base64
-						},
-						State = new MemeState()
-						{
-							Rating       = meme.Rating,
-							CommentCount = meme.CommentCount,
-							Vote = r != null? r.Vote : (sbyte)0
-						}
-					}).ToListAsync();
+			return await 
+				(from meme in page
+				 join reacts in _context.MemeRatings
+				 on meme.Id equals reacts.MemeId into rts
+				 let rt = rts.FirstOrDefault(r => r.UserId == userId)
+				 select new MemeModel()
+				 {
+				 	Core = new MemeCore()
+				 	{
+				 		Id      = meme.Id,
+				 		Title   = meme.Title,
+				 		AddTime = meme.AddTime,
+				 		Base64  = meme.Base64
+				 	},
+				 	State = new MemeState()
+				 	{
+				 		Rating       = meme.Rating,
+				 		CommentCount = meme.CommentCount,
+				 		Vote = rt != null ? rt.Vote : (sbyte)0
+				 	}
+				 }).ToListAsync();
 		}
 
 		public async Task<Meme> GetSingle(int elementId)

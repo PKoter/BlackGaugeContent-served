@@ -2,7 +2,7 @@
 	<p *ngIf="meme.title"><em>{{meme.title}}</em></p>
 	<img class="img-responsive meme-list-style" [src]="getMemeSrc()" alt="meme"/>
 
-	<div class="meme-list-style">
+	<div class="meme-list-style" style="height: 30px;">
 		<div>
 			<div class="bgc-button bgc-button-inform vote-buttons" 
 				 [ngClass]="{'bgc-button-affirm' : vote > 0}"
