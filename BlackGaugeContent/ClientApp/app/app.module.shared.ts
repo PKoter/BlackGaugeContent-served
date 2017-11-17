@@ -5,6 +5,7 @@ import { HttpModule }   from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent}             from './components/app/app.component';
+import { AppHeaderComponent}       from './components/appHeader/appHeader.component';
 import { NavMenuComponent}         from './components/navmenu/navmenu.component';
 import { HomeComponent}            from './components/home/home.component';
 import { MemeListComponent}        from './components/memeList/memeList.component';
@@ -12,6 +13,7 @@ import { MemeComponent}            from './components/meme/meme.component';
 import { RegisterComponent}        from './components/register/register.component';
 import { RegisterMessageComponent} from './components/registerMessage/registerMessage.component';
 import { LoginComponent}           from './components/login/login.component';
+import { ManageAccountComponent}   from './components/manageAccount/manageAccount.component';
 
 
 import { BgcSelectControl}		from './controls/bgcSelect/bgcSelect.control';
@@ -31,6 +33,7 @@ import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 @NgModule({
 	declarations: [
 		AppComponent,
+		AppHeaderComponent,
 		NavMenuComponent,
 		HomeComponent,
 		MemeListComponent,
@@ -38,6 +41,7 @@ import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 		RegisterComponent,
 		RegisterMessageComponent,
 		LoginComponent,
+		ManageAccountComponent,
 
 		BgcSelectControl,
 		BgcSwitchControl,
@@ -60,6 +64,7 @@ import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 			{ path: Routes.Login,                 component: LoginComponent },
 			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
 			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
+			{ path: Routes.ManageAccount,         component: ManageAccountComponent },
 			{ path: '**', redirectTo: Routes.Home }
 		],  {enableTracing:true})
 	],

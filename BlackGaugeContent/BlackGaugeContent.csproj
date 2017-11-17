@@ -55,6 +55,7 @@
     <TypeScriptCompile Include="ClientApp\app\auth\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\auth\authorizeRoute.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\manageAccount\manageAccount.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\registerMessage\registerMessage.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />

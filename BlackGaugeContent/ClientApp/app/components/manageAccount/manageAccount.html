@@ -1,0 +1,32 @@
+﻿<h2>Manage account</h2>
+
+<div class="row">
+	<div class="main-topic form-topic">
+		<form #form="ngForm" class="">
+			<h4>Customize your account settings</h4>
+			<hr />
+			<!-- motto -->
+			<div class="form-group">
+				<label>
+					Motto
+					<input type="text" class="form-control" name="motto"
+						   size="{{MaxMottoLength}}" multiline />
+				</label>
+			</div>
+			<hr />
+			
+			<!-- deactivate account -->
+			<div class="form-group">
+				<label>
+					Call death to take your account
+				</label>
+				<button type="submit"
+						class="bgc-button bgc-button-danger"
+						style="width: 100%;" (click)="onDeathRequest()">
+					Bye, I'm leaving
+				</button>
+			</div>
+			<bgc-loading-spinner *ngIf="redirecting" ></bgc-loading-spinner>
+		</form>
+	</div>
+</div>

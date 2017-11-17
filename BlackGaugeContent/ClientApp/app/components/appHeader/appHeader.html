@@ -1,0 +1,39 @@
+<div class="header-content">
+	<div class="route-section">
+		<nav [routerLinkActive]="['link-active']">
+			<a [routerLink]="homeRoute">
+				<span class="glyphicon glyphicon-home"></span> Home
+			</a>
+		</nav><!--
+		--><nav [routerLinkActive]="['link-active']">
+			<a [routerLink]="memeListRoute">
+				<span class="glyphicon glyphicon-th-list"></span> Meme list
+			</a>
+		</nav>
+	</div>
+	<div class="user-section">
+		<div *ngIf="userName == ''">
+			<nav [routerLinkActive]="['link-active']">
+				<a [routerLink]="loginRoute">
+					<span>Login</span> 
+				</a>
+			</nav><!--
+			--><nav [routerLinkActive]="['link-active']">
+				<a [routerLink]="registerRoute">
+					<span >Register</span> 
+				</a>
+			</nav>
+		</div>
+		<div *ngIf="userName != ''">
+			<nav>
+				<a>Welcome, <span style="color: burlywood">{{userName}} :)</span>
+				</a>
+			</nav><!--
+			--><nav>
+				<a (click)="logout()">
+					<span>Logout</span>
+				</a>
+			</nav>
+		</div>
+	</div>
+</div>

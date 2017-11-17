@@ -1,10 +1,16 @@
 <div class='container-fluid'>
-    <div class='row'>
-        <div class='col-sm-3'>
-            <nav-menu></nav-menu>
-        </div>
-        <div class='col-sm-9 body-content'>
-            <router-outlet></router-outlet>
-        </div>
-    </div>
+	<div class='row'>
+		<!--<div class='col-sm-3'>
+			<nav-menu></nav-menu>
+		</div>-->
+		<div class="view-menu-header">
+			<div class="bgc-mark">
+				<a class="navbar-brand" [routerLink]="['/home']">BGC served</a>
+			</div><!-- 
+			--><app-header style="width: calc(100% - 150px);"></app-header>
+		</div>
+		<div class="page-content-main">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
 </div>

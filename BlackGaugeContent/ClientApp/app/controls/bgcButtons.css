@@ -54,3 +54,18 @@
 .bgc-button-disabled, button:disabled {
 	cursor: no-drop !important;
 }
+
+.bgc-button-dangder {
+	background-color: rgb(255, 50, 70);
+	border: 1px rgb(200, 30, 30) solid !important;
+	color: aliceblue;
+	font-weight: bold;
+}
+
+	.bgc-button-danger:hover {
+		background-color: rgb(255, 70, 90);
+	}
+
+	.bgc-button-danger:disabled {
+		background-color: rgb(255, 50, 70);
+	}

@@ -22,6 +22,7 @@ export class Routes {
 	public static MemeList        = 'memeList';
 	public static ConfirmEmail    = 'account/confirmEmail';
 	public static RegisterMessage = 'register/message';
+	public static ManageAccount   = 'manageAccount';
 }
 
 /**
