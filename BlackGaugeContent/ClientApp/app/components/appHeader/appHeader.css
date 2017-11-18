@@ -1,69 +1,11 @@
-li .glyphicon {
-	margin-right: 10px;
-}
-
-/* Highlighting rules for nav menu items */
-li.link-active a,
-li.link-active a:hover,
-li.link-active a:focus {
-	background-color: #4189C7;
-	color: white;
-}
-
-/* Keep the nav menu independent of scrolling and on top of other items */
-.main-nav {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 1;
-}
-
-@media (min-width: 768px) {
-	/* On small screens, convert the nav menu to a vertical sidebar */
-	.main-nav {
-		height: 100%;
-		width: calc(25% - 20px);
-	}
-	.navbar {
-		border-radius: 0px;
-		border-width: 0px;
-		height: 100%;
-	}
-	.navbar-header {
-		float: none;
-	}
-	.navbar-collapse {
-		border-top: 1px solid #444;
-		padding: 0px;
-	}
-	.navbar ul {
-		float: none;
-	}
-	.navbar li {
-		float: none;
-		font-size: 15px;
-		margin: 6px;
-	}
-	.navbar li a {
-		padding: 10px 16px;
-		border-radius: 4px;
-	}
-	.navbar a {
-		/* If a menu item's text is too long, truncate it */
-		width: 100%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-}
-
 .header-content {
 	height: 50px;
 	background-color: rgba(40, 40, 40, 0.8);
 	background-image: url('/images/jumbotron-banner.png');
-	background-blend-mode:luminosity;
-	background-size: cover;
+	background-blend-mode:difference;
+	background-size: calc(100% - 150px);
+	background-repeat: no-repeat;
+	background-position-y: 65%;
 }
 
 	.header-content > div {
@@ -78,14 +20,20 @@ li.link-active a:focus {
 		height: 50px;
 		background-color: rgba(20, 20, 20, 0.2);
 		text-align: center;
-		padding-top: 15px;
+		padding: 15px 10px;
+		min-width: 75px;
+		line-height: 20px;
+	}
+
+	.header-content nav:hover {
+		background-color: rgba(90, 90, 90, 0.4);
 	}
 
 .route-section {
 	float: left;
 }
 	.route-section a {
-		color: rgb(40, 40, 150);
+		color: aliceblue;
 		text-shadow: 1px 1px 8px dimgrey;
 	}
 
@@ -95,13 +43,16 @@ li.link-active a:focus {
 
 .user-section {
 	float: right;
+	min-width: 150px;
 }
 
 	.user-section a {
-		color: rgb(190, 190, 250);
+		color: #337ab7; 
 		text-shadow: 1px 1px 8px dimgrey;
+		font-size: 18px;
 	}
 
 	.user-section nav {
 		border-left: 1px aliceblue solid;
+		width: 100%;
 	}
