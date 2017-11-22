@@ -4,7 +4,7 @@ import { LoginModel, AccountFeedback, FeedResult } from '../../models/account';
 
 import { UserService }     from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
-import { ApiRoutes }       from '../../services/apiRoutes.service';
+import { ApiRoutes, Routes, ApiRoutesService }       from '../../services/apiRoutes.service';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class LoginComponent {
 	private redirecting: boolean = false;
 
 	constructor(titleService: Title, private userService: UserService,
-		private dataService: DataFlowService
+		private dataService: DataFlowService, private router: ApiRoutesService
 	){
 		this.model = new LoginModel('', '', false);
 		titleService.setTitle("BGC login");
@@ -48,5 +48,9 @@ export class LoginComponent {
 				},
 				errors => console.warn(errors)
 			);
+	}
+
+	onRegisterRedirect() {
+		this.router.redirect(Routes.Register);
 	}
 }

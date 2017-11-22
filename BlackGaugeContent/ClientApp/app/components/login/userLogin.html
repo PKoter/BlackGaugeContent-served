@@ -1,7 +1,7 @@
 ﻿<h2>Login</h2>
 
-<div class="row">
-	<div class="main-topic form-topic">
+<div >
+	<div class="main-topic form-topic topic-well">
 		<form #form="ngForm" class="">
 			<h4>Login to an existing account.</h4>
 			<hr />
@@ -15,12 +15,6 @@
 					<input type="email" class="form-control" name="email" required
 						   [(ngModel)]="model.email" #email="ngModel" [email]="true" />
 				</label>
-				<!-- shows validation errors -->
-				<div *ngIf="!email.pristine">
-					<div *ngIf="!email.valid" class="text-error">
-						Email is invalid.
-					</div>
-				</div>
 			</div>
 			<hr />
 			<!-- passwords -->
@@ -31,15 +25,6 @@
 						   [(ngModel)]="model.password" #pass="ngModel" [minlength]="8" 
 						   [maxlength]="50" />
 				</label>
-				<!-- shows validation errors -->
-				<div *ngIf="!pass.pristine">
-					<div *ngIf="pass.errors && pass.errors.required" class="text-error">
-						Password is required.
-					</div>
-					<div *ngIf="pass.errors && pass.errors.minlength" class="text-error">
-						Password must be at least 8 characters long.
-					</div>
-				</div>
 			</div>
 
 			<hr />
@@ -69,5 +54,14 @@
 			<bgc-loading-spinner *ngIf="redirecting">
 			</bgc-loading-spinner>
 		</form>
+	</div>
+	<div class="topic-well side-panel">
+		<h4>Don't have an account?</h4>
+		<hr/>
+		<button type="button"
+				class="bgc-button bgc-button-inform"
+				style="width: 100%;" (click)="onRegisterRedirect()">
+			Register
+		</button>
 	</div>
 </div>

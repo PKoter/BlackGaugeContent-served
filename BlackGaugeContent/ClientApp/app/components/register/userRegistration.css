@@ -11,8 +11,24 @@
 .main-topic {
 	padding-left: 15px;
 	padding-right: 15px;
-	width: 55%;
+	width: 50%;
+	border-right: 1px rgb(190, 190, 190) solid;
+	margin-bottom: 20px;
 }
+
+	.main-topic:last-child {
+		margin-bottom: 100px;
+	}
+
+.topic-well {
+	display: block;
+	float: left;
+	min-width: 300px;
+}
+
+	.topic-well:last-child {
+		margin-bottom: 100px;
+	}
 
 .form-topic div.form-group {
 	width: 90%;
@@ -68,4 +84,10 @@
 .pass-strength-3 {
 	background-color:limegreen;
 	width: 100%;
+}
+
+.side-panel {
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 40%;
 }
