@@ -1,7 +1,7 @@
 ﻿import { Inject, Injectable, Output, EventEmitter } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
-import { GenderModel } from '../models/account';
+import { GenderModel, IUserId } from '../models/account';
 import { AuthRequestHandler } from './requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
@@ -47,7 +47,7 @@ export class UserService extends AuthRequestHandler {
 		this.logged.emit(false);
 	}
 
-	public getUserIds(): { id: number, name: string } {
+	public getUserIds(): IUserId {
 		return this.auth.getLoggedUserIds();
 	}
 }

@@ -24,16 +24,9 @@
 				</a>
 			</nav>-->
 		</div>
-		<div *ngIf="userName != ''">
-			<nav>
-				<a>Welcome, <span style="color: burlywood">{{userName}} :)</span>
-				</a>
-			</nav><!--
-			--><nav>
-				<a (click)="logout()">
-					<span>Logout</span>
-				</a>
-			</nav>
-		</div>
+		<bgc-quick-user-actions *ngIf="userName != ''"
+								[userName]="userName"
+								[items]="userActions">
+		</bgc-quick-user-actions>
 	</div>
 </div>

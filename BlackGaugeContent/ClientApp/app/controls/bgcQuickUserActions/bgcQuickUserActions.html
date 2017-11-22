@@ -1,0 +1,11 @@
+﻿<div class="quick-actions">
+	<div>
+		<span style="color: burlywood">{{userName}}</span>
+		<span class="glyphicon glyphicon-cog actions-icon"></span>
+	</div>
+	<ul>
+		<li *ngFor="let item of items" (click)="onSelect($index)">
+			{{item.name}}
+		</li>
+	</ul>
+</div>

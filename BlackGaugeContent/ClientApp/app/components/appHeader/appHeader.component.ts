@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiRoutesService, Routes } from '../../services/apiRoutes.service';
 import { UserService } from '../../services/user.service';
+import { BgcQuickUserActionsControl, QuickActionItem} from '../../controls/bgcQuickUserActions/bgcQuickUserActions.control';
 
 @Component({
 	selector: 'app-header',
@@ -16,6 +17,11 @@ export class AppHeaderComponent implements OnInit {
 
 	private userName = '';
 
+	private userActions: QuickActionItem[] = [
+		new QuickActionItem('Manage account', ''),
+		new QuickActionItem('Sign out', '/', this.logout)
+	];
+
 	constructor(private userService: UserService) {
 	}
 
@@ -28,7 +34,8 @@ export class AppHeaderComponent implements OnInit {
 		this.userName = really ? this.userService.getUserIds().name : '';
 	}
 
-	private logout() {
+	private logout():boolean {
 		this.userService.logOut();
+		return true;
 	}
 }

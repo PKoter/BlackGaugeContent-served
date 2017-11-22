@@ -55,3 +55,8 @@ export enum FeedResult {
 	success  = 1,
 	redirect = 2
 }
+
+export interface IUserId {
+	id: number;
+	name: string;
+}

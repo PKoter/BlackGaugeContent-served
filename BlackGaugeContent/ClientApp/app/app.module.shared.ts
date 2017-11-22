@@ -16,9 +16,10 @@ import { LoginComponent}           from './components/login/login.component';
 import { ManageAccountComponent}   from './components/manageAccount/manageAccount.component';
 
 
-import { BgcSelectControl}		from './controls/bgcSelect/bgcSelect.control';
-import { BgcSwitchControl}		from './controls/bgcSwitch/bgcSwitch.control';
-import { BgcSidePanelControl}	from './controls/bgcSidePanel/bgcSidePanel.control';
+import { BgcSelectControl}		        from './controls/bgcSelect/bgcSelect.control';
+import { BgcSwitchControl}		        from './controls/bgcSwitch/bgcSwitch.control';
+import { BgcSidePanelControl}           from './controls/bgcSidePanel/bgcSidePanel.control';
+import { BgcQuickUserActionsControl }   from './controls/bgcQuickUserActions/bgcQuickUserActions.control';
 
 import { BgcLoadingSpinnerHelper} from './viewApi/bgcLoadingSpinner.helper';
 
@@ -44,6 +45,7 @@ import { UserService}              from './services/user.service';
 		BgcSelectControl,
 		BgcSwitchControl,
 		BgcSidePanelControl,
+		BgcQuickUserActionsControl,
 
 		BgcLoadingSpinnerHelper,
 

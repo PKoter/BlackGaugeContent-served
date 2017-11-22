@@ -1,6 +1,7 @@
 ﻿import { Injectable, Inject } from '@angular/core';
 import { Response, RequestOptions, Headers } from '@angular/http';
 import { LocalStorage } from '../viewApi/localStorage';
+import { IUserId } from '../models/account';
 
 @Injectable()
 export class AuthGuard {
@@ -11,7 +12,7 @@ export class AuthGuard {
 		this.loginInfo = new LoginResult(0);
 	}
 
-	public getLoggedUserIds(): { id: number; name: string} {
+	public getLoggedUserIds(): IUserId {
 		if (this.hasActiveToken() === false)
 			return { id: 0, name: '' };
 
