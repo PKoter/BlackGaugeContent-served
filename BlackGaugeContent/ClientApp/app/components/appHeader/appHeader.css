@@ -37,22 +37,18 @@
 		text-shadow: 1px 1px 8px dimgrey;
 	}
 
-	.route-section nav {
-		border-right: 1px aliceblue solid;
-	}
-
 .user-section {
 	float: right;
 	min-width: 150px;
+	border-left: 1px aliceblue solid;
 }
 
 	.user-section a {
-		color: #337ab7; 
+		color: aliceblue; 
 		text-shadow: 1px 1px 8px dimgrey;
 		font-size: 18px;
 	}
 
 	.user-section nav {
-		border-left: 1px aliceblue solid;
 		width: 100%;
 	}

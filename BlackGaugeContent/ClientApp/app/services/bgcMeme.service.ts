@@ -24,4 +24,14 @@ export class BgcMemeService extends AuthRequestHandler {
 		let userId = this.auth.getLoggedUserIds().id;
 		return this.get<MemeModel[]>(ApiRoutes.PageMemes + `/${pageIndex}/${userId}`);
 	}
+
+	public getNewMemeCount(pageIndex: number, memes: MemeModel[]): Observable<number> {
+		let firstMemeId = memes[0].core.id;
+		return this.get<ItemCount>(ApiRoutes.CountNewMemes + `/${pageIndex}/${firstMemeId}`)
+			.map(r => r.count);
+	}
+}
+
+interface ItemCount {
+	count: number;
 }

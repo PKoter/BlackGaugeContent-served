@@ -7,11 +7,11 @@ namespace Testing
 {
 	public static class DbDataSeeder
 	{
-		public static BgcFullContext SeedMemes(this BgcFullContext context)
+		public static BgcFullContext SeedMemes(this BgcFullContext context, int count)
 		{
 			var random = new Random();
 			var date = DateTime.Now;
-			for (int i = 1; i <= EFInMemoryDbCreator.MemeCount; i++)
+			for (int i = 1; i <= count; i++)
 			{
 				context.Memes.Add(new Meme()
 				{

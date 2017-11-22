@@ -1,9 +1,15 @@
-﻿<h3>Meme list</h3>
+﻿<div class="left-section left-section-floating">
+	<h3>Memes</h3>
+	<h5>{{page}} page</h5>
+	<h5>{{memeCount}} memes on page</h5>
+	<span>New memes: 0</span>
+	<span>All memes: 2</span>
+</div>
 <bgc-loading-spinner *ngIf="!memes"></bgc-loading-spinner>
 
 <div *ngIf="memes" class="meme-list">
 	<div *ngFor="let meme of memes">
-		<hr/>
 		<meme-wrapping [Meme]="meme"></meme-wrapping>
+		<hr />
 	</div>
 </div>

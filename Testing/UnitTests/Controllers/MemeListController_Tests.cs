@@ -16,7 +16,8 @@ namespace Testing.UnitTests.Controllers
 		{
 			var reaction = StubMemeReaction(1);
 			var repo = CreateMockRepository(reaction, 0);
-			var controller = new MemeListController(repo);
+			var controller 
+				= new MemeListController(repo, Substitute.For<IBgcSessionsRepository>());
 
 			var result = await controller.MemeReaction(reaction);
 			Assert.AreEqual(1, result.Rating);
@@ -27,7 +28,8 @@ namespace Testing.UnitTests.Controllers
 		{
 			var reaction = StubMemeReaction(-1);
 			var repo = CreateMockRepository(reaction, 0);
-			var controller = new MemeListController(repo);
+			var controller 
+				= new MemeListController(repo, Substitute.For<IBgcSessionsRepository>());
 
 			var result = await controller.MemeReaction(reaction);
 
@@ -39,7 +41,8 @@ namespace Testing.UnitTests.Controllers
 		{
 			var reaction = StubMemeReaction(0);
 			var repo = CreateMockRepository(reaction, 1);
-			var controller = new MemeListController(repo);
+			var controller 
+				= new MemeListController(repo, Substitute.For<IBgcSessionsRepository>());
 
 			var result = await controller.MemeReaction(reaction);
 
@@ -66,7 +69,7 @@ namespace Testing.UnitTests.Controllers
 					Id = 1,
 					Rating = 0,
 				}));
-			mockRepo.GetOrMakeRating(reaction)
+			mockRepo.FetchRating(reaction)
 				.Returns(Task.FromResult(new MemeRating()
 				{
 					MemeId = reaction.MemeId,

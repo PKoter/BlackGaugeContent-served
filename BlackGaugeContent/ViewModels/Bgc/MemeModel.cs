@@ -44,4 +44,9 @@ namespace Bgc.ViewModels.Bgc
 		public sbyte Vote {get; set;}
 
 	}
+
+	public class ElementCount
+	{
+		public int Count {get; set;}
+	}
 }

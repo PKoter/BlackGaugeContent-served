@@ -11,6 +11,7 @@ namespace Bgc.Data
 		//public virtual DbSet<MemeComment> MemeComments { get; set; }
 		public virtual DbSet<Meme>       Memes        { get; set; }
 		public virtual DbSet<MemeRating> MemeRatings  { get; set; }
+		public virtual DbSet<MemeUserSession> MemeUserSessions  { get; set; }
 
 		public BgcFullContext(DbContextOptions<BgcFullContext> options) : base(options) {}
 
@@ -163,10 +164,6 @@ namespace Bgc.Data
 					.IsRequired()
 					.HasColumnType("tinyint");
 
-				entity.Property(e => e.MemeId).HasColumnName("MemeId");
-
-				entity.Property(e => e.UserId).HasColumnName("UserId");
-
 				entity.HasOne(d => d.Meme)
 					.WithMany(p => p.MemeRatings)
 					.HasForeignKey(d => d.MemeId)
@@ -178,6 +175,22 @@ namespace Bgc.Data
 					.HasForeignKey(d => d.UserId)
 					.OnDelete(DeleteBehavior.Cascade)
 					.HasConstraintName("FK_MemeRatings_Users");
+			});
+
+			modelBuilder.Entity<MemeUserSession>(entity =>
+			{
+				if(isSqlServer)
+					entity.ToTable("MemeWatchUsersSession", "dbo");
+
+				entity.Property(e => e.Id)
+					.HasColumnName("Id")
+					.ValueGeneratedOnAdd();
+
+				entity.HasOne(d => d.User)
+					.WithOne(e => e.MemeSession)
+					.HasForeignKey<MemeUserSession>(d => d.UserId)
+					.OnDelete(DeleteBehavior.Restrict)
+					.HasConstraintName("FK_MemeWatchUsersSession_Users");
 			});
 			
 			modelBuilder.Entity<AspUser>(entity =>

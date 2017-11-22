@@ -60,7 +60,7 @@ namespace Testing
 		{
 			_connection = GetConnection();
 			var context = GetBgcContext(_connection);
-			DbDataSeeder.SeedMemes(context);
+			DbDataSeeder.SeedMemes(context, MemeCount);
 			return context;
 		}
 

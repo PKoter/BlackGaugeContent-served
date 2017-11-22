@@ -1,12 +1,16 @@
 ﻿div.meme {
 	display: block;
-	padding: 20px 40px;
-	background-color: aliceblue;
+	padding: 10px 15px;
+	/*background-color: aliceblue;
 	border-radius: 2px;
-	border: 2px solid burlywood;
-	width: 70%;
-	min-width: 520px;
+	border: 2px solid burlywood;*/
+	min-width: 300px;
 }
+img.meme {
+	height: auto;
+	max-width: 50%;
+}
+
 .meme-list-style {
 	padding-top: 10px;
 	width: calc(100% - 40px);

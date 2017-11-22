@@ -27,8 +27,6 @@ import { BgcEqualValidator}    from './directives/bgcEqual.validator';
 
 import { DataFlowService}          from './services/dataFlow.service';
 import { UserService}              from './services/user.service';
-import { AuthGuard}                from './auth/auth.guard';
-import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 
 @NgModule({
 	declarations: [
@@ -60,13 +58,14 @@ import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 			{ path: '', redirectTo: Routes.Home,  pathMatch: 'full' },
 			{ path: Routes.Home,                  component: HomeComponent },
 			{ path: Routes.MemeList,              component: MemeListComponent },
+			{ path: Routes.MemeList+"/:page",     component: MemeListComponent},
 			{ path: Routes.Register,              component: RegisterComponent },
 			{ path: Routes.Login,                 component: LoginComponent },
 			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
 			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
 			{ path: Routes.ManageAccount,         component: ManageAccountComponent },
 			{ path: '**', redirectTo: Routes.Home }
-		],  {enableTracing:true})
+		],  /*{enableTracing:true}*/)
 	],
 	providers: [
 		DataFlowService,
@@ -77,3 +76,7 @@ import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 })
 export class AppModuleShared {
 }
+
+import { AuthGuard}                from './auth/auth.guard';
+
+import { Routes, ApiRoutesService} from './services/apiRoutes.service';
