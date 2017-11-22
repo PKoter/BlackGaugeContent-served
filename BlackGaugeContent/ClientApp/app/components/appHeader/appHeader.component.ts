@@ -18,8 +18,11 @@ export class AppHeaderComponent implements OnInit {
 	private userName = '';
 
 	private userActions: QuickActionItem[] = [
+		new QuickActionItem('Find user', ''),
+		new QuickActionItem('Compadres', ''),
+		new QuickActionItem('Messages', ''),
 		new QuickActionItem('Manage account', ''),
-		new QuickActionItem('Sign out', '/', this.logout)
+		new QuickActionItem('Sign out', '/', this.logout.bind(this))
 	];
 
 	constructor(private userService: UserService) {

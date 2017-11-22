@@ -1,11 +1,13 @@
 ﻿<div class="quick-actions">
-	<div>
-		<span style="color: burlywood">{{userName}}</span>
-		<span class="glyphicon glyphicon-cog actions-icon"></span>
+	<div class="user-beam" (click)="rollOut()">
+		<span class="user-name" title="{{userName}}">{{userName}}</span>
+		<span class="glyphicon-cog actions-icon"></span>
 	</div>
-	<ul>
-		<li *ngFor="let item of items" (click)="onSelect($index)">
-			{{item.name}}
-		</li>
-	</ul>
+	<div class="action-list"
+		 [@rollOut]="listState">
+		<div class="action-item"
+			*ngFor="let item of items; let i = index" (click)="onSelect(i)">
+			<span>{{item.name}}</span>
+		</div>
+	</div>
 </div>

@@ -1,5 +1,7 @@
 .header-content {
 	height: 50px;
+	display: inline-block;
+	width: 100%;
 	background-color: rgba(40, 40, 40, 0.8);
 	background-image: url('/images/jumbotron-banner.png');
 	background-blend-mode:difference;
