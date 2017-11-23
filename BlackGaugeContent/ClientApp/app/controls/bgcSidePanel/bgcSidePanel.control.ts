@@ -15,12 +15,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 			),
 			state('drawnNormal',
 				style({
-					left: '65%'
+					left: '50%'
 				})
 			),
 			state('drawnBig',
 				style({
-					left: 'calc(25% - 20px)'
+					left: 'calc(100% - 150px)'
 				})
 			),
 			transition('hidden => drawnNormal', animate('200ms ease-out')),
