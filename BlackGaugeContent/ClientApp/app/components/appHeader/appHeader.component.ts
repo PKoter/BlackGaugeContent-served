@@ -21,7 +21,7 @@ export class AppHeaderComponent implements OnInit {
 		new QuickActionItem('Find user', ''),
 		new QuickActionItem('Compadres', ''),
 		new QuickActionItem('Messages', ''),
-		new QuickActionItem('Manage account', ''),
+		new QuickActionItem('Manage account', Routes.ManageAccount),
 		new QuickActionItem('Sign out', '/', this.logout.bind(this))
 	];
 

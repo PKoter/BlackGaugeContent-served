@@ -55,11 +55,11 @@
 	cursor: no-drop !important;
 }
 
-.bgc-button-dangder {
+.bgc-button-danger {
 	background-color: rgb(255, 50, 70);
 	border: 1px rgb(200, 30, 30) solid !important;
 	color: aliceblue;
-	font-weight: bold;
+	font-weight: bolder;
 }
 
 	.bgc-button-danger:hover {

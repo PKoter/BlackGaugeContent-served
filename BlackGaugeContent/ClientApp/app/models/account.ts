@@ -50,6 +50,17 @@ export class AccountFeedback {
 	{ }
 }
 
+export class AccountDetails {
+	constructor(
+		public genderId: number,
+		public genderName: string,
+		public motto: string,
+		public coins: number,
+		public alive: boolean
+	)
+	{ }
+}
+
 export enum FeedResult {
 	error    = 0,
 	success  = 1,

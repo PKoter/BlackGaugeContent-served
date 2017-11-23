@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RegistrationModel, UniqueRegisterValue, GenderModel, AccountFeedback } from '../../models/account';
-import { SelectionEntry } from '../../controls/bgcSelect/bgcSelect.control';
+import { ListEntry } from '../../CommonTypes.api';
 import { UserService } from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
 import { ApiRoutesService, Routes, ApiRoutes } from '../../services/apiRoutes.service';
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
 	)
 	{
 		this.model = new RegistrationModel(0,'', '', '', '', 0);
-		titleService.setTitle("BGC registration");
+		titleService.setTitle("BGC Registration");
 	}
 
 	ngOnInit() {
@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
 
 	}
 
-	onGenderSelected(gender: SelectionEntry<GenderModel>) {
+	onGenderSelected(gender: ListEntry<GenderModel>) {
 		this.model.genderId = gender.item.id;
 	}
 

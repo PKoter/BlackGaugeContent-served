@@ -21,13 +21,15 @@ import { BgcSwitchControl}		        from './controls/bgcSwitch/bgcSwitch.control
 import { BgcSidePanelControl}           from './controls/bgcSidePanel/bgcSidePanel.control';
 import { BgcQuickUserActionsControl }   from './controls/bgcQuickUserActions/bgcQuickUserActions.control';
 
-import { BgcLoadingSpinnerHelper} from './viewApi/bgcLoadingSpinner.helper';
+import { BgcLoadingSpinnerHelper}  from './viewApi/bgcLoadingSpinner.helper';
 
-import { BgcDistinctValidator} from './directives/bgcDistinctChars.validator';
-import { BgcEqualValidator}    from './directives/bgcEqual.validator';
+import { BgcDistinctValidator}     from './directives/bgcDistinctChars.validator';
+import { BgcEqualValidator}        from './directives/bgcEqual.validator';
 
 import { DataFlowService}          from './services/dataFlow.service';
 import { UserService}              from './services/user.service';
+import { AuthGuard}                from './auth/auth.guard';
+import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 
 @NgModule({
 	declarations: [
@@ -78,7 +80,3 @@ import { UserService}              from './services/user.service';
 })
 export class AppModuleShared {
 }
-
-import { AuthGuard}                from './auth/auth.guard';
-
-import { Routes, ApiRoutesService} from './services/apiRoutes.service';

@@ -39,12 +39,13 @@ export class Routes {
  * Server-side router supported by controllers.
  */
 export class ApiRoutes {
-	public static ConfirmEmail  = 'api/Account/ConfirmEmail';
-	public static Login         = 'api/Account/Login';
-	public static Logout        = 'api/Account/Logout';
-	public static Register      = 'api/Account/Register';
-	public static MemeReaction  = 'api/MemeList/MemeReaction';
-	public static PageMemes     = 'api/MemeList/PageMemes';
-	public static CountNewMemes = 'api/MemeList/CountNewMemes';
-	public static EnsureAuth    = 'api/Account/EnsureAuthTransfer';
+	public static ConfirmEmail   = 'api/Account/ConfirmEmail';
+	public static Login          = 'api/Account/Login';
+	public static Logout         = 'api/Account/Logout';
+	public static Register       = 'api/Account/Register';
+	public static EnsureAuth     = 'api/Account/EnsureAuthTransfer';
+	public static AccountDetails = 'api/User/GetDetails';
+	public static MemeReaction   = 'api/MemeList/MemeReaction';
+	public static PageMemes      = 'api/MemeList/PageMemes';
+	public static CountNewMemes  = 'api/MemeList/CountNewMemes';
 }

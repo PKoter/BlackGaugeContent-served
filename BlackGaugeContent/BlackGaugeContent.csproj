@@ -40,6 +40,7 @@
   <ItemGroup>
     <None Remove="ClientApp\app\auth\auth.guard.ts" />
     <None Remove="ClientApp\app\auth\authorizeRoute.guard.ts" />
+    <None Remove="ClientApp\app\commonTypes.api.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
@@ -54,6 +55,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\auth\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\auth\authorizeRoute.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\app\commonTypes.api.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\manageAccount\manageAccount.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\registerMessage\registerMessage.component.ts" />

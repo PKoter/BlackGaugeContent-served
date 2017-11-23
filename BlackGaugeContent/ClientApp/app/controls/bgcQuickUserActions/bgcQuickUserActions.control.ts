@@ -21,6 +21,20 @@ import { IUserId } from '../../models/account';
 			),
 			transition('rolled => hidden', animate('200ms linear')),
 			transition('hidden => rolled', animate('250ms linear'))
+		]),
+		trigger('spin', [
+			state('rolled',
+				style({
+					transform: 'rotateZ(180deg)'
+				})
+			),
+			state('hidden',
+				style({
+					transform: 'rotateZ(0)'
+				})
+			),
+			transition('rolled => hidden', animate('200ms linear')),
+			transition('hidden => rolled', animate('250ms linear'))
 		])
 	]
 })

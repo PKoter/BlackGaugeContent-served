@@ -1,4 +1,5 @@
 ﻿import { Component, Injectable, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
+import { ListEntry} from '../../commonTypes.api';
 
 @Injectable()
 @Component({
@@ -33,15 +34,8 @@ export class BgcSelectControl {
 	}
 
 	select(item: any, index: number) {
-		this.selected.emit(new SelectionEntry(item, index));
+		this.selected.emit(new ListEntry(item, index));
 		this.item = item;
 		this.selecting = false;
-	}
-}
-
-export class SelectionEntry<T> {
-	constructor(
-		public item: T,
-		public index: number) {
 	}
 }

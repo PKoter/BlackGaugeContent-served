@@ -9,8 +9,26 @@
 			<div class="form-group">
 				<label>
 					Motto
-					<input type="text" class="form-control" name="motto"
-						   size="{{MaxMottoLength}}" multiline />
+					<textarea type="text" class="form-control" name="motto" 
+							  [maxLength]="MaxMottoLength"
+							  cols="40" rows="4">
+					</textarea>
+				</label>
+			<!-- gender selection -->
+				<label>
+					Gender
+					<bgc-select [items]="genders"
+								[modelToString]="genderToString"
+								[title]="'Select your gender'"
+								(selected)="onGenderSelected($event)">
+						<ng-template let-item>
+							<!-- render gender selection entry -->
+							<span>{{item.genderName}}</span> -
+							<i style="font-weight: lighter; font-size: 0.8em;">
+								{{item.description}}
+							</i>
+						</ng-template>
+					</bgc-select>
 				</label>
 			</div>
 			<hr />

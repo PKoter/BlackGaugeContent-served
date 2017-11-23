@@ -1,7 +1,8 @@
 ﻿<div class="quick-actions">
 	<div class="user-beam" (click)="rollOut()">
 		<span class="user-name" title="{{userName}}">{{userName}}</span>
-		<span class="glyphicon-cog actions-icon"></span>
+		<span [@spin]="listState"
+			  class="glyphicon-cog actions-icon"></span>
 	</div>
 	<div class="action-list"
 		 [@rollOut]="listState">
