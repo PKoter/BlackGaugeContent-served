@@ -25,7 +25,7 @@ import { IUserId } from '../../models/account';
 		trigger('spin', [
 			state('rolled',
 				style({
-					transform: 'rotateZ(180deg)'
+					transform: 'rotateZ(120deg)'
 				})
 			),
 			state('hidden',

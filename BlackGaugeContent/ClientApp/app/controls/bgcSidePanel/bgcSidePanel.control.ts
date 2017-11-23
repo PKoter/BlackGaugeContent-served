@@ -37,13 +37,25 @@ export class BgcSidePanelControl {
 	@Input() public title: string;
 	@Input() public closeText: string;
 	@Input() public big: boolean;
+	/** determines whether called events raised by Draw are welcomed */
+	@Input() public notifyOnDraw: boolean = false;
 
 	private drawn: boolean = false;
 	private shelfState: string = 'hidden';
 
 	@Input() set Draw(value: boolean) {
+		this.setState(value);
+		if(this.notifyOnDraw)
+			this.called.emit(value);
+	}
+
+	private hide() {
+		this.setState(false);
+		this.called.emit(false);
+	}
+
+	private setState(value: boolean) {
 		this.drawn = value;
-		this.shelfState = value ? (this.big? 'drawnBig' : 'drawnNormal') : 'hidden';
-		this.called.emit(value);
+		this.shelfState = value ? (this.big ? 'drawnBig' : 'drawnNormal') : 'hidden';
 	}
 }

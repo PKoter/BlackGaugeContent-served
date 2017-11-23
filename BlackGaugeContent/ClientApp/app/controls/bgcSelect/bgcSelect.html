@@ -1,5 +1,8 @@
-﻿<input type="text" class="form-control" placeholder="Choose one..." value="{{ShowValue}}" 
-	   [required]="required? 'required' : null" (focus)="turnSelecting(true)" />
+﻿<input class="form-control bgc-select-input"
+	   placeholder="Choose one..." value="{{ShowValue}}"
+	   [required]="required? 'required' : null" 
+	   readonly="readonly"
+	   (click)="selecting = !selecting"/>
 	
 <bgc-side-panel [title]="title"
 				[closeText]="'Cancel'"

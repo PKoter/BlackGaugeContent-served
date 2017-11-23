@@ -9,6 +9,10 @@
 	/*background: rgba(60, 60, 70, 0.5);*/
 }
 
+.bgc-select-input:read-only {
+	background-color: aliceblue;
+}
+
 
 button.select-entry {
 	display: block;
