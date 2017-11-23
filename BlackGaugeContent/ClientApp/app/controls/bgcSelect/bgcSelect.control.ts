@@ -13,6 +13,10 @@ export class BgcSelectControl {
 	@Output() public selected = new EventEmitter();
 	public item : any;
 
+	/** item to display before any other is selected */
+	@Input() public preselectedItem: any;
+	/** value to display if no item is present at start */
+	@Input() public preselectedValue: string = '';
 	@Input() public title: string;
 	@Input() public items: any[];
 	@Input() public modelToString: (item: any) => any;
@@ -23,8 +27,12 @@ export class BgcSelectControl {
 
 
 	private get ShowValue(): string {
-		if (this.item == null)
-			return '';
+		if (this.item == null) {
+			if (this.preselectedItem)
+				this.item = this.preselectedItem;
+			else
+				return this.preselectedValue;
+		}
 		let str = this.modelToString(this.item);
 		return str;
 	}
