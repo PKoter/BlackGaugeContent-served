@@ -130,6 +130,7 @@ namespace Bgc
 
 			services.AddTransient<IBgcMemeRepository, BgcMemeRepo>();
 			services.AddTransient<IBgcSessionsRepository, BgcSessionsRepo>();
+			services.AddTransient<IUserRepository, UserRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
