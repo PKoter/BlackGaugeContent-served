@@ -1,0 +1,23 @@
+﻿<div [hidden]="!enabled"
+	 class="popup-background">
+	<div class="popup-core modal-page">
+		<!-- modal context goes here -->
+		<ng-content>
+		</ng-content>
+		<div class="modal-buttonline">
+			<button type="button"
+					class="bgc-button"
+					[ngClass]="button1Class"
+					(click)="onButton1()">
+				{{button1Text}}
+			</button>
+			<button *ngIf="areTwoButtons"
+					type="button"
+					class="bgc-button"
+					[ngClass]="button2Class"
+					(click)="onButton2()">
+				{{button2Text}}
+			</button>
+		</div>
+	</div>
+</div>

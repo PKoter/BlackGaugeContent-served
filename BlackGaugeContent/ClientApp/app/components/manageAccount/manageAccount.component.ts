@@ -25,6 +25,8 @@ export class ManageAccountComponent implements OnInit {
 	private submitted: boolean = false;
 	private redirecting: boolean = false;
 
+	private deathRequest: boolean = false;
+
 	constructor(titleService: Title, private userService: UserService,
 		private dataService: DataFlowService
 	) {
@@ -45,7 +47,10 @@ export class ManageAccountComponent implements OnInit {
 		this.model.genderId = gender.item.id;
 	}
 
+
+
 	onDeathRequest() {
 		//TODO user death request;
+		this.deathRequest = true;
 	}
 }

@@ -44,10 +44,20 @@
 				</label>
 				<button type="submit"
 						class="bgc-button bgc-button-danger"
-						style="width: 100%;" (click)="onDeathRequest()">
+						style="width: 100%;" (click)="deathRequest = true">
 					Bye, I'm leaving
 				</button>
 			</div>
+			<bgc-message-modal [enabled]="deathRequest"
+							   [areTwoButtons]="true"
+							   [button1Class]="'bgc-button-danger'"
+							   [button1Text]="'Call Death'"
+							   [button2Class]="'bgc-button-inform'"
+							   [button2Text]="'Cancel'"
+							   (button1)="onDeathRequest()"
+							   (button2)="deathRequest = false">
+				<h3>Are You ultimately sure you want to deactivate account?</h3>
+			</bgc-message-modal>
 			<bgc-loading-spinner *ngIf="redirecting" ></bgc-loading-spinner>
 		</form>
 	</div>
