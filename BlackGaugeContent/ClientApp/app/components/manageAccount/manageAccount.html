@@ -1,6 +1,6 @@
 ﻿<h2>Manage account</h2>
-
-<div class="row">
+<bgc-loading-spinner *ngIf="loadLevel == 0"></bgc-loading-spinner>
+<div>
 	<div class="main-topic form-topic">
 		<form #form="ngForm" class="">
 			<h4>Customize your account settings</h4>
@@ -9,15 +9,19 @@
 			<div class="form-group">
 				<label>
 					Motto
-					<textarea type="text" class="form-control" name="motto" 
+					<textarea type="text" class="form-control long-input" name="motto" 
 							  [maxLength]="MaxMottoLength"
+							  [(ngModel)]="model.motto"
 							  cols="40" rows="4">
 					</textarea>
 				</label>
-			<!-- gender selection -->
+			</div>
+				<!-- gender selection -->
+			<div class="form-group">
 				<label>
 					Gender
 					<bgc-select [items]="genders"
+								[preselectedValue]="model.genderName"
 								[modelToString]="genderToString"
 								[title]="'Select your gender'"
 								(selected)="onGenderSelected($event)">

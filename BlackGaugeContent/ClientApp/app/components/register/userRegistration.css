@@ -16,6 +16,10 @@
 	margin-bottom: 20px;
 }
 
+@media screen and (min-width: 1000px) {
+	.main-topic { width: calc(50% - 75px); }
+}
+
 	.main-topic:last-child {
 		margin-bottom: 100px;
 	}
@@ -90,4 +94,9 @@
 	padding-left: 15px;
 	padding-right: 15px;
 	width: 40%;
+}
+
+.long-input {
+	resize: none;
+	overflow: hidden;
 }

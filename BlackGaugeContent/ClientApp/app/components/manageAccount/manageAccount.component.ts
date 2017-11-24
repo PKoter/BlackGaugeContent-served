@@ -1,4 +1,4 @@
-﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
+﻿import { Component, NgModule, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LoginModel, GenderModel, AccountFeedback, AccountDetails, FeedResult } from '../../models/account';
 import { ListEntry }      from '../../commonTypes.api';
@@ -18,6 +18,7 @@ export class ManageAccountComponent implements OnInit {
 
 	private genders: GenderModel[];
 	private model: AccountDetails;
+	private loadLevel: number = 0;
 
 	private genderToString = (model: GenderModel) => model.genderName;
 	private error: string = '';
@@ -33,7 +34,10 @@ export class ManageAccountComponent implements OnInit {
 
 	ngOnInit() {
 		this.userService.getGenders()
-			.subscribe(g => this.genders = g,
+			.subscribe(g => {
+				this.genders = g;
+				this.loadLevel += 1;
+			},
 			err => console.warn(err));
 	}
 
