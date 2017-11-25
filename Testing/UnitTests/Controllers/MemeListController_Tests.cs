@@ -63,7 +63,7 @@ namespace Testing.UnitTests.Controllers
 		private IBgcMemeRepository CreateMockRepository(MemeReaction reaction, sbyte vote)
 		{
 			var mockRepo = Substitute.For<IBgcMemeRepository>();
-			mockRepo.GetSingle(1)
+			mockRepo.DrawMeme(1)
 				.Returns(Task.FromResult(new Meme()
 				{
 					Id = 1,

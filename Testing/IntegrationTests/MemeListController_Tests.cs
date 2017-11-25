@@ -31,7 +31,7 @@ namespace Testing.IntegrationTests
 					UserId = 1,
 					Vote = (sbyte)(_random.Next(0, 10) % 2 == 0 ? -1 : 1)
 				};
-				var mRating = (await repo.GetSingle(reaction.MemeId)).Rating;
+				var mRating = (await repo.DrawMeme(reaction.MemeId)).Rating;
 				
 
 				// act
@@ -42,7 +42,7 @@ namespace Testing.IntegrationTests
 				// prepare assert
 				var rating = await repo.FetchRating(reaction);
 
-				var meme2 = await repo.GetSingle(reaction.MemeId);
+				var meme2 = await repo.DrawMeme(reaction.MemeId);
 
 				// assert
 				Assert.AreEqual(reaction.Vote, rating.Vote);

@@ -15,7 +15,7 @@ import { ApiRoutes, ApiRoutesService} from '../../services/apiRoutes.service';
 export class ManageAccountComponent implements OnInit {
 	private readonly MaxMottoLength: number = 255;
 
-	private genders: GenderModel[];
+	private genders: GenderModel[] = [];
 	private model: AccountDetails;
 	private modelCopy: AccountDetails;
 	private loadLevel: number = 0;
@@ -37,16 +37,23 @@ export class ManageAccountComponent implements OnInit {
 		this.userService.getGenders()
 			.subscribe(g => {
 				this.genders = g;
+				this.getModelGenderName();
 				this.loadLevel += 1;
 			},
 			err => console.warn(err));
 		this.userService.getAccountDetails()
 			.subscribe(d => {
 				this.model = d;
+				this.getModelGenderName();
 				this.modelCopy = new AccountDetails(d.genderId, '', d.motto, d.coins, d.alive);
 				this.loadLevel += 1;
 			},
 			err => console.warn(err));
+	}
+
+	private getModelGenderName() {
+		if(this.genders.length > 0 && this.model.genderId > 0)
+			this.model.genderName = this.genders[this.model.genderId - 1].genderName;
 	}
 
 	onGenderSelected(gender: ListEntry<GenderModel>) {

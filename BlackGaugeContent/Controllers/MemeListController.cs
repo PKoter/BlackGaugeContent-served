@@ -70,7 +70,7 @@ namespace Bgc.Controllers
 			{
 				try
 				{
-					var meme = await _repo.GetSingle(reaction.MemeId);
+					var meme = await _repo.DrawMeme(reaction.MemeId);
 					var earlierRating = await _repo.FetchRating(reaction);
 					// prevent forgering of likes without client
 					if (reaction.Vote == earlierRating.Vote)

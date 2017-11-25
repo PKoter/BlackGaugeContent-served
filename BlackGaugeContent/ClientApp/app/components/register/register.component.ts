@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit {
 
 	onCompleteUniqueCheck(value: string, type: string) {
 		this.userService
-			.get<UniqueRegisterValue>(`api/User/CheckUniqueness?value=${value}&type=${type}`)
+			.get<UniqueRegisterValue>(`api/User/CheckUniqueness/${value}/${type}`)
 			.subscribe(uniqueness => {
 				if (uniqueness.valueType === 'name') {
 					this.nameUnique = uniqueness.unique;

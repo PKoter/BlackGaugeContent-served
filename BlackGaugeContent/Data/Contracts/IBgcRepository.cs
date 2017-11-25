@@ -10,6 +10,6 @@ namespace Bgc.Data.Contracts
 		Task<IEnumerable<T2>> PageElements(int pageIndex, int userId);
 
 		[ItemNotNull]
-		Task<T> GetSingle(int elementId);
+		Task<T> DrawMeme(int elementId);
 	}
 }
