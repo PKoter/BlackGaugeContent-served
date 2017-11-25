@@ -3,8 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { LoginModel, GenderModel, AccountFeedback, AccountDetails, FeedResult } from '../../models/account';
 import { ListEntry }      from '../../commonTypes.api';
 import { UserService}     from '../../services/user.service';
-import { DataFlowService} from '../../services/dataFlow.service';
-import { ApiRoutes}       from '../../services/apiRoutes.service';
+import { ApiRoutes, ApiRoutesService} from '../../services/apiRoutes.service';
 
 
 @Component({
@@ -18,6 +17,7 @@ export class ManageAccountComponent implements OnInit {
 
 	private genders: GenderModel[];
 	private model: AccountDetails;
+	private modelCopy: AccountDetails;
 	private loadLevel: number = 0;
 
 	private genderToString = (model: GenderModel) => model.genderName;
@@ -27,8 +27,7 @@ export class ManageAccountComponent implements OnInit {
 
 	private deathRequest: boolean = false;
 
-	constructor(titleService: Title, private userService: UserService,
-		private dataService: DataFlowService
+	constructor(titleService: Title, private userService: UserService, private router: ApiRoutesService
 	) {
 		this.model = new AccountDetails(0, '', '', 0, true);
 		titleService.setTitle("BGC Manage account");
@@ -41,16 +40,36 @@ export class ManageAccountComponent implements OnInit {
 				this.loadLevel += 1;
 			},
 			err => console.warn(err));
+		this.userService.getAccountDetails()
+			.subscribe(d => {
+				this.model = d;
+				this.modelCopy = new AccountDetails(d.genderId, '', d.motto, d.coins, d.alive);
+				this.loadLevel += 1;
+			},
+			err => console.warn(err));
 	}
 
 	onGenderSelected(gender: ListEntry<GenderModel>) {
 		this.model.genderId = gender.item.id;
 	}
 
-
-
 	onDeathRequest() {
 		//TODO user death request;
 		this.deathRequest = true;
+	}
+
+	/**
+	 * Detects any changes to user settings and performs save, otherwise does nothing.
+	 */
+	onSave() {
+		let anyChange = this.model.genderId !== this.modelCopy.genderId;
+		anyChange = anyChange || this.model.motto !== this.modelCopy.motto;
+		if (anyChange === false)
+			return;
+		this.userService.saveAccountDetails(this.model)
+			.subscribe(r => {
+				if (r.result === FeedResult.success)
+					this.router.redirectHome();
+			}, errors => console.warn(errors));
 	}
 }

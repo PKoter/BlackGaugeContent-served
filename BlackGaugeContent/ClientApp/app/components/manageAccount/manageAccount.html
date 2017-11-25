@@ -1,5 +1,5 @@
 ﻿<h2>Manage account</h2>
-<bgc-loading-spinner *ngIf="loadLevel == 0"></bgc-loading-spinner>
+<bgc-loading-spinner *ngIf="loadLevel < 2"></bgc-loading-spinner>
 <div>
 	<div class="main-topic form-topic">
 		<form #form="ngForm" class="">
@@ -58,6 +58,15 @@
 							   (button2)="deathRequest = false">
 				<h3>Are You ultimately sure you want to deactivate account?</h3>
 			</bgc-message-modal>
+			<!-- save changes -->
+			<hr />
+			<div class="form-group">
+				<button type="submit"
+						class="bgc-button bgc-button-affirm"
+						style="width: 100%;" (click)="onSave()">
+					Save
+				</button>
+			</div>
 			<bgc-loading-spinner *ngIf="redirecting" ></bgc-loading-spinner>
 		</form>
 	</div>

@@ -1,7 +1,7 @@
 ﻿import { Inject, Injectable, Output, EventEmitter } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
-import { GenderModel, IUserId, AccountDetails } from '../models/account';
+import { GenderModel, AccountFeedback, FeedResult, IUserId, AccountDetails } from '../models/account';
 import { AuthRequestHandler } from './requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
@@ -51,11 +51,16 @@ export class UserService extends AuthRequestHandler {
 		return this.auth.getLoggedUserIds();
 	}
 
-	public getUserDetails(): Observable<AccountDetails> {
+	public getAccountDetails(): Observable<AccountDetails> {
 		if (this.isLoggedIn() === false)
 			return new Observable();
 		let userId = this.auth.getLoggedUserIds().id;
 		return this.authGet<AccountDetails>(
 			ApiRoutes.AccountDetails + `/${userId}`);
+	}
+
+	public saveAccountDetails(details: AccountDetails): Observable<AccountFeedback> {
+		details.userId = this.getUserIds().id;
+		return this.authPost<AccountDetails, AccountFeedback>(ApiRoutes.SetAccountDetails, details);
 	}
 }

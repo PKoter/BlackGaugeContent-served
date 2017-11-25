@@ -51,6 +51,7 @@ export class AccountFeedback {
 }
 
 export class AccountDetails {
+	public userId: number;
 	constructor(
 		public genderId: number,
 		public genderName: string,

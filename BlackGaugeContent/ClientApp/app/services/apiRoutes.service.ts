@@ -13,6 +13,10 @@ export class ApiRoutesService {
 		this.router.navigate([route]);
 	}
 
+	public redirectHome() {
+		this.router.navigate(['/']);
+	}
+
 	public getParam(paramName: string): any {
 		return this.routes.snapshot.paramMap.get(paramName);
 	}
@@ -36,16 +40,17 @@ export class Routes {
 }
 
 /**
- * Server-side router supported by controllers.
+ * Server-side router supported by  controllers.
  */
 export class ApiRoutes {
-	public static ConfirmEmail   = 'api/Account/ConfirmEmail';
-	public static Login          = 'api/Account/Login';
-	public static Logout         = 'api/Account/Logout';
-	public static Register       = 'api/Account/Register';
-	public static EnsureAuth     = 'api/Account/EnsureAuthTransfer';
-	public static AccountDetails = 'api/User/GetDetails';
-	public static MemeReaction   = 'api/MemeList/MemeReaction';
-	public static PageMemes      = 'api/MemeList/PageMemes';
-	public static CountNewMemes  = 'api/MemeList/CountNewMemes';
+	public static ConfirmEmail      = 'api/Account/ConfirmEmail';
+	public static Login             = 'api/Account/Login';
+	public static Logout            = 'api/Account/Logout';
+	public static Register          = 'api/Account/Register';
+	public static EnsureAuth        = 'api/Account/EnsureAuthTransfer';
+	public static AccountDetails    = 'api/User/GetAccountDetails';
+	public static SetAccountDetails = 'api/User/SetAccountDetails';
+	public static MemeReaction      = 'api/MemeList/MemeReaction';
+	public static PageMemes         = 'api/MemeList/PageMemes';
+	public static CountNewMemes     = 'api/MemeList/CountNewMemes';
 }
