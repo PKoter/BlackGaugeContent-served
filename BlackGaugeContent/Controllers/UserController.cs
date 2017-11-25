@@ -31,10 +31,10 @@ namespace Bgc.Controllers
 		[AllowAnonymous]
 		public async Task<IEnumerable<Gender>> GetGenders()
 		{
-			return await _context.Genders.ToListAsync();
+			return await _users.GetGenders();
 		}
 
-		[HttpGet]
+		[HttpGet("/{value}/{type}")]
 		[Produces("application/json")]
 		[AllowAnonymous]
 		public async Task<RegisterValueUniqueness> CheckUniqueness(string value, string type)
@@ -65,9 +65,11 @@ namespace Bgc.Controllers
 			var user = await _users.GetUser(userId);
 			if (user == null)
 				return new UserAccountDetails();
+			var genderName = user.Gender.GenderName;
 			var details = new UserAccountDetails()
 			{
 				Alive = true,
+				GenderName = genderName,
 				GenderId = user.GenderId,
 				Motto = user.Motto
 			};

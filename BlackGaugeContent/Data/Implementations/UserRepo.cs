@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bgc.Data.Contracts;
 using Bgc.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,14 @@ namespace Bgc.Data.Implementations
 	{
 		public UserRepo(BgcFullContext context) : base(context) {}
 
+		public async Task<IEnumerable<Gender>> GetGenders()
+		{
+			return await _context.Genders.AsNoTracking().ToListAsync();
+		}
 
 		public async Task<AspUser> GetUser(int userId, bool detectChanges = false)
 		{
-			var user = await _context.Users.FirstAsync(u => u.Id == userId);
+			var user = await _context.Users.AsNoTracking().FirstAsync(u => u.Id == userId);
 			if (detectChanges)
 				_context.Attach(user);
 			return user;

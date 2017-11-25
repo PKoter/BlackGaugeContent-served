@@ -8,7 +8,7 @@ namespace Bgc.ViewModels.User
 		public int    UserId {get; set;}
 		[Range(1, byte.MaxValue)]
 		public int    GenderId {get; set;}
-		//public string GenderName {get; set;}
+		public string GenderName {get; set;}
 		public string Motto {get; set;}
 		public int    Coins {get; set;}
 		public bool   Alive {get; set;} = true;
