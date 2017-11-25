@@ -24,6 +24,7 @@ namespace Bgc.Data.Implementations
 			if(pageIndex < 0)
 				throw new ArgumentOutOfRangeException();
 			var page = _context.Memes
+				.AsNoTracking()
 				.OrderByDescending(m => m.Id)
 				.Skip(PageMemeCount * pageIndex)
 				.Take(PageMemeCount);
@@ -33,6 +34,7 @@ namespace Bgc.Data.Implementations
 		public async Task<IList<MemeModel>> PageMemesAfter(int userId, int lastMemeId)
 		{
 			var page = _context.Memes
+				.AsNoTracking()
 				.Where(m => m.Id < lastMemeId)
 				.OrderByDescending(m => m.Id)
 				.Take(PageMemeCount);
@@ -71,7 +73,7 @@ namespace Bgc.Data.Implementations
 				.CountAsync();
 		}
 
-		public async Task<Meme> GetSingle(int elementId)
+		public async Task<Meme> DrawMeme(int elementId)
 		{
 			var element = await _context.Memes
 				.FirstAsync(m => m.Id == elementId);

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using Bgc.Data;
+using Bgc.Data.Contracts;
 using Bgc.Models;
 using Bgc.ViewModels.Account;
+using Bgc.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +18,12 @@ namespace Bgc.Controllers
 	public class UserController : Controller
 	{
 		private readonly BgcFullContext _context;
+		private readonly IUserRepository _users;
 
-		public UserController(BgcFullContext context)
+		public UserController(BgcFullContext context, IUserRepository users)
 		{
-			_context = context;
+			_context = context ?? throw new ArgumentNullException(nameof(context));
+			_users   = users ?? throw new ArgumentNullException(nameof(users));
 		}
 
 
@@ -26,10 +31,10 @@ namespace Bgc.Controllers
 		[AllowAnonymous]
 		public async Task<IEnumerable<Gender>> GetGenders()
 		{
-			return await _context.Genders.ToListAsync();
+			return await _users.GetGenders();
 		}
 
-		[HttpGet]
+		[HttpGet("{value}/{type}")]
 		[Produces("application/json")]
 		[AllowAnonymous]
 		public async Task<RegisterValueUniqueness> CheckUniqueness(string value, string type)
@@ -49,6 +54,42 @@ namespace Bgc.Controllers
 
 			result.Unique = await query.FirstOrDefaultAsync(u => u == value) == null;
 			return result;
+		}
+
+		[HttpGet("{userId}")]
+		[Authorize(Policy = "BgcUser")]
+		public async Task<UserAccountDetails> GetAccountDetails(int userId)
+		{
+			if (userId <= 0)
+				return new UserAccountDetails();
+			var user = await _users.GetBgcUser(userId);
+			if (user == null)
+				return new UserAccountDetails();
+			var details = new UserAccountDetails()
+			{
+				Alive = true,
+				GenderId = user.GenderId,
+				Motto = user.Motto
+			};
+			return details;
+		}
+
+		[HttpPost]
+		[Authorize(Policy = "BgcUser")]
+		[ValidateAntiForgeryToken]
+		public async Task<dynamic> SetAccountDetails([FromBody] UserAccountDetails details)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _users.GetUser(details.UserId, detectChanges: true);
+				if (user == null)
+					return new object();
+				user.GenderId = (byte)details.GenderId;
+				user.Motto = details.Motto;
+				await _users.SaveChanges();
+				return new AccountFeedback(){Result = FeedResult.Success};
+			}
+			return new object();
 		}
 	}
 }
