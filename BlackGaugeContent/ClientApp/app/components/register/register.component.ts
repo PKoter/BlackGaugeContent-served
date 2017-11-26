@@ -5,12 +5,14 @@ import { ListEntry } from '../../CommonTypes.api';
 import { UserService } from '../../services/user.service';
 import { DataFlowService } from '../../services/dataFlow.service';
 import { ApiRoutesService, Routes, ApiRoutes } from '../../services/apiRoutes.service';
+import { AppMetaService } from '../../services/appMeta.service';
 
 
 @Component({
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
-	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css']
+	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css'],
+	providers: [AppMetaService]
 })
 
 export class RegisterComponent implements OnInit {
@@ -38,7 +40,8 @@ export class RegisterComponent implements OnInit {
 	constructor(private router: ApiRoutesService,
 		titleService: Title,
 		private userService: UserService,
-		private dataService: DataFlowService
+		private dataService: DataFlowService,
+		private appMeta:     AppMetaService
 	)
 	{
 		this.model = new RegistrationModel(0,'', '', '', '', 0);
@@ -46,10 +49,7 @@ export class RegisterComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.userService.getGenders()
-			.subscribe(data => this.genders = data,
-				errors => console.warn(errors)
-			);
+		this.userService.getGenders(data => this.genders = data);
 	}
 
 	public set Password(value: string) {
@@ -68,9 +68,8 @@ export class RegisterComponent implements OnInit {
 	}
 
 	onCompleteUniqueCheck(value: string, type: string) {
-		this.userService
-			.get<UniqueRegisterValue>(`api/User/CheckUniqueness/${value}/${type}`)
-			.subscribe(uniqueness => {
+		this.appMeta.checkUniqueness(value, type, (uniqueness) => 
+			{
 				if (uniqueness.valueType === 'name') {
 					this.nameUnique = uniqueness.unique;
 					this.nameDone = true;
@@ -78,8 +77,7 @@ export class RegisterComponent implements OnInit {
 					this.emailUnique = uniqueness.unique;
 					this.emailDone = true;
 				}
-			}, error => console.error(`something is fucked up: ${error}`));
-
+			});
 	}
 
 	onGenderSelected(gender: ListEntry<GenderModel>) {
@@ -88,20 +86,14 @@ export class RegisterComponent implements OnInit {
 
 	openTerms() {
 		if (this.termsOfService == null) {
-			this.userService.getAny('api/AppMeta/GetTermsOfService')
-				.subscribe(result => {
-					this.termsOfService = result.terms;
-				});
+			this.appMeta.getTermsOfService((terms) => this.termsOfService = terms);
 		}
 		this.hideTerms = false;
 	}
 
 	termsCalled(value: boolean) {
-		this.openedTerms = this.openedTerms || value;
-	}
-
-	onTermsAgreedSwitched(value: boolean) {
-		this.agreedToTerms = value;
+		this.openedTerms = this.openedTerms || !value;
+		this.hideTerms = !value;
 	}
 
 	onSubmit() {
@@ -109,14 +101,11 @@ export class RegisterComponent implements OnInit {
 			return;
 		this.submitted   = true;
 		this.redirecting = true;
-		this.userService.post(ApiRoutes.Register, this.model)
-			.subscribe(result => {
-					let feedback = result.json() as AccountFeedback;
-					this.dataService.save('RegistrationRedirect', feedback);
-					this.redirecting = false;
-					this.router.redirect(Routes.RegisterMessage);
-				}, 
-				errors => console.warn(errors)
-			);
+		this.userService.register(this.model, feedback =>
+			{
+				this.dataService.save('RegistrationRedirect', feedback);
+				this.redirecting = false;
+				this.router.redirect(Routes.RegisterMessage);
+			});
 	}
 }

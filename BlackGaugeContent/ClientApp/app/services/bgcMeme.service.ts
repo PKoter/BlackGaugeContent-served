@@ -16,19 +16,22 @@ export class BgcMemeService extends AuthRequestHandler {
 		super(http, baseUrl, auth);
 	}
 
-	public setUserMemeReaction(reaction: MemeReaction): Observable<MemeState> {
-		return this.authPost<MemeReaction, MemeState>(ApiRoutes.MemeReaction, reaction);
+	public setUserMemeReaction(reaction: MemeReaction, callback: (r: MemeState) => void)
+	{
+		this.fireAuthPost<MemeReaction, MemeState>(ApiRoutes.MemeReaction, reaction, callback);
 	}
 
-	public getMemePage(pageIndex: number): Observable<MemeModel[]> {
+	public getMemePage(pageIndex: number, callback: (r: MemeModel[]) => void)
+	{
 		let userId = this.auth.getLoggedUserIds().id;
-		return this.get<MemeModel[]>(ApiRoutes.PageMemes + `/${pageIndex}/${userId}`);
+		this.fireGet<MemeModel[]>(ApiRoutes.PageMemes + `/${pageIndex}/${userId}`, callback);
 	}
 
-	public getNewMemeCount(pageIndex: number, memes: MemeModel[]): Observable<number> {
+	public getNewMemeCount(pageIndex: number, memes: MemeModel[], callback: (r: number) => void)
+	{
 		let firstMemeId = memes[0].core.id;
-		return this.get<ItemCount>(ApiRoutes.CountNewMemes + `/${pageIndex}/${firstMemeId}`)
-			.map(r => r.count);
+		this.fireGet<ItemCount>(ApiRoutes.CountNewMemes + `/${pageIndex}/${firstMemeId}`, 
+			r => callback(r.count));
 	}
 }
 

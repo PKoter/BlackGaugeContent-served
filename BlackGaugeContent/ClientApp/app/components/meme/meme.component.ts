@@ -63,8 +63,7 @@ export class MemeComponent {
 		this.blockVote = true;
 		let reaction =
 			new MemeReaction(this.userService.getUserIds().id, this.meme.id, this.vote);
-		this.memeService.setUserMemeReaction(reaction)
-			.subscribe(data => {
+		this.memeService.setUserMemeReaction(reaction, data => {
 				this.memeState = data;
 				this.blockVote = false;
 			});

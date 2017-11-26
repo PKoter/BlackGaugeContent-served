@@ -36,8 +36,8 @@ export class AuthGuard {
 
 	}
 
-	public loggedIn(result: Response) {
-		this.loginInfo = result.json() as LoginResult;
+	public loggedIn(result: any) {
+		this.loginInfo = result as LoginResult;
 
 		this.storage.setItem(this.AuthToken, this.loginInfo.auth_token);
 		this.storage.setItem(this.AuthToken + 'usN', this.loginInfo.userName);

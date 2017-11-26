@@ -26,12 +26,11 @@ export class MemeListComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.memeService.getMemePage(this.page)
-			.subscribe(data => {
+		this.memeService.getMemePage(this.page, data => {
 				this.memes = data;
 				this.memeCount = data.length;
 				this.getNewMemeCount();
-			}, errors => console.warn(errors));
+			});
 	}
 
 	private getNewMemeCount() {
@@ -39,7 +38,6 @@ export class MemeListComponent implements OnInit {
 			return;
 		if (this.memes == undefined || this.memes.length === 0)
 			return;
-		this.memeService.getNewMemeCount(this.page, this.memes)
-			.subscribe(r => this.newMemeCount = r, errors => console.warn(errors));
+		this.memeService.getNewMemeCount(this.page, this.memes, r => this.newMemeCount = r);
 	}
 }

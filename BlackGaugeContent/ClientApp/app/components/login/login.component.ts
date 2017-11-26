@@ -34,20 +34,15 @@ export class LoginComponent {
 		this.error = '';
 		this.submitted   = true;
 		this.redirecting = true;
-		this.userService.post<LoginModel>(ApiRoutes.Login, this.model)
-			.subscribe(result =>
+		this.userService.loginRequest(this.model, feedback =>
+			{
+				this.redirecting = false;
+				if (feedback.result !== FeedResult.success)
 				{
-					let feedback = result.json() as AccountFeedback;
-					this.redirecting = false;
-					if (feedback.result === FeedResult.success)
-						this.userService.logIn(result);
-					else {
-						this.submitted = false;
-						this.error = feedback.message;
-					}
-				},
-				errors => console.warn(errors)
-			);
+					this.submitted = false;
+					this.error = feedback.message;
+				}
+			});
 	}
 
 	onRegisterRedirect() {

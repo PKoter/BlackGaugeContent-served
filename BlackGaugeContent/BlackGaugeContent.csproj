@@ -46,6 +46,7 @@
     <None Remove="ClientApp\app\models\account.ts" />
     <None Remove="ClientApp\app\models\memes.ts" />
     <None Remove="ClientApp\app\services\apiRoutes.service.ts" />
+    <None Remove="ClientApp\app\services\appMeta.service.ts" />
     <None Remove="ClientApp\app\services\bgcMeme.service.ts" />
     <None Remove="ClientApp\app\services\dataFlow.service.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
@@ -61,6 +62,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\registerMessage\registerMessage.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcMessageModal\bgcMessageModal.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcQuickUserActions\bgcQuickUserActions.control.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\appMeta.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />

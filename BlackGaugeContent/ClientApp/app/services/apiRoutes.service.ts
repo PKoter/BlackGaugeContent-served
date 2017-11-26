@@ -48,9 +48,11 @@ export class ApiRoutes {
 	public static Logout            = 'api/Account/Logout';
 	public static Register          = 'api/Account/Register';
 	public static EnsureAuth        = 'api/Account/EnsureAuthTransfer';
+	public static CheckUniqueness   = 'api/User/CheckUniqueness';
 	public static AccountDetails    = 'api/User/GetAccountDetails';
 	public static SetAccountDetails = 'api/User/SetAccountDetails';
 	public static MemeReaction      = 'api/MemeList/MemeReaction';
 	public static PageMemes         = 'api/MemeList/PageMemes';
 	public static CountNewMemes     = 'api/MemeList/CountNewMemes';
+	public static TermsOfService    = 'api/AppMeta/GetTermsOfService';
 }

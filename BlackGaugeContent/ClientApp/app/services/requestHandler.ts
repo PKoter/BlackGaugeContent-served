@@ -18,19 +18,16 @@ export class RequestHandler {
 	 * performs http get from given route and maps result to T type.
 	 * @param route
 	 */
-	public get<T>(route: string, options?: RequestOptions): Observable<T> {
-		return this.http.get(this.baseUrl + route, options).map((result: Response) => result.json() as T);
+	protected get<T>(route: string, options?: RequestOptions): Observable<T> {
+		return this.http.get(this.baseUrl + route, options)
+			.map((result: Response) => result.json() as T);
 	}
 
-	/**
-	 * performs get and maps result to json.
-	 * @param route
-	 */
-	public getAny(route: string): Observable<any> {
-		return this.http.get(this.baseUrl + route).map((result: Response) => result.json());
+	public fireGet<T>(route: string, callback: (r : T) => void, options?: RequestOptions) {
+		this.get<T>(route, options).subscribe(r => callback(r), errors => console.warn(errors));
 	}
 
-	public post<T>(route: string, data: T): Observable<Response> {
+	protected postAny<T>(route: string, data: T): Observable<Response> {
 		let body    = JSON.stringify(data);
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
@@ -42,20 +39,18 @@ export class RequestHandler {
 	 * @param route
 	 * @param data
 	 */
-	public postClassic<T, R>(route: string, data: T): Observable<R> {
-		let body = JSON.stringify(data);
+	protected post<T, R>(route: string, data: T): Observable<R> {
+		let body    = JSON.stringify(data);
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
 		return this.http.post(this.baseUrl + route, body, options)
 			.map((response: Response) => response.json() as R);
 	}
-	/*
-	public postEmpty(route: string): Observable<Response> {
-		let body = JSON.stringify({});
-		let headers = new Headers({ 'Content-Type': 'application/json' });
-		let options = new RequestOptions({ headers: headers });
-		return this.http.post(this.baseUrl + route, body, options);
-	}*/
+
+	public firePost<T, R>(route: string, data: T, callback: (r: R) => void) {
+		this.post<T, R>(route, data)
+			.subscribe(r => callback(r), errors => console.warn(errors));
+	}
 }
 
 export class AuthRequestHandler extends RequestHandler {
@@ -80,16 +75,6 @@ export class AuthRequestHandler extends RequestHandler {
 	}
 
 	/**
-	 * performs empty post at given route with headers
-	 * @param route
-	 * @param options special auth headers?
-	 */ /*
-	protected postEmptyWithHeaders(route: string, options: RequestOptions): Observable<Response> {
-		let body = JSON.stringify({});
-		return this.http.post(this.baseUrl + route, body, options);
-	}*/
-
-	/**
 	 * performs post with authentication and maps result to R type.
 	 * @param route
 	 * @param data
@@ -106,8 +91,14 @@ export class AuthRequestHandler extends RequestHandler {
 		return this.http.get(this.baseUrl + route, options)
 			.map((response: Response) => response.json() as R);
 	}
-	/*
-	protected authPostEmpty(route: string): Observable<Response> {
-		return this.postEmptyWithHeaders(route, this.auth.authPostHeaders());
-	}*/
+
+	protected fireAuthPost<T, R>(route: string, data: T, callback: (r: R) => void) {
+		this.authPost<T, R>(route, data)
+			.subscribe(r => callback(r), errors => console.warn(errors));
+	}
+
+	protected fireAuthGet<T>(route: string, callback: (r: T) => void) {
+		this.authGet<T>(route)
+			.subscribe(r => callback(r), errors => console.warn(errors));
+	}
 }

@@ -34,21 +34,17 @@ export class ManageAccountComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.userService.getGenders()
-			.subscribe(g => {
+		this.userService.getGenders(g => {
 				this.genders = g;
 				this.getModelGenderName();
 				this.loadLevel += 1;
-			},
-			err => console.warn(err));
-		this.userService.getAccountDetails()
-			.subscribe(d => {
-				this.model = d;
-				this.getModelGenderName();
-				this.modelCopy = new AccountDetails(d.genderId, '', d.motto, d.coins, d.alive);
-				this.loadLevel += 1;
-			},
-			err => console.warn(err));
+			});
+		this.userService.getAccountDetails(d => {
+			this.model = d;
+			this.getModelGenderName();
+			this.modelCopy = new AccountDetails(d.genderId, '', d.motto, d.coins, d.alive);
+			this.loadLevel += 1;
+		});
 	}
 
 	private getModelGenderName() {
@@ -73,10 +69,10 @@ export class ManageAccountComponent implements OnInit {
 		anyChange = anyChange || this.model.motto !== this.modelCopy.motto;
 		if (anyChange === false)
 			return;
-		this.userService.saveAccountDetails(this.model)
-			.subscribe(r => {
+		this.userService.saveAccountDetails(this.model, r =>
+			{
 				if (r.result === FeedResult.success)
 					this.router.redirectHome();
-			}, errors => console.warn(errors));
+			});
 	}
 }
