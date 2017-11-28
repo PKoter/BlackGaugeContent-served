@@ -5,12 +5,12 @@ namespace Bgc.Data
 {
 	public class BgcFullContext : ApplicationDbContext
 	{
-		//public virtual DbSet<Blacklist>   Blacklists   { get; set; }
-		//public virtual DbSet<Exclusive>   Exclusive    { get; set; }
-		public virtual DbSet<Gender>     Genders      { get; set; }
-		//public virtual DbSet<MemeComment> MemeComments { get; set; }
-		public virtual DbSet<Meme>       Memes        { get; set; }
-		public virtual DbSet<MemeRating> MemeRatings  { get; set; }
+		//public virtual DbSet<Blacklist>     Blacklists        { get; set; }
+		//public virtual DbSet<Exclusive>     Exclusive         { get; set; }
+		public virtual DbSet<Gender>          Genders           { get; set; }
+		//public virtual DbSet<MemeComment>   MemeComments      { get; set; }
+		public virtual DbSet<Meme>            Memes             { get; set; }
+		public virtual DbSet<MemeRating>      MemeRatings       { get; set; }
 		public virtual DbSet<MemeUserSession> MemeUserSessions  { get; set; }
 
 		public BgcFullContext(DbContextOptions<BgcFullContext> options) : base(options) {}
@@ -20,6 +20,7 @@ namespace Bgc.Data
 			base.OnModelCreating(modelBuilder);
 
 			var isSqlServer = Database.IsSqlServer();
+			CreateMessageModel(modelBuilder, isSqlServer);
 			/*
 			modelBuilder.Entity<Blacklist>(entity =>
 			{
@@ -226,6 +227,55 @@ namespace Bgc.Data
 					.HasConstraintName("FK_Users_Genders");
 
 			});
+		}
+
+		private void CreateMessageModel(ModelBuilder modelBuilder, bool isSqlServer)
+		{
+			modelBuilder.Entity<Message>(entity =>
+				{
+					if(isSqlServer)
+						entity.ToTable("Messages", "Community");
+
+					var pbuilder =
+						entity.Property(e => e.Id)
+							.HasColumnType("bigint");
+					if(isSqlServer)
+						pbuilder.ValueGeneratedOnAdd();
+					else
+						pbuilder.ValueGeneratedNever();
+
+					entity.Property(e => e.Text)
+						.IsRequired()
+						.HasColumnType("nvarchar(2048)");
+				});
+
+			modelBuilder.Entity<Comrade>(entity =>
+				{
+					if(isSqlServer)
+						entity.ToTable("Comrades", "Community");
+
+					var pbuilder =
+						entity.Property(e => e.Id)
+							.HasColumnType("int");
+					if(isSqlServer)
+						pbuilder.ValueGeneratedOnAdd();
+					else
+						pbuilder.ValueGeneratedNever();
+				});
+
+			modelBuilder.Entity<ComradeRequest>(entity =>
+				{
+					if(isSqlServer)
+						entity.ToTable("ComradeRequests", "Community");
+
+					var pbuilder =
+						entity.Property(e => e.Id)
+							.HasColumnType("int");
+					if(isSqlServer)
+						pbuilder.ValueGeneratedOnAdd();
+					else
+						pbuilder.ValueGeneratedNever();
+				});
 		}
 	}
 }
