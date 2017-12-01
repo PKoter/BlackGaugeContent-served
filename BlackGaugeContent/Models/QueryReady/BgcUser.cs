@@ -7,6 +7,7 @@ namespace Bgc.Models.QueryReady
 		public int    Id        {get; set;}
 		public string Name      {get; set;}
 		public byte   GenderId  {get; set;}
+		public string GenderName{get; set;}
 		public int    DogeCoins {get; set;}
 		public int    Respek    {get; set;}
 		public string Motto     {get; set;}

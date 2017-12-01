@@ -10,5 +10,6 @@ namespace Bgc.Models
 		public int      SenderId   {get; set;}
 		public int      ReceiverId {get; set;}
 		public DateTime Since      {get; set;}
+		public bool     Agreed     {get; set;}
 	}
 }

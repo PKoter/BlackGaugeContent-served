@@ -5,6 +5,9 @@ namespace Bgc.Data
 {
 	public class BgcFullContext : ApplicationDbContext
 	{
+		public virtual DbSet<ComradeRequest>  ComradeRequests   { get; set; }
+		public virtual DbSet<Comrade>         Comrades          { get; set; }
+		public virtual DbSet<Message>         Messages          { get; set; }
 		//public virtual DbSet<Blacklist>     Blacklists        { get; set; }
 		//public virtual DbSet<Exclusive>     Exclusive         { get; set; }
 		public virtual DbSet<Gender>          Genders           { get; set; }
@@ -20,7 +23,7 @@ namespace Bgc.Data
 			base.OnModelCreating(modelBuilder);
 
 			var isSqlServer = Database.IsSqlServer();
-			CreateMessageModel(modelBuilder, isSqlServer);
+			CreateSignalModel(modelBuilder, isSqlServer);
 			/*
 			modelBuilder.Entity<Blacklist>(entity =>
 			{
@@ -229,7 +232,7 @@ namespace Bgc.Data
 			});
 		}
 
-		private void CreateMessageModel(ModelBuilder modelBuilder, bool isSqlServer)
+		private void CreateSignalModel(ModelBuilder modelBuilder, bool isSqlServer)
 		{
 			modelBuilder.Entity<Message>(entity =>
 				{
