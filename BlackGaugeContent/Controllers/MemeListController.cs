@@ -54,8 +54,8 @@ namespace Bgc.Controllers
 		[AllowAnonymous]
 		public async Task<ElementCount> CountNewMemes(int pageIndex, int firstMemeId)
 		{
-			if(pageIndex < 0 || firstMemeId <= 0)
-				throw new InvalidOperationException();
+			if (pageIndex < 0 || firstMemeId <= 0)
+				return null;
 			var count = await _repo.CountMemesBefore(firstMemeId);
 			count -= PageMemeCount * pageIndex;
 			return new ElementCount{Count = count};
@@ -66,45 +66,35 @@ namespace Bgc.Controllers
 		[Authorize(policy: "BgcUser")]
 		public async Task<MemeState> MemeReaction([FromBody] MemeReaction reaction)
 		{
-			if (ModelState.IsValid)
+			if (ModelState.IsValid == false)
+				return null;
+			
+			var meme = await _repo.DrawMeme(reaction.MemeId);
+			var earlierRating = await _repo.FetchRating(reaction);
+			// prevent forgering of likes without client
+			if (reaction.Vote == earlierRating.Vote)
+				return null;
+			// add rating
+			if (reaction.Vote != 0)
 			{
-				try
-				{
-					var meme = await _repo.DrawMeme(reaction.MemeId);
-					var earlierRating = await _repo.FetchRating(reaction);
-					// prevent forgering of likes without client
-					if (reaction.Vote == earlierRating.Vote)
-						return null;
-					// add rating
-					if (reaction.Vote != 0)
-					{
-						meme.Rating += reaction.Vote - earlierRating.Vote;
-						earlierRating.Vote = reaction.Vote;
-					}
-					// remove previous, user undid his rating
-					else
-					{
-						meme.Rating -= earlierRating.Vote;
-						_repo.DeleteRating(earlierRating);
-					}
-
-					await _repo.SaveChanges();
-
-					return new MemeState()
-					{
-						CommentCount = meme.CommentCount,
-						Rating       = meme.Rating,
-						Vote         = reaction.Vote
-					};
-				}
-				catch (Exception e) 
-				{
-					#if DEBUG
-					throw e;
-					#endif
-				}
+				meme.Rating += reaction.Vote - earlierRating.Vote;
+				earlierRating.Vote = reaction.Vote;
 			}
-			return new MemeState();
+			// remove previous, user undid his rating
+			else
+			{
+				meme.Rating -= earlierRating.Vote;
+				_repo.DeleteRating(earlierRating);
+			}
+
+			await _repo.SaveChanges();
+
+			return new MemeState()
+			{
+				CommentCount = meme.CommentCount,
+				Rating       = meme.Rating,
+				Vote         = reaction.Vote
+			};
 		}
 	
 	}

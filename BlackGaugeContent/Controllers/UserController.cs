@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using System.Threading.Tasks;
 using Bgc.Data;
 using Bgc.Data.Contracts;
@@ -50,7 +49,7 @@ namespace Bgc.Controllers
 				query = _context.Users.Select(u => u.Email);
 			}
 			else
-				throw new SecurityException();
+				return null;
 
 			result.Unique = await query.FirstOrDefaultAsync(u => u == value) == null;
 			return result;
@@ -61,7 +60,7 @@ namespace Bgc.Controllers
 		public async Task<UserAccountDetails> GetAccountDetails(int userId)
 		{
 			if (userId <= 0)
-				return new UserAccountDetails();
+				return null;
 			var user = await _users.GetBgcUser(userId);
 			if (user == null)
 				return new UserAccountDetails();
@@ -77,19 +76,19 @@ namespace Bgc.Controllers
 		[HttpPost]
 		[Authorize(Policy = "BgcUser")]
 		[ValidateAntiForgeryToken]
-		public async Task<dynamic> SetAccountDetails([FromBody] UserAccountDetails details)
+		public async Task<AccountFeedback> SetAccountDetails([FromBody] UserAccountDetails details)
 		{
-			if (ModelState.IsValid)
-			{
-				var user = await _users.GetUser(details.UserId, detectChanges: true);
-				if (user == null)
-					return new object();
-				user.GenderId = (byte)details.GenderId;
-				user.Motto = details.Motto;
-				await _users.SaveChanges();
-				return new AccountFeedback(){Result = FeedResult.Success};
-			}
-			return new object();
+			if (ModelState.IsValid == false)
+				return null;
+
+			var user = await _users.GetUser(details.UserId, detectChanges: true);
+			if (user == null)
+				return null;
+			user.GenderId = (byte)details.GenderId;
+			user.Motto = details.Motto;
+			await _users.SaveChanges();
+			return new AccountFeedback(){Result = FeedResult.Success};
+		}
 		}
 	}
 }

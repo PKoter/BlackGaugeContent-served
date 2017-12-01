@@ -18,7 +18,7 @@ namespace Bgc
 				{
 					logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
 					logging.AddConsole();
-					logging.AddDebug();
+					//logging.AddDebug();
 				})
 				.Build();
 	}

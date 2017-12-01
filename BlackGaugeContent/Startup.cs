@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Bgc
@@ -27,10 +28,12 @@ namespace Bgc
 	public class Startup
 	{
 		private SecurityKey _signinKey;
+		private ILoggerFactory _loggerFactory;
 
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
 		{
 			Configuration = configuration;
+			_loggerFactory = loggerFactory;
 			_signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["SymmetricSecurityKey"]));
 		}
 
@@ -44,7 +47,6 @@ namespace Bgc
 			services.AddIdentity<AspUser, AspRole>()
 				.AddEntityFrameworkStores<BgcFullContext>()
 				.AddDefaultTokenProviders();
-
 
 			services.Configure<IdentityOptions>(options =>
 			{
@@ -99,11 +101,11 @@ namespace Bgc
 			//services.AddTransient<AntiforgeryCookieResultFilter>();
 
 			services.AddTransient<IEmailSender, EmailSender>();
-
 			services.Configure<MvcOptions>(options =>
 				{
 					options.Filters.Add(new RequireHttpsAttribute());
 					//options.Filters.Add(new ValidateAntiForgeryTokenAttribute());
+					options.Filters.Add(new ExceptionFilter(_loggerFactory));
 				});
 			services.Configure<AuthMessageSenderOptions>(Configuration);
 
@@ -134,7 +136,7 @@ namespace Bgc
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery, ILoggerFactory loggingFactory)
 		{
 			var options = new RewriteOptions().AddRedirectToHttps();
 			

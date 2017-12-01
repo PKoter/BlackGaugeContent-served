@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using Bgc.Data;
 using Bgc.Models;
 using Bgc.Services;
 using Bgc.ViewModels.Account;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -29,7 +24,6 @@ namespace Bgc.Controllers
 		private readonly ILogger                _logger;
 		private readonly IJwtFactory            _jwtFactory;
 		private readonly JwtIssuerOptions       _jwtOptions;
-		private readonly BgcFullContext         _context;
 
 		public AccountController(
 			UserManager<AspUser>       userManager,
@@ -38,56 +32,43 @@ namespace Bgc.Controllers
 			ILogger<AccountController> logger,
 			IOptions<JwtIssuerOptions> optionsIssuer,
 			IJwtFactory                jwtFactory,
-			BgcFullContext             context
 		)
 		{
-			_userManager   = userManager;
-			_signInManager = signInManager;
-			_emailSender   = emailSender;
-			_logger        = logger;
-			_context       = context;
-			_jwtOptions    = optionsIssuer.Value;
-			_jwtFactory    = jwtFactory;
+			_userManager      = userManager;
+			_signInManager    = signInManager;
+			_emailSender      = emailSender;
+			_logger           = logger;
+			_jwtOptions       = optionsIssuer.Value;
+			_jwtFactory       = jwtFactory;
 		}
 
 		[TempData]
 		public string ErrorMessage { get; set; }
 
-		[HttpGet]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(string returnUrl = null)
-		{
-			// Clear the existing external cookie to ensure a clean login process
-			await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-			ViewData["ReturnUrl"] = returnUrl;
-			return View();
-		}
 
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login([FromBody] LoginModel model, string returnUrl = null)
 		{
-			ViewData["ReturnUrl"] = returnUrl;
-			if (ModelState.IsValid)
-			{
-				var user = await _userManager.FindByEmailAsync(model.Email);
-				if (user == null)
-					return NoSuchUserError;
-				
-				if (!await _userManager.IsEmailConfirmedAsync(user))
-				{
-					return Json(new AccountFeedback()
-					{
-						Message = "You must have a confirmed email to log in."
-					});
-				}
+			if (!ModelState.IsValid)
+				return ValidationFail;
 
-				// This doesn't count login failures towards account lockout
-				// To enable password failures to trigger account lockout, set lockoutOnFailure: true
-				var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+			var user = await _userManager.FindByEmailAsync(model.Email);
+			if (user == null)
+				return NoSuchUserError;
+				
+			if (!await _userManager.IsEmailConfirmedAsync(user))
+			{
+				return Json(new AccountFeedback()
+				{
+					Message = "You must have a confirmed email to log in."
+				});
+			}
+
+			// This doesn't count login failures towards account lockout
+			// To enable password failures to trigger account lockout, set lockoutOnFailure: true
+			var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 				if (result.Succeeded)
 				{
 					_logger.LogInformation($"User {model.Email} logged in.");
@@ -98,17 +79,17 @@ namespace Bgc.Controllers
 				{
 					return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
 				}
-				if (result.IsLockedOut)
-				{
-					_logger.LogWarning("User account locked out.");
-					return AccountLockoutError;
-				}
-				
-				return Json(new AccountFeedback()
-				{
-					Message = "Wrong username or password"
-				});
+			if (result.IsLockedOut)
+			{
+				_logger.LogWarning("User account locked out.");
+				return AccountLockoutError;
 			}
+
+			return Json(new AccountFeedback()
+			{
+				Message = "Wrong username or password"
+			});
+		}
 			return ValidationFail;
 		}
 
@@ -290,45 +271,41 @@ namespace Bgc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<JsonResult> Register([FromBody] RegisterModel model)
 		{
-			ViewData["ReturnUrl"] = null;
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
+				return ValidationFail;
+			try
 			{
-				try
+				var user = new AspUser
 				{
-					var user = new AspUser
-					{
-						UserName = model.Name, 
-						Email = model.Email,
-						GenderId = (byte)model.GenderId,
-					};
-					var result = await _userManager.CreateAsync(user, model.Password);
-					if (result.Succeeded)
-					{
-						
-
-						var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-						code = HttpUtility.UrlEncode(code);
-						var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-						await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-						_logger.LogInformation($"User {user.UserName} created a new account with password.");
-						return Json(new AccountFeedback()
-						{
-							Result = FeedResult.Redirect,
-							Message = "Your account has been successfully created. You've been sent an email to activate your account."
-						});
-					}
-					AddErrors(result);
-				}
-				catch (Exception e)
+					UserName = model.Name, 
+					Email = model.Email,
+					GenderId = (byte)model.GenderId,
+				};
+				var result = await _userManager.CreateAsync(user, model.Password);
+				if (result.Succeeded)
 				{
+					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+					code = HttpUtility.UrlEncode(code);
+					var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+					await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+					_logger.LogInformation($"User {user.UserName} created a new account with password.");
 					return Json(new AccountFeedback()
 					{
-						Message = "Something went wrong. Make sure you passed valid email."
+						Result = FeedResult.Redirect,
+						Message = "Your account has been successfully created. You've been sent an email to activate your account."
 					});
 				}
+				AddErrors(result);
+				return ValidationFail;
 			}
-			return ValidationFail;
+			catch (Exception)
+			{
+				return Json(new AccountFeedback()
+				{
+					Message = "Something went wrong. Make sure you passed valid email."
+				});
+			}
 		}
 
 		[HttpPost]
@@ -565,30 +542,6 @@ namespace Bgc.Controllers
 			}
 		}
 
-		#endregion
-
-		#region Uniqueness check
-		[HttpGet("[action]")]
-		[Produces("Application/json")]
-		[AllowAnonymous]
-		public RegisterValueUniqueness CheckUniqueness(string value, string type)
-		{
-			var result = new RegisterValueUniqueness() { ValueType = type };
-			IQueryable<string> query;
-			if ("name".Equals(type))
-			{
-				query = _context.Users.Select(u => u.UserName);
-			}
-			else if ("email".Equals(type))
-			{
-				query = _context.Users.Select(u => u.Email);
-			}
-			else
-				throw new SecurityException();
-
-			result.Unique = query.FirstOrDefault(u => u == value) == null;
-			return result;
-		}
 		#endregion
 	}
 }

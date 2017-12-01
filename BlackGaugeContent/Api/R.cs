@@ -11,5 +11,13 @@
 			public const string Id        = "id";
 			public const string ApiAccess = "api_access";
 		}
+
+		public struct UserModelRules
+		{
+			public const int MinNameLength = 5;
+			public const int MaxNameLength = 128;
+			public const int MinEmailLength = 4;
+			public const int MaxEmailLength = 256;
+		}
 	}
 }
