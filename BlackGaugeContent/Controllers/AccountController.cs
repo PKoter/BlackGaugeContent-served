@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Web;
 using Bgc.Models;
 using Bgc.Services;
+using Bgc.Services.Signals;
 using Bgc.ViewModels.Account;
+using Bgc.ViewModels.Signals;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +25,7 @@ namespace Bgc.Controllers
 		private readonly IEmailSender           _emailSender;
 		private readonly ILogger                _logger;
 		private readonly IJwtFactory            _jwtFactory;
+		private readonly IUserImpulse      _userImpulse;
 		private readonly JwtIssuerOptions       _jwtOptions;
 
 		public AccountController(
@@ -32,6 +35,7 @@ namespace Bgc.Controllers
 			ILogger<AccountController> logger,
 			IOptions<JwtIssuerOptions> optionsIssuer,
 			IJwtFactory                jwtFactory,
+			IUserImpulse          userImpulse
 		)
 		{
 			_userManager      = userManager;
@@ -40,6 +44,7 @@ namespace Bgc.Controllers
 			_logger           = logger;
 			_jwtOptions       = optionsIssuer.Value;
 			_jwtFactory       = jwtFactory;
+			_userImpulse = userImpulse;
 		}
 
 		[TempData]
@@ -65,32 +70,25 @@ namespace Bgc.Controllers
 					Message = "You must have a confirmed email to log in."
 				});
 			}
-
 			// This doesn't count login failures towards account lockout
 			// To enable password failures to trigger account lockout, set lockoutOnFailure: true
 			var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
-				if (result.Succeeded)
-				{
-					_logger.LogInformation($"User {model.Email} logged in.");
-
-					return JwtAuth(user);
-				}
-				if (result.RequiresTwoFactor)
-				{
-					return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-				}
 			if (result.IsLockedOut)
 			{
 				_logger.LogWarning("User account locked out.");
 				return AccountLockoutError;
+			}
+			if (result.Succeeded)
+			{
+				_logger.LogInformation($"User {model.Email} logged in.");
+				var notifyState = await _userImpulse.GetFullInteractionsState(user.Id);
+				return JwtAuth(user, notifyState);
 			}
 
 			return Json(new AccountFeedback()
 			{
 				Message = "Wrong username or password"
 			});
-		}
-			return ValidationFail;
 		}
 
 		#region Error properties
@@ -141,8 +139,9 @@ namespace Bgc.Controllers
 		/// Returns Jwt token when user logged successfully.
 		/// </summary>
 		/// <param name="user"></param>
+		/// <param name="notifyState">any push state, messages or notifications</param>
 		/// <returns></returns>
-		private IActionResult JwtAuth([NotNull] AspUser user)
+		private IActionResult JwtAuth([NotNull] AspUser user, UserImpulseState notifyState)
 		{
 			var identity = _jwtFactory.GenerateClaimsIdentity(user.UserName, user.Id.ToString());
 
@@ -151,7 +150,8 @@ namespace Bgc.Controllers
 				userId     = user.Id,
 				userName   = user.UserName,
 				auth_token = _jwtFactory.GenerateEncodedToken(user.UserName, identity),
-				expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
+				expires_in = (int)_jwtOptions.ValidFor.TotalSeconds,
+				impulses   = notifyState
 			});
 		}
 		#region 2F/Recovery

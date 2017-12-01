@@ -52,5 +52,22 @@ namespace Bgc.Data.Implementations
 				}).FirstAsync(u => u.Id == userId);
 			return user;
 		}
+
+		public async Task<BgcUser> GetBgcUserInfo(string userName)
+		{
+			return await _context.Users.AsNoTracking()
+				.Join(_context.Genders.AsNoTracking(),
+					u => u.GenderId,
+					g => g.Id,
+					(u, g) => new BgcUser()
+					{
+						Respek = u.Respek,
+						Motto = u.Motto,
+						Name = u.UserName,
+						GenderName = g.GenderName
+					})
+				.SingleOrDefaultAsync(u => u.Name.Contains(userName));
+			
+		}
 	}
 }

@@ -89,6 +89,24 @@ namespace Bgc.Controllers
 			await _users.SaveChanges();
 			return new AccountFeedback(){Result = FeedResult.Success};
 		}
+
+		[HttpGet("{userName}")]
+		[Authorize(Policy = "BgcUser")]
+		public async Task<UserPublicDetails> GetUserPublicDetails(string userName)
+		{
+			if (String.IsNullOrEmpty(userName))
+				return new UserPublicDetails();
+			var user = await _users.GetBgcUserInfo(userName);
+			if (user == null)
+				return new UserPublicDetails();
+			var details = new UserPublicDetails()
+			{
+				UserName   = user.Name,
+				Respek     = user.Respek,
+				Motto      = user.Motto,
+				GenderName = user.GenderName
+			};
+			return details;
 		}
 	}
 }

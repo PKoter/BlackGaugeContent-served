@@ -24,5 +24,8 @@ namespace Bgc.Data.Contracts
 			Expression<Func<AspUser, T>> include = null);
 
 		Task<BgcUser> GetBgcUser(int userId);
+
+		[ItemCanBeNull]
+		Task<BgcUser> GetBgcUserInfo(string userName);
 	}
 }

@@ -7,6 +7,7 @@ using Bgc.Data.Implementations;
 using Bgc.Extensions;
 using Bgc.Models;
 using Bgc.Services;
+using Bgc.Services.Signals;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +33,7 @@ namespace Bgc
 
 		public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
 		{
-			Configuration = configuration;
+			Configuration  = configuration;
 			_loggerFactory = loggerFactory;
 			_signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["SymmetricSecurityKey"]));
 		}
@@ -116,6 +117,8 @@ namespace Bgc
 					policy.RequireClaim(R.AuthTags.Role, R.AuthTags.ApiAccess)
 				);
 			});
+
+			services.AddSignalR();
 			ConfigureJwtAuthServices(services);
 		}
 
@@ -133,6 +136,8 @@ namespace Bgc
 			services.AddTransient<IBgcMemeRepository, BgcMemeRepo>();
 			services.AddTransient<IBgcSessionsRepository, BgcSessionsRepo>();
 			services.AddTransient<IUserRepository, UserRepo>();
+			services.AddTransient<IComradeRepository, ComradesRepository>();
+			services.AddTransient<IUserImpulse, UserImpulse>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -169,6 +174,11 @@ namespace Bgc
 				routes.MapSpaFallbackRoute(
 					name: "spa-fallback",
 					defaults: new { controller = "Home", action = "Index" });
+			});
+
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<SignalHub>("signals");
 			});
 		}
 
