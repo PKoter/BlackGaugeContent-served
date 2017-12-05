@@ -7,14 +7,27 @@
 	line-height: 20px;
 	width: 100%;
 }
+.user-beam span {
+	display: inline-block;
+}
 .user-name {
-	color: burlywood;
+	color: aliceblue;
 	text-overflow: ellipsis;
 	overflow-x: hidden;
 	white-space: nowrap;
-	display: inline-block;
-	width: calc(100% - 40px);
+	width: calc(100% - 55px);
 	cursor: pointer;
+}
+	.user-name:hover {
+		color: burlywood;
+	}
+
+.impulse-badge {
+	overflow-x: hidden;
+	padding: 0 5px;
+	margin-left: -5px;
+	color: burlywood;
+	font-size: 1.2em;
 }
 
 .actions-icon {
@@ -41,6 +54,7 @@
 	z-index: -10;
 	transform-origin: top;
 	top: 50px;
+	right: 0;
 }
 
 .action-item {
@@ -51,7 +65,7 @@
 	
 	min-width: 140px;
 }
-	.action-item > span {
+	.action-item  span {
 		position: relative;
 	}
 	.action-item:hover {

@@ -42,6 +42,7 @@ import { IUserId } from '../../models/account';
 export class BgcQuickUserActionsControl {
 	@Input() public items: QuickActionItem[];
 	@Input() public userName: string;
+	@Input() public notifications: number|string|undefined;
 	private rolledOut: boolean = false;
 	private listState: string = 'hidden';
 
@@ -73,11 +74,13 @@ export class BgcQuickUserActionsControl {
 export class QuickActionItem {
 	public name: string;
 	public route: string;
-	public action: (() => boolean)|undefined;
+	public action: (() => boolean) | undefined;
+	public badge: number|string;
 
-	constructor(name: string, route: string, action?: () => boolean) {
-		this.name = name;
-		this.route = route;
+	constructor(name: string, route: string, action?: () => boolean, badge?: number|string) {
+		this.name   = name;
+		this.route  = route;
 		this.action = action;
+		this.badge  = (badge)? badge : '';
 	}
 }

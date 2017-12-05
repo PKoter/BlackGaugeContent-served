@@ -17,15 +17,11 @@
 				<a [routerLink]="loginRoute">
 					<span>Sign in</span> 
 				</a>
-			</nav><!--
-			<nav [routerLinkActive]="['link-active']">
-				<a [routerLink]="registerRoute">
-					<span >Register</span> 
-				</a>
-			</nav>-->
+			</nav>
 		</div>
 		<bgc-quick-user-actions *ngIf="userName != ''"
 								[userName]="userName"
+								[notifications]="userImpulses.getAllImpulseCount()"
 								[items]="userActions">
 		</bgc-quick-user-actions>
 	</div>

@@ -1,5 +1,6 @@
 ﻿<div class="quick-actions">
 	<div class="user-beam" (click)="rollOut()">
+		<span *ngIf="notifications" class="impulse-badge" style="display:">{{notifications}}</span>
 		<span class="user-name" title="{{userName}}">{{userName}}</span>
 		<span [@spin]="listState"
 			  class="glyphicon-cog actions-icon"></span>
@@ -8,7 +9,8 @@
 		 [@rollOut]="listState">
 		<div class="action-item"
 			*ngFor="let item of items; let i = index" (click)="onSelect(i)">
-			<span>{{item.name}}</span>
+			<span class="impulse-badge">{{item.badge}}</span><!--
+		 --><span>{{item.name}}</span>
 		</div>
 	</div>
 </div>
