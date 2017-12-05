@@ -37,6 +37,7 @@ export class Routes {
 	public static ConfirmEmail    = 'account/confirmEmail';
 	public static RegisterMessage = 'register/message';
 	public static ManageAccount   = 'manageAccount';
+	public static FindUsers       = 'findUsers';
 }
 
 /**
