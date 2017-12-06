@@ -9,7 +9,7 @@ import { ApiRoutes, ApiRoutesService} from '../../services/apiRoutes.service';
 @Component({
 	selector: 'manage-account',
 	templateUrl: './manageAccount.html',
-	styleUrls: ['../register/userRegistration.css', '../../controls/bgcButtons.css']
+	styleUrls: ['../../controls/bgcButtons.css', '../../controls/bgcForms.css', '../../controls/bgcViewSections.css']
 })
 
 export class ManageAccountComponent implements OnInit {

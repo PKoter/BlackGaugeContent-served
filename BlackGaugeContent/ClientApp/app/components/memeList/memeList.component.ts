@@ -8,7 +8,7 @@ import { MemeModel } from '../../models/memes';
 @Component({
 	selector: 'meme-list',
 	templateUrl: './memeList.html',
-	styleUrls: ['./memeList.css', '../../controls/bgcPageSections.css'],
+	styleUrls: ['./memeList.css', '../../controls/bgcViewSections.css'],
 	providers: [BgcMemeService]
 })
 

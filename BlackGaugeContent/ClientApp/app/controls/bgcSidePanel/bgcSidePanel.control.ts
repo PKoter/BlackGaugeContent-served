@@ -20,7 +20,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 			),
 			state('drawnBig',
 				style({
-					left: '150px'
+					left: '200px'
 				})
 			),
 			transition('hidden => drawnNormal', animate('200ms ease-out')),

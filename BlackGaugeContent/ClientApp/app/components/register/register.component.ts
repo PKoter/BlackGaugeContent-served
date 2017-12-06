@@ -11,7 +11,7 @@ import { AppMetaService } from '../../services/appMeta.service';
 @Component({
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
-	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css'],
+	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css', '../../controls/bgcViewSections.css', '../../controls/bgcForms.css'],
 	providers: [AppMetaService]
 })
 

@@ -1,56 +1,50 @@
 ﻿.switch-outer {
-	display: block;
-	height: 30px;
-	border-radius: 2px;
-	border: 1px rgb(50, 100, 170) solid;
-	background-color: aliceblue;
-	/*padding: 1px;*/
-}
+  display: block;
+  height: 30px;
+  border-radius: 2px;
+  border: 1px #3264aa solid;
+  background-color: aliceblue;
+  /*padding: 1px;*/ }
 
 .switch-outline {
-	min-width: 100px;
-}
+  min-width: 100px; }
 
 .switch-button {
-	height: 30px;
-	width: 50%;
-	background-color: rgb(50, 100, 170);
-	border-radius: 2px;
-	border: none;
-	display: block;
-	position: relative;
-	top: -1px;
-}
-.switch-button:hover ~bgc-button-disabled {
-	background-color: rgb(60, 120, 200);
-}
+  height: 30px;
+  width: 50%;
+  background-color: #3264aa;
+  border-radius: 2px;
+  border: none;
+  display: block;
+  position: relative;
+  top: -1px; }
+
+.switch-button:hover ~ bgc-button-disabled {
+  background-color: #3c78c8; }
 
 .value-name {
-	position: relative;
-	display: inline-block;
-	width: 49%;
-	text-align: center;
-	font-weight: normal;
-	height: 30px;
-	padding-top: 6px;
-	font-size: 1em;
-	top: -30px;
-	cursor: crosshair;
-	pointer-events: none;
-}
+  position: relative;
+  display: inline-block;
+  width: 49%;
+  text-align: center;
+  font-weight: normal;
+  height: 30px;
+  padding-top: 6px;
+  font-size: 1em;
+  top: -30px;
+  cursor: crosshair;
+  pointer-events: none; }
 
 .current {
-	font-weight: bold;
-	color:white;
-}
+  font-weight: bold;
+  color: white; }
 
 .checkbox-box {
-	width: 30px;
-	padding: 1px;
-}
+  width: 30px;
+  padding: 1px; }
 
 .checkbox-check {
-	padding-left: 2px;
-	font-size: 1.4em;
-	color: rgb(60, 120, 200);
-}
+  padding-left: 2px;
+  font-size: 1.4em;
+  color: #3c78c8; }
+

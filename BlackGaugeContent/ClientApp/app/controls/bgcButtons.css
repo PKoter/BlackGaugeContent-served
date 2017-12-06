@@ -1,71 +1,63 @@
 ﻿/* basic button layout*/
 .bgc-button {
-	display: inline-block;
-	text-align: center;
-	vertical-align: middle;
-	touch-action: auto;
-	cursor: pointer;
-	border: 1px black solid;
-	border-radius: 2px;
-	padding: 4px 20px;
-	font-weight: normal;
-	font-size: 1em;
-	background-color: aliceblue;
-}
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: auto;
+  cursor: pointer;
+  border: 1px black solid;
+  border-radius: 2px;
+  padding: 4px 20px;
+  font-weight: normal;
+  font-size: 1em;
+  background-color: aliceblue; }
 
 /* button style used mostly informatively - not to agree, confirm or select things that are important somehow */
 .bgc-button-inform {
-	background-color: rgb(50, 100, 170);
-	border: none !important;
-	color: antiquewhite;
-}
+  background-color: #3264aa;
+  border: none !important;
+  color: white;
+  text-shadow: 1px 0 2px black; }
 
-	.bgc-button-inform:hover {
-		background-color: rgb(60, 120, 200);
-	}
+.bgc-button-inform:hover {
+  background-color: #3c78c8; }
 
 /* used to put on title bars or somewhere where we don't want background */
 .bgc-button-blend {
-	border: none !important;
-	background: rgba(0, 0, 0, 0);
-	text-shadow: 1px 1px black;
-	padding: 0;
-}
+  border: none !important;
+  background: transparent;
+  text-shadow: 1px 0 2px black;
+  color: white;
+  padding: 0; }
 
-	.bgc-button-blend:hover {
-		color: burlywood;
-	}
+.bgc-button-blend:hover {
+  color: burlywood; }
 
 .bgc-button-affirm {
-	background-color: rgb(220, 185, 130);
-	border: 1px rgb(200, 170, 120) solid !important;
-	color: black;
-	font-weight: bold;
-}
+  background-color: burlywood;
+  border: 1px #dcb982 solid !important;
+  color: white;
+  text-shadow: 1px 1px black;
+  font-weight: bold; }
 
-	.bgc-button-affirm:hover {
-		background-color: rgb(240, 195, 140);
-	}
+.bgc-button-affirm:hover {
+  background-color: #f0c38c; }
 
-	.bgc-button-affirm:disabled {
-		background-color: rgb(220, 185, 130);
-	}
+.bgc-button-affirm:disabled {
+  background-color: #dcb982; }
 
 .bgc-button-disabled, button:disabled {
-	cursor: no-drop !important;
-}
+  cursor: no-drop !important; }
 
 .bgc-button-danger {
-	background-color: rgb(255, 50, 70);
-	border: 1px rgb(200, 30, 30) solid !important;
-	color: aliceblue;
-	font-weight: bolder;
-}
+  background-color: #ff3246;
+  border: 1px #e12332 solid !important;
+  color: white;
+  font-weight: bolder; }
 
-	.bgc-button-danger:hover {
-		background-color: rgb(255, 70, 90);
-	}
+.bgc-button-danger:hover {
+  background-color: #ff465a; }
 
-	.bgc-button-danger:disabled {
-		background-color: rgb(255, 50, 70);
-	}
+.bgc-button-danger:disabled {
+  background-color: #e12332; }
+

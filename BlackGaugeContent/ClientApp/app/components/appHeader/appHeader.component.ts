@@ -21,7 +21,7 @@ export class AppHeaderComponent implements OnInit {
 	private comradeRequests: number;
 
 	private userActions: QuickActionItem[] = [
-		new QuickActionItem('Find user', ''),
+		new QuickActionItem('Find user', Routes.FindUsers),
 		new QuickActionItem('Compadre Requests', ''),
 		new QuickActionItem('Compadres', ''),
 		new QuickActionItem('Messages', ''),

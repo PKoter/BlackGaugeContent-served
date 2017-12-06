@@ -1,0 +1,36 @@
+@import '../../controls/bgcLayout.scss';
+
+.main-header {
+	width: calc(100% - #{$bgc-mark-width});
+}
+
+.view-menu-header {
+	width: 100%;
+	height: $app-header-height;
+	background-color: rgb(40, 40, 40);
+	border-bottom: 1px burlywood solid;
+	box-shadow: 2px 1px 2px rgba(200, 164, 120, 0.5);
+	position: fixed;
+	z-index: 100;
+
+
+	> div, app-header {
+		display: inline-block;
+	}
+}
+
+.bgc-mark {
+	height: 100%;
+	width: $bgc-mark-width;
+	border-bottom: 1px burlywood solid;
+	border-right: 1px aliceblue solid;
+	z-index: 105;
+
+	> a {
+		line-height: 20px;
+		font-size: 18px;
+		float: left;
+		padding: 15px 10px;
+		width: 100%;
+	}
+}

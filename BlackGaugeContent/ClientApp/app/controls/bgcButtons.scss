@@ -1,0 +1,77 @@
+﻿@import './bgcColors.scss';
+
+
+/* basic button layout*/
+.bgc-button {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	touch-action: auto;
+	cursor: pointer;
+	border: 1px black solid;
+	border-radius: 2px;
+	padding: 4px 20px;
+	font-weight: normal;
+	font-size: 1em;
+	background-color: $background1-color;
+}
+
+/* button style used mostly informatively - not to agree, confirm or select things that are important somehow */
+.bgc-button-inform {
+	background-color: $inform-color;
+	border: none !important;
+	color: $button-text-color;
+	text-shadow: 1px 0 2px $button-text-invert-color;
+}
+
+.bgc-button-inform:hover {
+	background-color: $inform-highlight-color;
+}
+
+/* used to put on title bars or somewhere where we don't want background */
+.bgc-button-blend {
+	border: none !important;
+	background: rgba(0, 0, 0, 0);
+	text-shadow: 1px 0 2px black;
+	color: $button-blend-color;
+	padding: 0;
+}
+
+.bgc-button-blend:hover {
+	color: $button-blend-highlight-color;
+}
+
+.bgc-button-affirm {
+	background-color: $affirm-color;
+	border: 1px $affirm-darker-color solid !important;
+	color: $button-text-color;
+	text-shadow: 1px 1px $button-text-invert-color;
+	font-weight: bold;
+}
+
+.bgc-button-affirm:hover {
+	background-color: $affirm-highlight-color;
+}
+
+.bgc-button-affirm:disabled {
+	background-color: $affirm-disabled-color;
+}
+
+.bgc-button-disabled, button:disabled {
+	cursor: no-drop !important;
+}
+
+.bgc-button-danger {
+	background-color: $danger-color;
+	border: 1px $danger-darker-color solid !important;
+	color: $button-text-color;
+	font-weight: bolder;
+}
+
+.bgc-button-danger:hover {
+	background-color: $danger-highlight-color;
+}
+
+.bgc-button-danger:disabled {
+	background-color: $danger-disabled-color;
+}

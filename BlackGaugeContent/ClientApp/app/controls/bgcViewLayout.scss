@@ -1,0 +1,39 @@
+﻿@import 'bgcLayout.scss';
+
+.view-container {
+	margin: $top-page-margin $right-margin 0 $left-margin;
+}
+
+.main-view {
+	display: block;
+	margin-right: $small-right-add-margin;
+}
+
+.main-view-symmetrical {
+	display: block;
+	margin-right: $right-additional-margin;
+
+	h1, h2 {
+		text-align: center;
+	}
+}
+
+@media screen and (min-width: $medium-big-boundary-width) {
+	.main-view {
+		margin-right: $right-additional-margin;
+	}
+}
+
+@media screen and (max-width: $small-medium-boundary-width) {
+	.view-container {
+		margin: $top-page-margin $small-right-margin 0 $small-left-margin !important;
+	}
+
+	.main-view-symmetrical {
+		margin-right: $small-right-add-margin;
+	}
+
+	.main-view {
+		margin-right: $small-right-add-margin;
+	}
+}

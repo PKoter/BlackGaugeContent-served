@@ -1,0 +1,34 @@
+﻿//  << button colors
+$meaningless-color: aliceblue;
+$meaningless-highlight-color: white;
+
+$inform-color: rgb(50, 100, 170) !global;
+$inform-darker-color: ;
+$inform-highlight-color: rgb(60, 120, 200) !global;
+
+$affirm-color: burlywood !global;
+$affirm-highlight-color: rgb(240, 195, 140) !global;
+$affirm-darker-color: rgb(220, 185, 130);
+$affirm-disabled-color: $affirm-darker-color;
+
+$danger-color: rgb(255, 50, 70);
+$danger-highlight-color: rgb(255, 70, 90);
+$danger-darker-color: rgb(225, 35, 50);
+$danger-disabled-color: $danger-darker-color;
+
+$button-blend-color: white;
+$button-blend-highlight-color: burlywood;
+// >> 
+
+
+$background1-color: aliceblue !global;
+$background-color: white !global;
+
+$app-header-color: rgb(50, 50, 50);
+
+$text-color: black;
+$text-invert-color: white;
+$button-text-color: white;
+$button-text-invert-color: black;
+$text-light-hover-color: burlywood;
+$text-light-color: aliceblue;

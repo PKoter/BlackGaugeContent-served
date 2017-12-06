@@ -1,20 +1,20 @@
 <div class="header-content">
 	<div class="route-section">
-		<nav [routerLink]="homeRoute" [routerLinkActive]="['link-active']">
+		<!--<nav [routerLink]="homeRoute" [routerLinkActive]="['link-active']">
 			<a >
 				<span class="glyphicon glyphicon-home"></span> Home
 			</a>
-		</nav><!--
+		</nav>
 		--><nav [routerLink]="memeListRoute" [routerLinkActive]="['link-active']">
 			<a >
-				<span class="glyphicon glyphicon-th-list"></span> Meme list
+				<span class="glyphicon glyphicon-th-list"></span> Published memes
 			</a>
 		</nav>
 	</div>
 	<div class="user-section">
 		<div *ngIf="userName == ''">
-			<nav [routerLinkActive]="['link-active']">
-				<a [routerLink]="loginRoute">
+			<nav [routerLinkActive]="['link-active']" [routerLink]="loginRoute">
+				<a >
 					<span>Sign in</span> 
 				</a>
 			</nav>

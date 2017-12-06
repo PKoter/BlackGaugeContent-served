@@ -1,0 +1,54 @@
+﻿@import 'bgcLayout.scss';
+@import 'bgcViewLayout.scss';
+
+.topic {
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 20px;
+	width: 50%;
+	min-width: $topic-min-width;
+	display: block;
+	float: left;
+}
+
+.main-topic {
+	width: 60% !important;
+	border-right: 1px rgb(190, 190, 190) solid;
+	min-width: $main-topic-min-width;
+}
+
+.main-topic:last-child {
+	margin-bottom: 100px;
+}
+
+.secondary-topic {
+	width: 40% !important;
+}
+
+.only-topic{
+	width: 100% !important;
+	min-width: $only-topic-min-width;
+}
+
+.left-section-floating {
+	position: fixed;
+	z-index: 80;
+	top: $app-header-height;
+	bottom: 0;
+	left: 0;
+	width: $left-margin;
+	padding: 10px 15px;
+	text-overflow: ellipsis;
+	box-shadow: 0 1px 2px rgb(120, 120, 120);
+}
+
+.left-section span {
+	display:block;
+}
+
+@media screen and (max-width: $main-topic-single-max-width){
+	.main-topic.dual-topic, .secondary-topic {
+		border: none !important;
+		width: 80% !important;
+	}
+}

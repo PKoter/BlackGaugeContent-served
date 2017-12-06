@@ -1,0 +1,42 @@
+﻿@import '../bgcColors.scss';
+@import '../bgcLayout.scss';
+$back-color: lightgray;
+$title-color: $inform-color;
+$title-text-color: $button-text-color;
+
+.side-panel-modal {
+	position: relative;
+	height: 100%;
+	width: 50%;
+	top: $app-header-height;
+	position: fixed;
+	z-index: 1000;
+	background-color: $back-color;
+	box-shadow: -1px 0 6px darkslategray;
+}
+
+
+
+.side-panel-title {
+	padding: 10px 15px 10px 15px;
+	background-color: $title-color;
+	color: $title-text-color;
+	text-shadow: 1px 1px black;
+	height: 40px;
+}
+
+.side-panel-title h4 {
+	margin: 0;
+	display: inline-block;
+}
+
+.side-panel-body {
+	width: 100%;
+	border: 2px dimgrey solid;
+	height: calc(100% - 40px);
+	overflow-y: hidden;
+}
+
+.panel-width-big {
+	width: calc(100% - 400px) !important;
+}

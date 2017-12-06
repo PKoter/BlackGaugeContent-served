@@ -1,0 +1,67 @@
+﻿@import '../bgcColors.scss';
+$button-color: $inform-color;
+$button-hovered-color: $inform-highlight-color;
+$border-color: $inform-color;
+$check-color: $inform-highlight-color;
+
+$back-color: $background1-color;
+$current-text-color: $button-text-color;
+
+
+.switch-outer {
+	display: block;
+	height: 30px;
+	border-radius: 2px;
+	border: 1px $border-color solid;
+	background-color: $back-color;
+	/*padding: 1px;*/
+}
+
+.switch-outline {
+	min-width: 100px;
+}
+
+.switch-button {
+	height: 30px;
+	width: 50%;
+	background-color: $button-color;
+	border-radius: 2px;
+	border: none;
+	display: block;
+	position: relative;
+	top: -1px;
+}
+
+.switch-button:hover ~ bgc-button-disabled {
+	background-color: $button-hovered-color;
+}
+
+.value-name {
+	position: relative;
+	display: inline-block;
+	width: 49%;
+	text-align: center;
+	font-weight: normal;
+	height: 30px;
+	padding-top: 6px;
+	font-size: 1em;
+	top: -30px;
+	cursor: crosshair;
+	pointer-events: none;
+}
+
+.current {
+	font-weight: bold;
+	color: $current-text-color;
+}
+
+.checkbox-box {
+	width: 30px;
+	padding: 1px;
+}
+
+.checkbox-check {
+	padding-left: 2px;
+	font-size: 1.4em;
+	color: $check-color;
+}

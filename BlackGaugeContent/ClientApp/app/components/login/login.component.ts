@@ -10,7 +10,7 @@ import { ApiRoutes, Routes, ApiRoutesService } from '../../services/apiRoutes.se
 @Component({
 	selector: 'user-login',
 	templateUrl: './userLogin.html',
-	styleUrls: ['../register/userRegistration.css', '../../controls/bgcButtons.css']
+	styleUrls: ['../../controls/bgcButtons.css', '../../controls/bgcViewSections.css', '../../controls/bgcForms.css']
 })
 
 export class LoginComponent {

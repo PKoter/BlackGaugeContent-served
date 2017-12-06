@@ -8,46 +8,6 @@
 	border-color: red !important;
 }
 
-.main-topic {
-	padding-left: 15px;
-	padding-right: 15px;
-	width: 50%;
-	border-right: 1px rgb(190, 190, 190) solid;
-	margin-bottom: 20px;
-}
-
-@media screen and (min-width: 1000px) {
-	.main-topic { width: calc(50% - 75px); }
-}
-
-	.main-topic:last-child {
-		margin-bottom: 100px;
-	}
-
-.topic-well {
-	display: block;
-	float: left;
-	min-width: 300px;
-}
-
-	.topic-well:last-child {
-		margin-bottom: 100px;
-	}
-
-.form-topic div.form-group {
-	width: 90%;
-	max-width: 400px;
-}
-.form-topic label, div.form-group {
-	width: 100%;
-	display: block;
-}
-
-.form-topic input {
-	border: 1px rgb(50, 100, 170) solid;
-	border-radius: 2px;
-}
-
 /* displays indication that ie. value is valid and unique (name, email)*/
 .form-value-info {
 	display: block;
@@ -88,15 +48,4 @@
 .pass-strength-3 {
 	background-color:limegreen;
 	width: 100%;
-}
-
-.side-panel {
-	padding-left: 15px;
-	padding-right: 15px;
-	width: 40%;
-}
-
-.long-input {
-	resize: none;
-	overflow: hidden;
 }

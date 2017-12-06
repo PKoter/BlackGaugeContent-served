@@ -1,77 +1,72 @@
 ﻿.quick-actions {
-	width: 150px;
-}
+  width: 200px; }
+
 .user-beam {
-	padding: 12px;
-	text-align: center;
-	line-height: 20px;
-	width: 100%;
-}
+  padding: 12px;
+  text-align: center;
+  line-height: 20px;
+  width: 100%; }
+
 .user-beam span {
-	display: inline-block;
-}
+  display: inline-block; }
+
 .user-name {
-	color: aliceblue;
-	text-overflow: ellipsis;
-	overflow-x: hidden;
-	white-space: nowrap;
-	width: calc(100% - 55px);
-	cursor: pointer;
-}
-	.user-name:hover {
-		color: burlywood;
-	}
+  color: aliceblue;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  white-space: nowrap;
+  width: calc(100% - 55px);
+  cursor: pointer; }
+
+.user-name:hover {
+  color: burlywood; }
 
 .impulse-badge {
-	overflow-x: hidden;
-	padding: 0 5px;
-	margin-left: -5px;
-	color: burlywood;
-	font-size: 1.2em;
-}
+  overflow-x: hidden;
+  padding: 0 5px;
+  margin-left: -5px;
+  color: burlywood;
+  font-size: 1.2em; }
 
 .actions-icon {
-	color: aliceblue;
-	padding: 4px;
-	font-size: 20px;
-	display: inline-block;
-	font-family: 'Glyphicons Halflings';
-	-webkit-font-smoothing: antialiased;
-	cursor: pointer;
-}
-	.actions-icon:hover {
-		color: burlywood;
-	}
+  color: aliceblue;
+  padding: 4px;
+  font-size: 20px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer; }
+
+.actions-icon:hover {
+  color: burlywood; }
 
 .action-list {
-	background-color: rgb(40, 40, 40);
-	color: aliceblue;
-	padding: 0 5px;
-	display: block;
-	width: max-content;
-	float: right;
-	position: absolute;
-	z-index: -10;
-	transform-origin: top;
-	top: 50px;
-	right: 0;
-}
+  background-color: #282828;
+  color: aliceblue;
+  padding: 0 5px;
+  display: block;
+  width: max-content;
+  float: right;
+  position: absolute;
+  z-index: -10;
+  transform-origin: top;
+  top: 50px;
+  right: 0; }
 
 .action-item {
-	border-bottom: 1px aliceblue solid;
-	padding: 8px 16px 8px 8px;
-	cursor: pointer;
-	display: block;
-	
-	min-width: 140px;
-}
-	.action-item  span {
-		position: relative;
-	}
-	.action-item:hover {
-		background-color: rgb(60, 60, 60);
-	}
-	.action-item:hover > span {
-		left: 10px;
-		color: burlywood;
-	}
+  border-bottom: 1px aliceblue solid;
+  padding: 8px 16px 8px 8px;
+  cursor: pointer;
+  display: block;
+  min-width: 140px; }
+
+.action-item span {
+  position: relative; }
+
+.action-item:hover {
+  background-color: #3c3c3c; }
+
+.action-item:hover > span {
+  left: 10px;
+  color: burlywood; }
+

@@ -1,7 +1,7 @@
 ﻿<h2>Login</h2>
 
-<div >
-	<div class="main-topic form-topic topic-well">
+<div class="main-view">
+	<div class="topic main-topic dual-topic">
 		<form #form="ngForm" class="">
 			<h4>Login to an existing account.</h4>
 			<hr />
@@ -47,7 +47,7 @@
 				<button type="submit"
 						[disabled]="email.errors || pass.errors"
 						class="bgc-button bgc-button-affirm"
-						style="width: 100%;" (click)="onSubmit()">
+						(click)="onSubmit()">
 					Login
 				</button>
 			</div>
@@ -55,12 +55,12 @@
 			</bgc-loading-spinner>
 		</form>
 	</div>
-	<div class="topic-well side-panel">
+	<div class="topic secondary-topic">
 		<h4>Don't have an account?</h4>
 		<hr/>
 		<button type="button"
-				class="bgc-button bgc-button-inform"
-				style="width: 100%;" (click)="onRegisterRedirect()">
+				class="bgc-button bgc-button-inform form-element"
+				style="width: 90%;" (click)="onRegisterRedirect()">
 			Register
 		</button>
 	</div>

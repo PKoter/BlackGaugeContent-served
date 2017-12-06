@@ -2,5 +2,9 @@
 	border:none; 
 	background-color:transparent; 
 }
+img.fit-width {
+	width: 100%;
+	height: auto;
+}
 
 [hidden] {display: none !important}

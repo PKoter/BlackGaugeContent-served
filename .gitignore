@@ -262,3 +262,7 @@ __pycache__/
 
 BlackGaugeContent/appsettings.json
 BlackGaugeContent/appsettings.Development.json
+*.min.css
+BlackGaugeContent/ClientApp/app/controls/_bgcLayout.css
+BlackGaugeContent/ClientApp/app/controls/_bgcColors.css
+BlackGaugeContent/ClientApp/app/controls/bgcForms.css

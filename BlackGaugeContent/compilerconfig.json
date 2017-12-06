@@ -1,0 +1,46 @@
+﻿[
+  {
+    "outputFile": "ClientApp/app/controls/bgcSwitch/bgcSwitch.css",
+    "inputFile": "ClientApp/app/controls/bgcSwitch/bgcSwitch.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcButtons.css",
+    "inputFile": "ClientApp/app/controls/bgcButtons.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcSidePanel/bgcSidePanel.css",
+    "inputFile": "ClientApp/app/controls/bgcSidePanel/bgcSidePanel.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcViewSections.css",
+    "inputFile": "ClientApp/app/controls/bgcViewSections.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/appHeader/appHeader.css",
+    "inputFile": "ClientApp/app/components/appHeader/appHeader.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcQuickUserActions/bgcQuickUserActions.css",
+    "inputFile": "ClientApp/app/controls/bgcQuickUserActions/bgcQuickUserActions.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/app/app.css",
+    "inputFile": "ClientApp/app/components/app/app.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcViewLayout.css",
+    "inputFile": "ClientApp/app/controls/bgcViewLayout.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcForms.css",
+    "inputFile": "ClientApp/app/controls/bgcForms.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/_bgcColors.css",
+    "inputFile": "ClientApp/app/controls/_bgcColors.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/_bgcLayout.css",
+    "inputFile": "ClientApp/app/controls/_bgcLayout.scss"
+  }
+]
