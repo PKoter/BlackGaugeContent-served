@@ -1,10 +1,11 @@
-﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
 	selector: 'bgc-switch',
 	templateUrl: 'bgcSwitch.html',
 	styleUrls: ['bgcSwitch.css', '../bgcButtons.css'],
+	encapsulation: ViewEncapsulation.None,
 	animations: [
 		trigger('switchSide', [
 			state('left',
@@ -32,6 +33,8 @@ export class BgcSwitchControl {
 	@Input() public disabled:    boolean;
 	@Input() public leftName:    string;
 	@Input() public rightName:   string;
+	@Input() public switchClass: string;
+	@Input() public checkClass:  string;
 	//@Input() public switchOrCheckbox: () => boolean;
 
 	private value: boolean;
