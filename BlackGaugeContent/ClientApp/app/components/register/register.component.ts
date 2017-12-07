@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RegistrationModel, UniqueRegisterValue, GenderModel, AccountFeedback } from '../../models/account';
 import { ListEntry } from '../../CommonTypes.api';
@@ -12,6 +12,7 @@ import { AppMetaService } from '../../services/appMeta.service';
 	selector: 'user-registration',
 	templateUrl: './userRegistration.html',
 	styleUrls: ['./userRegistration.css', '../../controls/bgcButtons.css', '../../controls/bgcViewSections.css', '../../controls/bgcForms.css'],
+	encapsulation: ViewEncapsulation.None,
 	providers: [AppMetaService]
 })
 

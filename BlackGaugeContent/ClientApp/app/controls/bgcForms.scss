@@ -20,14 +20,14 @@
 .form-group{
 	padding-right: 50px;
 
-	label, :last-child, :first-child {
+	>label, >:last-child, >:first-child {
 		width: 100%;
 		max-width: 400px !important;
 	}
 }
 
 .form-element {
-	width: 90%;
+	width: 100%;
 	max-width: 400px !important;
 }
 

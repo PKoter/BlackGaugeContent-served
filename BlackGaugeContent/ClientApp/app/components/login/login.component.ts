@@ -1,4 +1,4 @@
-﻿import { Component, NgModule, OnInit, Inject } from '@angular/core';
+﻿import { Component, NgModule, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LoginModel, AccountFeedback, FeedResult } from '../../models/account';
 import { UserImpulsesService } from '../../services/userImpulses.service';
@@ -10,7 +10,8 @@ import { ApiRoutes, Routes, ApiRoutesService } from '../../services/apiRoutes.se
 @Component({
 	selector: 'user-login',
 	templateUrl: './userLogin.html',
-	styleUrls: ['../../controls/bgcButtons.css', '../../controls/bgcViewSections.css', '../../controls/bgcForms.css']
+	styleUrls: ['../../controls/bgcButtons.css', '../../controls/bgcViewSections.css', '../../controls/bgcForms.css'],
+	encapsulation: ViewEncapsulation.None
 })
 
 export class LoginComponent {

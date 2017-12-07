@@ -75,7 +75,7 @@ import { UserImpulsesService}      from './services/userImpulses.service';
 			{ path: Routes.ManageAccount,         component: ManageAccountComponent },
 			{ path: Routes.FindUsers,             component: FindUsersComponent },
 			{ path: '**', redirectTo: Routes.Home }
-		],  /*{enableTracing:true}*/)
+		]  /*{enableTracing:true}*/)
 	],
 	providers: [
 		DataFlowService,
