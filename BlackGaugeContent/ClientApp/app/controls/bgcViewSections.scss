@@ -30,6 +30,10 @@
 	min-width: $only-topic-min-width;
 }
 
+.one-topic {
+	border: none !important;
+}
+
 .left-section-floating {
 	position: fixed;
 	z-index: 80;

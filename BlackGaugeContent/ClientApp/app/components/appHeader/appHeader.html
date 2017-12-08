@@ -21,7 +21,7 @@
 		</div>
 		<bgc-quick-user-actions *ngIf="userName != ''"
 								[userName]="userName"
-								[notifications]="userImpulses.getAllImpulseCount()"
+								[notifications]="getAllImpulseCount"
 								[items]="userActions">
 		</bgc-quick-user-actions>
 	</div>

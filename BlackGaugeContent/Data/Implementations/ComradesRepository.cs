@@ -18,6 +18,9 @@ namespace Bgc.Data.Implementations
 		public async Task<ComradeRequest> FetchComradeRequest(int senderId, string receiverName, bool createOnly = false)
 		{
 			var receiverId = await GetUserId(receiverName);
+			if(senderId == receiverId)
+				throw new InvalidOperationException("comrade request sent by receiver.");
+
 			var request    = await GetComradeRequest(senderId, receiverId);
 			if (request == null)
 			{

@@ -52,6 +52,8 @@ export class ApiRoutes {
 	public static CheckUniqueness   = 'api/User/CheckUniqueness';
 	public static AccountDetails    = 'api/User/GetAccountDetails';
 	public static SetAccountDetails = 'api/User/SetAccountDetails';
+	public static GetUserInfo       = 'api/User/GetUserPublicDetails';
+	public static SendComradeRequest= 'api/Comrade/MakeComradeRequest';
 	public static MemeReaction      = 'api/MemeList/MemeReaction';
 	public static PageMemes         = 'api/MemeList/PageMemes';
 	public static CountNewMemes     = 'api/MemeList/CountNewMemes';

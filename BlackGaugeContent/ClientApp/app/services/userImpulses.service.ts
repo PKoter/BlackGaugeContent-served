@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserImpulsesService {
-	private state: IImpulseState;
+	state: IImpulseState;
 	@Output() public impulsed = new EventEmitter();
 
 	constructor(private router: ApiRoutesService) {

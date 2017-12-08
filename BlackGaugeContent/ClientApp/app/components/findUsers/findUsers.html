@@ -1,8 +1,52 @@
-﻿<div >
-	<div >
-		
+﻿<h3>Find User You may know</h3>
+
+<div class="main-view">
+	<div [ngClass]="{'one-topic' : !found}"
+		 class="topic main-topic dual-topic">
+		<form #form="ngForm">
+			<h4>Type user's name in the box.</h4>
+			<hr />
+			<div class="form-group">
+				<label>
+					User's name
+					<input type="text" class="form-control" name="name" required
+						   [(ngModel)]="model.userName" #name="ngModel" [minlength]="5" />
+				</label>
+				<div *ngIf="!success">
+					<div class="text-warning">
+						BGC was unable to find the user.
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit"
+						[disabled]="name.errors"
+						class="bgc-button bgc-button-inform"
+						(click)="findUser()">
+					Find
+				</button>
+			</div>
+			<bgc-loading-spinner *ngIf="searching">
+			</bgc-loading-spinner>
+		</form>
+		<div *ngIf="found">
+			<hr/>
+			<h4>{{model.userName}}</h4>
+			Gender: <span>{{model.genderName}}</span><br/>
+			Motto: <i>{{model.motto}}</i><br/>
+			Respek: <span>{{model.respek}}</span>
+
+		</div>
 	</div>
-	<div >
-		
+	<div *ngIf="found"
+		 class="topic secondary-topic">
+		<h4>Interact with {{model.userName}}?</h4>
+		<hr />
+		<button type="button"
+				[disabled]="comradeRequestSent"
+				class="bgc-button bgc-button-affirm form-element"
+				style="width: 90%;" (click)="onComradeRequest()">
+			{{comradeRequirement}}
+		</button>
 	</div>
 </div>

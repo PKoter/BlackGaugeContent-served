@@ -1,14 +1,4 @@
-﻿.text-error {
-	color: red;
-	border-bottom: 1px red solid;
-	padding: 10px 5px 5px 5px;
-}
-
-.ng-invalid.ng-dirty {
-	border-color: red !important;
-}
-
-/* displays indication that ie. value is valid and unique (name, email)*/
+﻿/* displays indication that ie. value is valid and unique (name, email)*/
 .form-value-info {
 	display: block;
 	width: 34px;

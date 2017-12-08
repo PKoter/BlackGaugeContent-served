@@ -38,6 +38,13 @@ export class AppHeaderComponent implements OnInit {
 		this.userName = this.userService.getUserIds().name;
 	}
 
+	private get getAllImpulseCount(): number | string {
+		let impulses = this.userImpulses.getAllImpulseCount();
+		if (impulses == 0)
+			return '';
+		return impulses;
+	}
+
 	private userNotification() {
 		this.comradeRequests = this.userImpulses.getComradeRequestCount();
 		this.notifications = this.userImpulses.getAllImpulseCount();

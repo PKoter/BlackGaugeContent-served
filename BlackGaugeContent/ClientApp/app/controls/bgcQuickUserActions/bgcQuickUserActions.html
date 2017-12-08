@@ -1,6 +1,6 @@
 ﻿<div class="quick-actions">
 	<div class="user-beam" (click)="rollOut()">
-		<span *ngIf="notifications" class="impulse-badge" style="display:">{{notifications}}</span>
+		<span class="impulse-badge">{{notifications}}</span>
 		<span class="user-name" title="{{userName}}">{{userName}}</span>
 		<span [@spin]="listState"
 			  class="glyphicon-cog actions-icon"></span>

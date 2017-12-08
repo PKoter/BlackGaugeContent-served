@@ -20,7 +20,7 @@
 .form-group{
 	padding-right: 50px;
 
-	>label, >:last-child, >:first-child {
+	>label, >button, >:last-child, >:first-child {
 		width: 100%;
 		max-width: 400px !important;
 	}
@@ -34,4 +34,22 @@
 .long-input {
 	resize: none;
 	overflow: hidden;
+}
+
+form {
+	.text-error {
+		color: red;
+		border-bottom: 1px red solid;
+		padding: 10px 5px 5px 5px;
+	}
+
+	.ng-invalid.ng-dirty {
+		border-color: red !important;
+	}
+
+	.text-warning {
+		color: goldenrod;
+		border-bottom: 1px goldenrod solid;
+		padding: 10px 5px 5px 5px;
+	}
 }

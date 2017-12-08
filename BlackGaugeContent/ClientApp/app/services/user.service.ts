@@ -2,6 +2,7 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
 import { GenderModel, AccountFeedback, FeedResult, IUserId, AccountDetails, LoginModel, RegistrationModel } from '../models/account';
+import { IUserInfo, ComradeRequest } from '../models/users';
 import { AuthRequestHandler } from './requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
@@ -77,5 +78,20 @@ export class UserService extends AuthRequestHandler {
 		details.userId = this.getUserIds().id;
 		this.fireAuthPost<AccountDetails, AccountFeedback>(
 			ApiRoutes.SetAccountDetails, details, callback);
+	}
+
+	public findUser(userName: string, callback: (r: IUserInfo) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+		this.fireAuthGet<IUserInfo>(ApiRoutes.GetUserInfo + `/${userName}`, callback);
+	}
+
+	public sendComradeRequest(userName: string, callback: (r: {result: FeedResult}) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+		let id = this.getUserIds().id;
+		let request = new ComradeRequest(id, userName);
+		this.fireAuthPost<ComradeRequest, { result: FeedResult }>
+			(ApiRoutes.SendComradeRequest, request, callback);
 	}
 }
