@@ -266,3 +266,13 @@ BlackGaugeContent/appsettings.Development.json
 BlackGaugeContent/ClientApp/app/controls/_bgcLayout.css
 BlackGaugeContent/ClientApp/app/controls/_bgcColors.css
 BlackGaugeContent/ClientApp/app/controls/bgcForms.css
+BlackGaugeContent/ClientApp/app/controls/bgcViewSections.css
+BlackGaugeContent/ClientApp/app/controls/bgcViewLayout.css
+BlackGaugeContent/ClientApp/app/controls/bgcSwitch/bgcSwitch.css
+BlackGaugeContent/ClientApp/app/controls/bgcSidePanel/bgcSidePanel.css
+BlackGaugeContent/ClientApp/app/controls/bgcQuickUserActions/bgcQuickUserActions.css
+BlackGaugeContent/ClientApp/app/controls/bgcGeneral.scss
+BlackGaugeContent/ClientApp/app/controls/bgcButtons.css
+BlackGaugeContent/ClientApp/app/components/appHeader/appHeader.css
+BlackGaugeContent/ClientApp/app/components/app/app.css
+BlackGaugeContent/ClientApp/app/controls/bgcGeneral.css
