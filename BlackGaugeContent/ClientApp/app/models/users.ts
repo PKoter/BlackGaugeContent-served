@@ -3,6 +3,9 @@
 	genderName:  string;
 	motto:       string;
 	respek:      number;
+	isComrade:          boolean;
+	requestReceived:    boolean;
+	comradeRequestSent: boolean;
 }
 
 export class ComradeRequest {

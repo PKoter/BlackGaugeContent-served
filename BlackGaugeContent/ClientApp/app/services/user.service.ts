@@ -83,7 +83,8 @@ export class UserService extends AuthRequestHandler {
 	public findUser(userName: string, callback: (r: IUserInfo) => void) {
 		if (this.isLoggedIn() === false)
 			return;
-		this.fireAuthGet<IUserInfo>(ApiRoutes.GetUserInfo + `/${userName}`, callback);
+		let id = this.getUserIds().id;
+		this.fireAuthGet<IUserInfo>(ApiRoutes.GetUserInfo + `/${id}/${userName}`, callback);
 	}
 
 	public sendComradeRequest(userName: string, callback: (r: {result: FeedResult}) => void) {

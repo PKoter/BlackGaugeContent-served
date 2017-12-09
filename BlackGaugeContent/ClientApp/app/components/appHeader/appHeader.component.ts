@@ -22,8 +22,7 @@ export class AppHeaderComponent implements OnInit {
 
 	private userActions: QuickActionItem[] = [
 		new QuickActionItem('Find user', Routes.FindUsers),
-		new QuickActionItem('Compadre Requests', ''),
-		new QuickActionItem('Compadres', ''),
+		new QuickActionItem('Compadres', Routes.Comrades),
 		new QuickActionItem('Messages', ''),
 		new QuickActionItem('Manage account', Routes.ManageAccount),
 		new QuickActionItem('Sign out', '/', this.logout.bind(this))
@@ -40,7 +39,7 @@ export class AppHeaderComponent implements OnInit {
 
 	private get getAllImpulseCount(): number | string {
 		let impulses = this.userImpulses.getAllImpulseCount();
-		if (impulses == 0)
+		if (impulses === 0)
 			return '';
 		return impulses;
 	}
