@@ -20,6 +20,7 @@
 			</nav>
 		</div>
 		<bgc-quick-user-actions *ngIf="userName != ''"
+								[tabIndex]="2"
 								[userName]="userName"
 								[notifications]="getAllImpulseCount"
 								[items]="userActions">

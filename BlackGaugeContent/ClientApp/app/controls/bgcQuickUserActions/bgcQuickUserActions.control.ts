@@ -42,7 +42,8 @@ import { IUserId } from '../../models/account';
 export class BgcQuickUserActionsControl {
 	@Input() public items: QuickActionItem[];
 	@Input() public userName: string;
-	@Input() public notifications: number|string|undefined;
+	@Input() public notifications: number | string | undefined;
+	@Input() public tabIndex: number;
 	private rolledOut: boolean = false;
 	private listState: string = 'hidden';
 
