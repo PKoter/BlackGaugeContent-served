@@ -11,4 +11,11 @@ namespace Bgc.ViewModels.User
 		public string Motto      {get; set;}
 		public int    Respek     {get; set;}
 	}
+
+	public class UserInfo : UserPublicDetails
+	{
+		public bool IsComrade          {get; set;}
+		public bool ComradeRequestSent {get; set;}
+		public bool RequestReceived    {get; set;}
+	}
 }

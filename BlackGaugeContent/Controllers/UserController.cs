@@ -90,23 +90,16 @@ namespace Bgc.Controllers
 			return new AccountFeedback(){Result = FeedResult.Success};
 		}
 
-		[HttpGet("{userName}")]
+		[HttpGet("{userId}/{userName}")]
 		[Authorize(Policy = "BgcUser")]
-		public async Task<UserPublicDetails> GetUserPublicDetails(string userName)
+		public async Task<UserPublicDetails> GetUserInfo(int userId, string userName)
 		{
-			if (String.IsNullOrEmpty(userName))
+			if (string.IsNullOrEmpty(userName) || userId <= 0)
 				return new UserPublicDetails();
-			var user = await _users.GetBgcUserInfo(userName);
+			var user = await _users.GetUserInfo(userId, userName);
 			if (user == null)
 				return new UserPublicDetails();
-			var details = new UserPublicDetails()
-			{
-				UserName   = user.Name,
-				Respek     = user.Respek,
-				Motto      = user.Motto,
-				GenderName = user.GenderName
-			};
-			return details;
+			return user;
 		}
 	}
 }

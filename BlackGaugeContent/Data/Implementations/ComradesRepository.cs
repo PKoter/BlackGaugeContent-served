@@ -51,7 +51,7 @@ namespace Bgc.Data.Implementations
 			if(request == null) 
 				throw new SyncException("no comrade request.");
 			request.Agreed = true;
-			_context.ComradeRequests.Remove(request);
+			//_context.ComradeRequests.Remove(request);
 			await _context.SaveChangesAsync();
 			return request;
 		}

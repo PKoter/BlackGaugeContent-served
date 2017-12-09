@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Bgc.Models;
 using Bgc.Models.QueryReady;
+using Bgc.ViewModels.User;
 using JetBrains.Annotations;
 
 namespace Bgc.Data.Contracts
@@ -27,5 +28,8 @@ namespace Bgc.Data.Contracts
 
 		[ItemCanBeNull]
 		Task<BgcUser> GetBgcUserInfo(string userName);
+
+		[ItemCanBeNull]
+		Task<UserInfo> GetUserInfo(int id, string userName);
 	}
 }

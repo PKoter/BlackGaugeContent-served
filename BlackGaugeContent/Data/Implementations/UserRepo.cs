@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bgc.Data.Contracts;
 using Bgc.Models;
 using Bgc.Models.QueryReady;
+using Bgc.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bgc.Data.Implementations
@@ -61,12 +62,39 @@ namespace Bgc.Data.Implementations
 					g => g.Id,
 					(u, g) => new BgcUser()
 					{
-						Respek = u.Respek,
-						Motto = u.Motto,
-						Name = u.UserName,
+						Respek     = u.Respek,
+						Motto      = u.Motto,
+						Name       = u.UserName,
 						GenderName = g.GenderName
 					})
 				.SingleOrDefaultAsync(u => u.Name.Contains(userName));
+			
+		}
+
+		public async Task<UserInfo> GetUserInfo(int id, string userName)
+		{
+			var query = from user in _context.Users
+						join gender in _context.Genders
+						on user.GenderId equals gender.Id
+
+						join req1 in _context.ComradeRequests
+						on user.Id equals req1.ReceiverId into rs1
+							let r1 = rs1.FirstOrDefault(r => r.SenderId == id)
+
+						join req2 in _context.ComradeRequests
+						on user.Id equals req2.SenderId into rs2
+							let r2 = rs2.FirstOrDefault(r => r.ReceiverId == id)
+						select new UserInfo()
+						{
+							Respek     = user.Respek,
+							Motto      = user.Motto,
+							UserName   = user.UserName,
+							GenderName = gender.GenderName,
+							IsComrade  = r1 != null ? r1.Agreed : r2 != null && r2.Agreed,
+							RequestReceived    = r2 != null,
+							ComradeRequestSent = r1 != null
+						};
+			return await query.SingleOrDefaultAsync(u => u.UserName.Contains(userName));
 			
 		}
 	}
