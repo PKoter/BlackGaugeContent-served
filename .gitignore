@@ -276,3 +276,6 @@ BlackGaugeContent/ClientApp/app/controls/bgcButtons.css
 BlackGaugeContent/ClientApp/app/components/appHeader/appHeader.css
 BlackGaugeContent/ClientApp/app/components/app/app.css
 BlackGaugeContent/ClientApp/app/controls/bgcGeneral.css
+BlackGaugeContent/ClientApp/app/controls/bgcFrontPopups.css
+BlackGaugeContent/ClientApp/app/controls/bgcSelect/bgcSelect.css
+BlackGaugeContent/ClientApp/app/controls/bgcMessageModal/bgcMessageModal.css

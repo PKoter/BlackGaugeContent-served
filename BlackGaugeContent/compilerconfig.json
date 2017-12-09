@@ -42,5 +42,21 @@
   {
     "outputFile": "ClientApp/app/controls/_bgcLayout.css",
     "inputFile": "ClientApp/app/controls/_bgcLayout.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcFrontPopups.css",
+    "inputFile": "ClientApp/app/controls/bgcFrontPopups.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcSelect/bgcSelect.css",
+    "inputFile": "ClientApp/app/controls/bgcSelect/bgcSelect.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcMessageModal/bgcMessageModal.css",
+    "inputFile": "ClientApp/app/controls/bgcMessageModal/bgcMessageModal.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/controls/bgcGeneral.css",
+    "inputFile": "ClientApp/app/controls/bgcGeneral.scss"
   }
 ]
