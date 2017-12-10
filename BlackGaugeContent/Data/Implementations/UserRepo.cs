@@ -94,8 +94,14 @@ namespace Bgc.Data.Implementations
 							RequestReceived    = r2 != null,
 							ComradeRequestSent = r1 != null
 						};
-			return await query.SingleOrDefaultAsync(u => u.UserName.Contains(userName));
-			
+			try
+			{
+				return await query.SingleOrDefaultAsync(u => u.UserName.Contains(userName));
+			}
+			catch (Exception)
+			{
+				return null;
+			}
 		}
 	}
 }

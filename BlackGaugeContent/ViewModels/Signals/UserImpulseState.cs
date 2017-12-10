@@ -7,7 +7,7 @@ namespace Bgc.ViewModels.Signals
 	{
 		public int NotifyCount {get; set;}
 
-		public IEnumerable<ComradeRequest> RequestsReceived {get; set;}
-		public IEnumerable<ComradeRequest> RequestsAgreed {get; set;}
+		public IEnumerable<ComradeRequest> Received {get; set;}
+		public IEnumerable<ComradeRequest> Agreed {get; set;}
 	}
 }

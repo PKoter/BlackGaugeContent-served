@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Bgc.Api;
 using Bgc.Data.Contracts;
 using Bgc.Models;
+using Bgc.ViewModels.User;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using ComradeRequest = Bgc.Models.ComradeRequest;
 
 namespace Bgc.Data.Implementations
 {
@@ -21,7 +23,7 @@ namespace Bgc.Data.Implementations
 			if(senderId == receiverId)
 				throw new InvalidOperationException("comrade request sent by receiver.");
 
-			var request    = await GetComradeRequest(senderId, receiverId);
+			var request = await GetComradeRequest(senderId, receiverId);
 			if (request == null)
 			{
 				request = new ComradeRequest()
@@ -44,29 +46,10 @@ namespace Bgc.Data.Implementations
 				.FirstOrDefaultAsync(rq => rq.SenderId == s && rq.ReceiverId == r);
 		}
 
-		public async Task<ComradeRequest> ComradeRequestAgreed(int receiverId, string senderName)
-		{
-			var senderId = await GetUserId(senderName);
-			var request  = await GetComradeRequest(senderId, receiverId);
-			if(request == null) 
-				throw new SyncException("no comrade request.");
-			request.Agreed = true;
-			//_context.ComradeRequests.Remove(request);
-			await _context.SaveChangesAsync();
-			return request;
-		}
-
-		public async Task SaveComrades([NotNull] Comrade first, [NotNull] Comrade second)
-		{
-			_context.Comrades.Add(first);
-			_context.Comrades.Add(second);
-			await _context.SaveChangesAsync();
-		}
-
 		public async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetReceivedComradeRequests
 		(int userId)
 		{
-			return await GetSpecificRequests(r => r.ReceiverId == userId, 
+			return await GetSpecificRequests(r => r.ReceiverId == userId && r.Agreed == false, 
 				request => request.SenderId);
 		}
 
@@ -77,16 +60,9 @@ namespace Bgc.Data.Implementations
 				request => request.ReceiverId);
 		}
 
-		public async Task<IEnumerable<ComradeRequest>> GetUserRelatedRequests(int userId)
-		{
-			return await _context.ComradeRequests.AsNoTracking()
-				.Where(r => r.ReceiverId == userId || r.Agreed && r.SenderId == userId)
-				.ToListAsync();
-		}
-
 		private async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetSpecificRequests
-		([NotNull] Expression<Func<ComradeRequest, bool>> predicate,
-		[NotNull] Expression<Func<ComradeRequest, int>> joinKeySelector)
+			([NotNull] Expression<Func<ComradeRequest, bool>> predicate,
+			 [NotNull] Expression<Func<ComradeRequest, int>> joinKeySelector)
 		{
 			return await _context.ComradeRequests.AsNoTracking()
 					.Where(predicate)
@@ -95,10 +71,86 @@ namespace Bgc.Data.Implementations
 					u => u.Id,
 					(r, u) => new ViewModels.User.ComradeRequest()
 					{
+						Id = r.Id,
 						OtherName = u.UserName,
 						Agreed = r.Agreed,
 						Since = r.Since
 					}).ToListAsync();
+		}
+
+		public async Task<IEnumerable<ComradeSlim>> GetComradeList(int userId)
+		{
+			var query = (from c in _context.Comrades.AsNoTracking()
+						join u1 in _context.Users.AsNoTracking()
+							on c.FirstId equals u1.Id
+						where c.SecondId == userId
+						select new ComradeSlim()
+						{
+							Name         = u1.UserName,
+							Interactions = c.InteractionCount
+						}).Union(
+						 from c in _context.Comrades.AsNoTracking()
+						join u2 in _context.Users.AsNoTracking()
+							on c.SecondId equals u2.Id
+						where c.FirstId == userId
+						select new ComradeSlim()
+						{
+							Name         = u2.UserName,
+							Interactions = c.InteractionCount
+						})
+						.OrderByDescending(c => c.Interactions);
+			return await query.ToListAsync();
+		}
+
+		public async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetAllComradeRequests(
+			int userId)
+		{
+			var query = (from c in _context.ComradeRequests.AsNoTracking()
+						join u1 in _context.Users.AsNoTracking()
+							on c.SenderId equals u1.Id
+						where c.ReceiverId == userId && c.Agreed == false
+						select new ViewModels.User.ComradeRequest()
+						{
+							Id        = c.Id,
+							OtherName = u1.UserName,
+							Agreed    = false,
+							Received  = true,
+							Since     = c.Since
+						}).Union(
+						 from r in _context.ComradeRequests.AsNoTracking()
+						join u2 in _context.Users.AsNoTracking()
+							on r.ReceiverId equals u2.Id
+						where r.SenderId == userId && r.Agreed == false
+						select new ViewModels.User.ComradeRequest()
+						{
+							Id        = r.Id,
+							OtherName = u2.UserName,
+							Agreed    = false,
+							Received  = false,
+							Since     = r.Since
+						})
+						.OrderBy(r => r.Since);
+			return await query.ToListAsync();
+		}
+
+		public async Task<ComradeRequest> DrawComradeRequest(int requestId)
+		{
+			return await _context.ComradeRequests
+				.FirstOrDefaultAsync(r => r.Id == requestId);
+		}
+
+		public async Task MakeComradesFromRequest(ComradeRequest request)
+		{
+			_context.Attach(request);
+			request.Agreed = true;
+			var comrades = new Comrade()
+			{
+				FirstId  = request.SenderId,
+				SecondId = request.ReceiverId,
+				Since    = DateTime.Now
+			};
+			_context.Comrades.Add(comrades);
+			await _context.SaveChangesAsync();
 		}
 	}
 }

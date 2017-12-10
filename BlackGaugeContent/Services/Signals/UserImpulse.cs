@@ -19,7 +19,7 @@ namespace Bgc.Services.Signals
 		{
 			var state = new UserImpulseState();
 			await _comrades.FillRequestsInModel(state, userId);
-			state.NotifyCount = state.RequestsAgreed.Count() + state.RequestsReceived.Count();
+			state.NotifyCount = state.Agreed.Count() + state.Received.Count();
 			return state;
 		}
 	}
