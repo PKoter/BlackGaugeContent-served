@@ -1,0 +1,44 @@
+﻿@import '../../controls/bgcColors.scss';
+
+.list-container {
+	padding: 0 4px 0 4px;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	border-top: 1px $inform-color solid;
+	background-color: ghostwhite;
+
+	.list-item {
+		display: block;
+		width: 100%;
+		line-height: 24px;
+		color: $inform-color;
+		font-size: 16px;
+		cursor: pointer;
+		padding: 5px 0;
+		border-bottom: 1px $inform-color solid;
+
+		> span {
+			font-size: 20px;
+			display: block;
+		}
+
+		p {
+			color: black;
+			margin: 5px 15px;
+		}
+
+		button {
+			width: calc(50% - 30px);
+			margin: 5px 15px;
+		}
+	}
+
+	.list-item:hover {
+		color: $inform-highlight-color;
+		border-left: 4px $inform-highlight-color solid;
+		background-color: aliceblue;
+		padding-left: 20px;
+		margin-left: -4px;
+	}
+}

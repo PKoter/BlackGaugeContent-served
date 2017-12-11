@@ -1,0 +1,49 @@
+﻿<h3>Comrades & pending requests.</h3>
+
+<bgc-loading-spinner [hidden]="!loading"></bgc-loading-spinner>
+
+<div class="main-view">
+	<div class="topic main-topic dual-topic">
+		<h4>Comrades</h4>
+		<div [hidden]="!comrades || comrades.length == 0"
+			 class="list-container">
+			<div class="list-item"
+				 *ngFor="let comrade of comrades">
+				<span>{{comrade.name}}</span>
+			</div>
+		</div>
+		<div [hidden]="comrades && comrades.length > 0">
+			<span >No comrades yet.</span>
+			<hr/>
+		</div>
+
+		<h4>Sent requests</h4>
+		<div [hidden]="!sent || sent.length == 0"
+			 class="list-container">
+			<div class="list-item"
+				 *ngFor="let sentRequest of sent">
+				<span>{{sentRequest.otherName}}</span>
+				<p>Sent {{sentRequest.timeSpan}} ago.</p>
+			</div>
+		</div>
+		<div [hidden]="sent && sent.length > 0">
+			<span >No pending sent requests.</span>
+			<hr />
+		</div>
+
+		<h4>Received requests</h4>
+		<div [hidden]="!received || received.length == 0"
+			 class="list-container">
+			<div class="list-item"
+				 *ngFor="let receivedRequest of received; let i = index">
+				<span>{{receivedRequest.otherName}}</span>
+				<p>Sent {{receivedRequest.timeSpan}} ago.</p>
+				<button class="bgc-button bgc-button-affirm" (click)="onAgree(i)">
+					Agree
+				</button>
+			</div>
+		</div>
+		<span [hidden]="received && received.length > 0">No pending received requests.</span>
+	</div>
+	
+</div>

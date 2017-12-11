@@ -58,5 +58,9 @@
   {
     "outputFile": "ClientApp/app/controls/bgcGeneral.css",
     "inputFile": "ClientApp/app/controls/bgcGeneral.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/comrades/comrades.css",
+    "inputFile": "ClientApp/app/components/comrades/comrades.scss"
   }
 ]

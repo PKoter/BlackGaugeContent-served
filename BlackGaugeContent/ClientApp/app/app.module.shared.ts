@@ -15,6 +15,7 @@ import { RegisterMessageComponent} from './components/registerMessage/registerMe
 import { LoginComponent}           from './components/login/login.component';
 import { ManageAccountComponent}   from './components/manageAccount/manageAccount.component';
 import { FindUsersComponent}       from './components/findUsers/findUsers.component';
+import { ComradesComponent}        from './components/comrades/comrades.component';
 
 
 import { BgcSelectControl}		     from './controls/bgcSelect/bgcSelect.control';
@@ -47,6 +48,7 @@ import { UserImpulsesService}      from './services/userImpulses.service';
 		LoginComponent,
 		ManageAccountComponent,
 		FindUsersComponent,
+		ComradesComponent,
 
 		BgcSelectControl,
 		BgcSwitchControl,
@@ -74,6 +76,7 @@ import { UserImpulsesService}      from './services/userImpulses.service';
 			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
 			{ path: Routes.ManageAccount,         component: ManageAccountComponent },
 			{ path: Routes.FindUsers,             component: FindUsersComponent },
+			{ path: Routes.Comrades,              component: ComradesComponent },
 			{ path: '**', redirectTo: Routes.Home }
 		]  /*{enableTracing:true}*/)
 	],

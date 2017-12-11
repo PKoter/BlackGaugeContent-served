@@ -21,8 +21,9 @@ export class FindUsersComponent {
 	private searching:          boolean = false;
 	private success:            number  = 0; // 0 1 2
 
-	constructor(titleService: Title, private userService: UserService, private router: ApiRoutesService
-	) {
+	constructor(titleService: Title, private userService: UserService,
+		private router: ApiRoutesService)
+	{
 		titleService.setTitle("BGC Find User");
 	}
 
@@ -31,7 +32,7 @@ export class FindUsersComponent {
 			return '';
 		if (this.model.isComrade)
 			return 'Already a comrade!';
-		if (this.model.comradeRequestSent)
+		if (this.model.comradeRequestSent || this.comradeRequestSent)
 			return "Comrade request has been sent";
 		if (this.model.requestReceived)
 			return `${this.model.userName} applies as a comrade!`;
