@@ -77,14 +77,17 @@ $span-line-height: 20px;
 	padding: 8px 16px 8px 8px;
 	cursor: pointer;
 	display: block;
-	
 	min-width: 140px;
-}
-	.action-item  span {
+
+	span {
 		position: relative;
 	}
+}
 	.action-item:hover {
 		background-color: rgb(60, 60, 60);
+		padding-right: 17px;
+		margin-left: -4px;
+		border-left: 3px white solid;
 	}
 	.action-item:hover > span {
 		left: 10px;

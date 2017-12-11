@@ -82,6 +82,6 @@ export class QuickActionItem {
 		this.name   = name;
 		this.route  = route;
 		this.action = action;
-		this.badge  = (badge)? badge : '';
+		this.badge  = (badge && badge !== 0)? badge : '';
 	}
 }
