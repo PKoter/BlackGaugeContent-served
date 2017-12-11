@@ -1,15 +1,10 @@
-﻿import { Inject, Injectable, Output, EventEmitter } from '@angular/core';
-import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
-import { IImpulseState} from '../models/signals';
-import 'rxjs/add/operator/map';
+﻿import { Injectable, Output, EventEmitter } from '@angular/core';
+import { IImpulseState } from '../models/signals';
 
 @Injectable()
 export class UserImpulsesService {
 	state: IImpulseState;
 	@Output() public impulsed = new EventEmitter();
-
-	constructor(private router: ApiRoutesService) {
-	}
 
 	public digestState(state: any) {
 		let impulses = (state as { impulses: IImpulseState });
@@ -31,13 +26,11 @@ export class UserImpulsesService {
 
 	public getComradeRequestCount(): number {
 		if (this.state)
-			return this.state.requestsAgreed.length + this.state.requestsReceived.length;
+			return this.state.agreed.length + this.state.received.length;
 		return 0;
 	}
 
-	public getEachComradeRequestCount(): { agreed: number, received: number } {
-		if (this.state)
-			return { agreed: this.state.requestsAgreed.length, received: this.state.requestsReceived.length };
-		return { agreed: 0, received: 0 };
+	public getEachComradeRequestCount(): IImpulseState {
+		return this.state;
 	}
 }

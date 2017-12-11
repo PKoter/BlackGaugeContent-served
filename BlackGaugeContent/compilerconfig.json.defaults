@@ -16,7 +16,7 @@
       "includePath": "",
       "indentType": "tab",
       "indentWidth": 4,
-      "outputStyle": "nested",
+      "outputStyle": "expanded",
       "Precision": 5,
       "relativeUrls": true,
       "sourceMapRoot": "",

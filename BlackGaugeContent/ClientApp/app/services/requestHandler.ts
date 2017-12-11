@@ -92,12 +92,24 @@ export class AuthRequestHandler extends RequestHandler {
 			.map((response: Response) => response.json() as R);
 	}
 
-	protected fireAuthPost<T, R>(route: string, data: T, callback: (r: R) => void) {
+	protected fireAuthPost<T, R>(route: string, data: T, callback: (r: R) => void,
+		...params: (string | number)[])
+	{
+		for (let i = 0; i < params.length; i++)
+			route += `/${params[i]}`;
 		this.authPost<T, R>(route, data)
 			.subscribe(r => callback(r), errors => console.warn(errors));
 	}
 
-	protected fireAuthGet<T>(route: string, callback: (r: T) => void) {
+	/**
+	 * Sends user request.
+	 * @param route
+	 * @param callback controller callback when method finishes
+	 * @param params optional route parameters
+	 */
+	protected fireAuthGet<T>(route: string, callback: (r: T) => void, ...params: (string|number)[]) {
+		for (let i = 0; i < params.length; i++)
+			route += `/${params[i]}`;
 		this.authGet<T>(route)
 			.subscribe(r => callback(r), errors => console.warn(errors));
 	}

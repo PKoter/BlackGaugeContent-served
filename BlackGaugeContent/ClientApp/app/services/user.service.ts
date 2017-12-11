@@ -2,7 +2,7 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
 import { GenderModel, AccountFeedback, FeedResult, IUserId, AccountDetails, LoginModel, RegistrationModel } from '../models/account';
-import { IUserInfo, ComradeRequest } from '../models/users';
+import { IUserInfo, ComradeRequest, IComradeRelations, ComradeRequestFeedback } from '../models/users';
 import { AuthRequestHandler } from './requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
@@ -69,7 +69,7 @@ export class UserService extends AuthRequestHandler {
 			return;
 		let userId = this.getUserIds().id;
 		this.fireAuthGet<AccountDetails>(
-			ApiRoutes.AccountDetails + `/${userId}`, callback);
+			ApiRoutes.AccountDetails, callback, userId);
 	}
 
 	public saveAccountDetails(details: AccountDetails, callback: (r: AccountFeedback) => void) {
@@ -84,7 +84,7 @@ export class UserService extends AuthRequestHandler {
 		if (this.isLoggedIn() === false)
 			return;
 		let id = this.getUserIds().id;
-		this.fireAuthGet<IUserInfo>(ApiRoutes.GetUserInfo + `/${id}/${userName}`, callback);
+		this.fireAuthGet<IUserInfo>(ApiRoutes.GetUserInfo, callback, id, userName);
 	}
 
 	public sendComradeRequest(userName: string, callback: (r: {result: FeedResult}) => void) {
@@ -94,5 +94,21 @@ export class UserService extends AuthRequestHandler {
 		let request = new ComradeRequest(id, userName);
 		this.fireAuthPost<ComradeRequest, { result: FeedResult }>
 			(ApiRoutes.SendComradeRequest, request, callback);
+	}
+
+	public getComradeRelations(callback: (r: IComradeRelations) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+		let id = this.getUserIds().id;
+		this.fireAuthGet<IComradeRelations>(ApiRoutes.GetComradeRelations, callback, id);
+	}
+
+	public confirmComradeRequest(requestId: number, callback: (r: { result: FeedResult }) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+		let id = this.getUserIds().id;
+		let request = new ComradeRequestFeedback(requestId, id);
+		this.fireAuthPost<ComradeRequestFeedback, { result: FeedResult }>
+			(ApiRoutes.ConfirmComradeRequest, request, callback);
 	}
 }

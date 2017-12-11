@@ -11,7 +11,6 @@ import { BgcQuickUserActionsControl, QuickActionItem} from '../../controls/bgcQu
 })
 
 export class AppHeaderComponent implements OnInit {
-	private readonly registerRoute = [`/${Routes.Register}`];
 	private readonly loginRoute    = [`/${Routes.Login}`];
 	private readonly memeListRoute = [`/${Routes.MemeList}`];
 	private readonly homeRoute     = [`/${Routes.Home}`];

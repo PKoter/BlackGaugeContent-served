@@ -6,6 +6,6 @@ export interface IUserImpulses {
 
 export interface IImpulseState {
 	notifyCount: number;
-	requestsAgreed: ComradeRequest[];
-	requestsReceived: ComradeRequest[];
+	agreed:      ComradeRequest[];
+	received:    ComradeRequest[];
 }
