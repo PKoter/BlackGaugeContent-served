@@ -17,6 +17,13 @@ export interface IImpulseState {
 	received:    ComradeRequest[];
 }
 
+export interface ICountImpulses {
+	countAll: number;
+	comradeRequestCount: number;
+
+	popComradeRequests(): void;
+}
+
 export interface IRuntimeImpulse {
 	
 }
@@ -24,4 +31,24 @@ export interface IRuntimeImpulse {
 export interface IComradeRequest {
 	requestId: number;
 	agreed:    boolean;
+}
+
+export class ImpulseCounts implements ICountImpulses {
+	public  count:   number;
+	private crCount: number;
+
+
+	public get countAll(): number { return this.count; }
+
+	public get comradeRequestCount(): number { return this.crCount; }
+
+	public popComradeRequests(): void {
+		this.crCount--;
+		this.count--;
+	}
+
+	public pushComradeRequest() {
+		this.crCount++;
+		this.count++;
+	}
 }

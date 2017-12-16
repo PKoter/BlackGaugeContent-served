@@ -3,6 +3,7 @@ import { ApiRoutesService, Routes } from '../../services/apiRoutes.service';
 import { UserService } from '../../services/user.service';
 import { UserImpulsesService} from '../../services/userImpulses.service';
 import { QuickActionItem } from '../../controls/bgcQuickUserActions/bgcQuickUserActions.control';
+import { ICountImpulses} from '../../models/signals'
 
 @Component({
 	selector: 'app-header',
@@ -33,35 +34,33 @@ export class AppHeaderComponent implements OnInit {
 	ngOnInit() {
 		this.userService.logged.subscribe((input: any) => this.userLogged(input));
 		this.userName = this.userService.getUserIds().name;
-
-		this.impulseService.impulsed.subscribe(() => this.userNotification());
-		this.impulseService.comradeRequest.subscribe((value: any) => {
-			if (value && value != null) {
-				let badge: number = +this.userActions[1].badge;
-				this.userActions[1].badge = +badge + 1;
-				this.notifications += 1;
-			}
-		});
+		// wait for notification count update
+		this.impulseService.activeCounts.subscribe(this.updateImpulseCount);
 	}
 
-	private get getAllImpulseCount(): number | string {
-		// impulses  = this.impulseService.getAllImpulseCount();
+	private updateImpulseCount(counts: ICountImpulses) {
+		this.userActions[1].badge = counts.comradeRequestCount;
+		this.notifications        = counts.countAll;
+	}
+
+	/**
+	 * feeds quick user actions with currect notification count.
+	 * @returns {} 
+	 */
+	private get getImpulsesCount(): number | string {
 		let impulses = this.notifications;
 		if (impulses === 0)
 			return '';
 		return impulses;
 	}
 
-	private userNotification() {
-		this.comradeRequests = this.impulseService.getComradeRequestCount();
-		this.notifications = this.impulseService.getAllImpulseCount();
-		this.userActions[1].badge = this.comradeRequests;
-	}
-
 	private userLogged(really: boolean) {
 		this.userName = really ? this.userService.getUserIds().name : '';
 	}
 
+	/**
+	 * called by quick user actions
+	 */
 	private logout():boolean {
 		this.userService.logOut();
 		return true;

@@ -9,9 +9,6 @@ import { ImpulseHandler } from '../handlers/impulseHandler';
 export class UserImpulsesService extends ImpulseHandler {
 	private impulsesEndpoint: string;
 	private connected:        boolean = false;
-	private state:            IImpulseState;
-
-	@Output() public impulsed : EventEmitter<IRuntimeImpulse> = new EventEmitter();
 
 	constructor(private userService: UserService, @Inject('BASE_URL') baseUrl: string, private auth: AuthGuard)
 	{
@@ -40,33 +37,5 @@ export class UserImpulsesService extends ImpulseHandler {
 					console.warn(errors);
 				});
 		}
-	}
-
-	public digestState(state: any) {
-		let impulses = (state as { impulses: IImpulseState });
-		if (impulses) {
-			this.state = impulses.impulses;
-			//this.impulsed.emit();
-		}
-	}
-
-	public digestImpulses(impulses: IImpulseState) {
-		this.state = impulses;
-	}
-
-	public getAllImpulseCount(): number {
-		if (this.state)
-			return this.state.notifyCount;
-		return 0;
-	}
-
-	public getComradeRequestCount(): number {
-		if (this.state)
-			return this.state.agreed.length + this.state.received.length;
-		return 0;
-	}
-
-	public getEachComradeRequestCount(): IImpulseState {
-		return this.state;
 	}
 }
