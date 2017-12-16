@@ -5,6 +5,13 @@
 		public const int MaxGendersCount  = 255;
 		public const int MemesOnPageCount = 10;
 
+		public struct Privileges
+		{
+			public const string User  = "BgcUser";
+			public const string Mod   = "BgcMod";
+			public const string Admin = "BgcGod";
+		}
+
 		public struct AuthTags
 		{
 			public const string Role      = "rol";

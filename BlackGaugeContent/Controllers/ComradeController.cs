@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Routing;
 namespace Bgc.Controllers
 {
 	[Route("api/[controller]/[action]")]
-	[Authorize("BgcUser")]
+	[Authorize(Policy = R.Privileges.User)]
 	public class ComradeController: Controller
 	{
 		private readonly IUserRepository    _users;

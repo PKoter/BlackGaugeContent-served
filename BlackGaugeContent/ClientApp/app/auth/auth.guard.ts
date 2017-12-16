@@ -12,20 +12,25 @@ export class AuthGuard {
 		this.loginInfo = new LoginResult(0);
 	}
 
+	/**
+	 * loads credetials stored in persistent storage if login object is empty.
+	 */
+	private fetchStoredAuth() {
+		if (this.loginInfo.userId === 0) {
+			let token = this.storage.getItem(this.AuthToken);
+			let name = this.storage.getItem(this.AuthToken + 'usN');
+			let id = this.storage.getItem(this.AuthToken + 'uId');
+			this.loginInfo.auth_token = token != null ? token : '';
+			this.loginInfo.userName = name != null ? name : '';
+			this.loginInfo.userId = id != null ? +id : 0;
+		}
+	}
+
 	public getLoggedUserIds(): IUserId {
 		if (this.hasActiveToken() === false)
 			return { id: 0, name: '' };
 
-		if (this.loginInfo.userId === 0) {
-			
-			let token                 = this.storage.getItem(this.AuthToken);
-			let name                  = this.storage.getItem(this.AuthToken + 'usN');
-			let id                    = this.storage.getItem(this.AuthToken + 'uId');
-			this.loginInfo.auth_token = token != null ? token : '';
-			this.loginInfo.userName   = name != null ? name : '';
-			this.loginInfo.userId     = id != null ? +id : 0;
-		}
-
+		this.fetchStoredAuth();
 		return { id: this.loginInfo.userId, name: this.loginInfo.userName };
 	}
 
@@ -50,8 +55,10 @@ export class AuthGuard {
 	}
 
 	public getAuthorization(): { auth: string } {
-		if (this.hasActiveToken())
+		if (this.hasActiveToken()) {
+			this.fetchStoredAuth();
 			return { auth: this.loginInfo.auth_token };
+		}
 		return {} as { auth: string };
 	}
 

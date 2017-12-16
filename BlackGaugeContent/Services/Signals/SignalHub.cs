@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Bgc.Api;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Bgc.Services.Signals
 {
+	[Authorize(Policy = R.Privileges.User)]
 	public class SignalHub : Hub
 	{
 		public SignalHub()

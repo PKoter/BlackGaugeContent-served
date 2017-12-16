@@ -112,8 +112,7 @@ namespace Bgc
 
 			services.AddAuthorization(options => 
 			{
-				options.AddPolicy("BgcUser", policy => 
-					//policy.RequireClaim(R.AuthTags.Role, R.AuthTags.ApiAccess)
+				options.AddPolicy(R.Privileges.User, policy => 
 					policy.RequireClaim(R.AuthTags.Role, R.AuthTags.ApiAccess)
 				);
 			});

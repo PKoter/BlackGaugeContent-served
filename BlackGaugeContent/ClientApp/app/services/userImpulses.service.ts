@@ -8,6 +8,7 @@ import { ImpulseHandler } from '../handlers/impulseHandler';
 @Injectable()
 export class UserImpulsesService extends ImpulseHandler {
 	private impulsesEndpoint: string;
+	private connected:        boolean = false;
 	private state:            IImpulseState;
 
 	@Output() public impulsed : EventEmitter<IRuntimeImpulse> = new EventEmitter();
@@ -17,20 +18,27 @@ export class UserImpulsesService extends ImpulseHandler {
 		super();
 		this.impulsesEndpoint = baseUrl + 'bgcImpulses';
 		this.userService.logged.subscribe((x: any) => this.connectIfLogged(x));
+		if (this.userService.isLoggedIn()) {
+			this.connectIfLogged(true);
+		}
 	}
 
 
 	private connectIfLogged(logged: boolean) {
-		if (logged) {
+		if (logged && !this.connected) {
 			let aut = this.auth.getAuthorization();
 			this.subscribe = new HubConnection(
 				this.impulsesEndpoint + `?auth=${aut.auth}`);
 			
 			this.hub.start()
 				.then(() => {
+					this.connected = true;
 					console.log('impulse sniff established');
 				})
-				.catch(errors => console.warn(errors));
+				.catch(errors => {
+					this.connected = false;
+					console.warn(errors);
+				});
 		}
 	}
 

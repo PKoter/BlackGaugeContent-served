@@ -63,7 +63,7 @@ namespace Bgc.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(policy: "BgcUser")]
+		[Authorize(policy: R.Privileges.User)]
 		public async Task<MemeState> MemeReaction([FromBody] MemeReaction reaction)
 		{
 			if (ModelState.IsValid == false)

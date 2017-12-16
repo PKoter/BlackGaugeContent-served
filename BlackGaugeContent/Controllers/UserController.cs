@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bgc.Api;
 using Bgc.Data;
 using Bgc.Data.Contracts;
 using Bgc.Models;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bgc.Controllers
 {
 	[Route("api/[controller]/[action]")]
+	[Authorize(Policy = R.Privileges.User)]
 	public class UserController : Controller
 	{
 		private readonly BgcFullContext _context;
@@ -56,7 +58,6 @@ namespace Bgc.Controllers
 		}
 
 		[HttpGet("{userId}")]
-		[Authorize(Policy = "BgcUser")]
 		public async Task<UserAccountDetails> GetAccountDetails(int userId)
 		{
 			if (userId <= 0)
@@ -74,7 +75,6 @@ namespace Bgc.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Policy = "BgcUser")]
 		[ValidateAntiForgeryToken]
 		public async Task<AccountFeedback> SetAccountDetails([FromBody] UserAccountDetails details)
 		{
@@ -91,7 +91,6 @@ namespace Bgc.Controllers
 		}
 
 		[HttpGet("{userId}/{userName}")]
-		[Authorize(Policy = "BgcUser")]
 		public async Task<UserPublicDetails> GetUserInfo(int userId, string userName)
 		{
 			if (string.IsNullOrEmpty(userName) || userId <= 0)

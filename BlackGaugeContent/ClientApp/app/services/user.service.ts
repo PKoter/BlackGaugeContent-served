@@ -46,8 +46,6 @@ export class UserService extends AuthRequestHandler {
 				this.router.redirect(Routes.Home);
 				this.logged.emit(true);
 			}, errors => console.warn(errors));
-		//this.router.redirect(Routes.Home);
-		//this.logged.emit(true);
 	}
 
 	public logOut() {
