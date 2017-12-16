@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
 using System.Threading.Tasks;
+using Bgc.Api;
 using Bgc.Data.Contracts;
+using Bgc.Services.Signals;
 using Bgc.ViewModels;
 using Bgc.ViewModels.Account;
+using Bgc.ViewModels.Signals;
 using Bgc.ViewModels.User;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
@@ -20,14 +23,19 @@ namespace Bgc.Controllers
 	{
 		private readonly IUserRepository    _users;
 		private readonly IComradeRepository _comrades;
+		private readonly ISignalDispatcher _signalDispatcher;
 
-		public ComradeController(IUserRepository users, IComradeRepository comrades)
+		public ComradeController(IUserRepository users, IComradeRepository comrades, ISignalDispatcher signalDispatcher)
 		{
 			Debug.Assert(users != null, nameof(users) + " != null");
 			_users = users;
 			Debug.Assert(comrades != null, nameof(comrades) + " != null");
 			_comrades = comrades;
+			Debug.Assert(signalDispatcher != null, nameof(signalDispatcher) + " != null");
+			_signalDispatcher = signalDispatcher;
 		}
+
+		private Feedback Success {get {return new Feedback() {Result = FeedResult.Success};}}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -35,16 +43,17 @@ namespace Bgc.Controllers
 		{
 			if (ModelState.IsValid == false)
 				return null;
-			#if DEBUG
-				Debug.Assert(req.SenderId != null, "req.SenderId != null"); 
-			#endif
+			Debug.Assert(req.SenderId != null, "req.SenderId != null"); 
+			var name = req.OtherName;
 			var request = await 
-				_comrades.FetchComradeRequest(req.SenderId.Value, req.OtherName, createOnly: true);
-			var result = new Feedback()
+				_comrades.FetchComradeRequest(req.SenderId.Value, name, createOnly: true);
+			var answer = new ComradeRequestImpulse()
 			{
-				Result = FeedResult.Success
+				RequestId = request.Id
 			};
-			return result;
+
+			await _signalDispatcher.PushImpulse(name, R.ImpulseType.ComradeRequest, answer);
+			return Success;
 		}
 
 		[HttpGet("{userId}")]
@@ -66,7 +75,7 @@ namespace Bgc.Controllers
 			}
 			var set = new ComradeRelatedSet()
 			{
-				Received    = received,
+				Received = received,
 				Sent     = sent,
 				Comrades = comrades
 			};
@@ -102,8 +111,8 @@ namespace Bgc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<Feedback> ConfirmComradeRequest([FromBody] ComradeRequestFeedback req)
 		{
-			if(req.Id <= 0 || req.ReceiverId <= 0)
-				return new Feedback();
+			if (req.Id <= 0 || req.ReceiverId <= 0)
+				return null;
 			var request = await _comrades.DrawComradeRequest(req.Id);
 			if (request == null || request.Agreed || request.ReceiverId != req.ReceiverId)
 			{
@@ -111,7 +120,7 @@ namespace Bgc.Controllers
 				throw new SecurityException();
 			}
 			await _comrades.MakeComradesFromRequest(request);
-			return new Feedback {Result = FeedResult.Success};
+			return Success;
 		}
 	}
 

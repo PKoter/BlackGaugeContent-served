@@ -30,7 +30,7 @@ namespace Bgc.Data.Implementations
 				{
 					SenderId = senderId,
 					ReceiverId = receiverId,
-					Since = DateTime.Today
+					Since = DateTime.Now
 				};
 				_context.ComradeRequests.Add(request);
 				await _context.SaveChangesAsync();
