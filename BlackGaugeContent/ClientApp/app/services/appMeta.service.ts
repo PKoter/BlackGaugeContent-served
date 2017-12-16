@@ -1,6 +1,6 @@
 ﻿import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { RequestHandler } from './requestHandler';
+import { RequestHandler } from '../handlers/requestHandler';
 import { ApiRoutes } from './apiRoutes.service';
 import { UniqueRegisterValue } from '../models/account';
 

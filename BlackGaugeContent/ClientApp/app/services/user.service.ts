@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
 import { GenderModel, AccountFeedback, FeedResult, IUserId, AccountDetails, LoginModel, RegistrationModel } from '../models/account';
 import { IUserInfo, ComradeRequest, IComradeRelations, ComradeRequestFeedback } from '../models/users';
-import { AuthRequestHandler } from './requestHandler';
+import { AuthRequestHandler } from '../handlers/requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';

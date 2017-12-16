@@ -1,7 +1,7 @@
 ﻿import { Inject, Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
-import { AuthRequestHandler } from './requestHandler';
+import { AuthRequestHandler } from '../handlers/requestHandler';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { MemeModel, MemeState, MemeReaction } from '../models/memes';

@@ -74,7 +74,7 @@
     <TypeScriptCompile Include="ClientApp\app\models\signals.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\users.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\appMeta.service.ts" />
-    <TypeScriptCompile Include="ClientApp\app\services\requestHandler.ts" />
+    <TypeScriptCompile Include="ClientApp\app\handlers\requestHandler.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSelect\bgcSelect.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcSwitch\bgcSwitch.control.ts" />
