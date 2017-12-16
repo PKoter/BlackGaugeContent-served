@@ -16,17 +16,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="BuildWebCompiler" Version="1.11.326" />
+	  <PackageReference Include="BuildWebCompiler" Version="1.11.375" />
 	  <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
-	  <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.1.4" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
+	  <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.1.5" />
 	  <PackageReference Include="SendGrid" Version="9.9.0" />
-	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
+	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.5" />
   </ItemGroup>
 
   <ItemGroup>
