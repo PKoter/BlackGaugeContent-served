@@ -14,10 +14,16 @@
 
 		public struct UserModelRules
 		{
-			public const int MinNameLength = 5;
-			public const int MaxNameLength = 128;
+			public const int MinNameLength  = 5;
+			public const int MaxNameLength  = 128;
 			public const int MinEmailLength = 4;
 			public const int MaxEmailLength = 256;
+		}
+
+		public struct ImpulseType
+		{
+			public const string ComradeRequest = "comradeRequest";
+			public const string Message        = "message";
 		}
 	}
 }

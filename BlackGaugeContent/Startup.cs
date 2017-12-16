@@ -88,7 +88,7 @@ namespace Bgc
 					options.SuppressXFrameOptionsHeader = false;
 					options.Cookie.HttpOnly = false;
 				});
-
+			
 			services.AddMvc(options =>
 				{
 					//options.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
@@ -117,9 +117,10 @@ namespace Bgc
 					policy.RequireClaim(R.AuthTags.Role, R.AuthTags.ApiAccess)
 				);
 			});
+			ConfigureJwtAuthServices(services);
 
 			services.AddSignalR();
-			ConfigureJwtAuthServices(services);
+			services.AddTransient<ISignalDispatcher, SignalDispatcher>();
 		}
 
 		/// <summary>
@@ -163,8 +164,14 @@ namespace Bgc
 
 			app.UseStaticFiles();
 
+			app.UseMiddleware<SignalAuthorizationMiddleware>();
 			app.UseAuthentication();
 			app.UseMiddleware<AntiforgeryMiddleware>();
+
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<SignalHub>("bgcImpulses");
+			});
 
 			app.UseMvc(routes =>
 			{
@@ -174,11 +181,6 @@ namespace Bgc
 				routes.MapSpaFallbackRoute(
 					name: "spa-fallback",
 					defaults: new { controller = "Home", action = "Index" });
-			});
-
-			app.UseSignalR(routes =>
-			{
-				routes.MapHub<SignalHub>("signals");
 			});
 		}
 
