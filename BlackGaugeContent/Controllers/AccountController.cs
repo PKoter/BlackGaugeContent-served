@@ -149,7 +149,7 @@ namespace Bgc.Controllers
 				Result     = FeedResult.Success,
 				userId     = user.Id,
 				userName   = user.UserName,
-				auth_token = _jwtFactory.GenerateEncodedToken(user.UserName, identity),
+				auth_token = _jwtFactory.GenerateEncodedToken(identity),
 				expires_in = (int)_jwtOptions.ValidFor.TotalSeconds,
 				impulses   = notifyState
 			});
@@ -429,13 +429,6 @@ namespace Bgc.Controllers
 			return Json(new AccountFeedback() {Result = type, Message = message});
 		}
 
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult ForgotPassword()
-		{
-			return View();
-		}
-
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
@@ -447,7 +440,7 @@ namespace Bgc.Controllers
 				if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
 				{
 					// Don't reveal that the user does not exist or is not confirmed
-					return RedirectToAction(nameof(ForgotPasswordConfirmation));
+					return Ok();
 				}
 
 				// For more information on how to enable account confirmation and password reset please
@@ -456,18 +449,11 @@ namespace Bgc.Controllers
 				var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
 				await _emailSender.SendEmailAsync(model.Email, "Reset Password",
 				   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-				return RedirectToAction(nameof(ForgotPasswordConfirmation));
+				return Ok();
 			}
 
 			// If we got this far, something failed, redisplay form
 			return View(model);
-		}
-
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult ForgotPasswordConfirmation()
-		{
-			return View();
 		}
 
 		[HttpGet]
@@ -495,28 +481,14 @@ namespace Bgc.Controllers
 			if (user == null)
 			{
 				// Don't reveal that the user does not exist
-				return RedirectToAction(nameof(ResetPasswordConfirmation));
+				return Ok();
 			}
 			var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
 			if (result.Succeeded)
 			{
-				return RedirectToAction(nameof(ResetPasswordConfirmation));
+				return Ok();
 			}
 			AddErrors(result);
-			return View();
-		}
-
-		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult ResetPasswordConfirmation()
-		{
-			return View();
-		}
-
-
-		[HttpGet]
-		public IActionResult AccessDenied()
-		{
 			return View();
 		}
 

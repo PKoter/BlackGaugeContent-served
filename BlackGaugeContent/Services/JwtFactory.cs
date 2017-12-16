@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using Bgc.Api;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
 namespace Bgc.Services
@@ -17,7 +18,7 @@ namespace Bgc.Services
 			ThrowInvalidOptions(_jwtOptions);
 		}
 
-		private static void ThrowInvalidOptions(JwtIssuerOptions options)
+		private static void ThrowInvalidOptions([NotNull] JwtIssuerOptions options)
 		{
 			if (options == null) throw new ArgumentNullException(nameof(options));
 
@@ -31,25 +32,22 @@ namespace Bgc.Services
 				throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
 		}
 
-		public string GenerateEncodedToken(string userName, ClaimsIdentity identity)
+		public string GenerateEncodedToken(ClaimsIdentity identity)
 		{
-			var claims = new[]
+			var claims = identity.Claims.Concat(new[]
 			{
-				new Claim(JwtRegisteredClaimNames.Sub, userName),
 				//new Claim(JwtRegisteredClaimNames.Jti, _jwtOptions.JtiGenerator),
 				new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate
-					(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-				identity.FindFirst(R.AuthTags.Id),
-				identity.FindFirst(R.AuthTags.Role)
-			};
+					(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64)
+			});
 
 			// Create the JWT security token and encode it.
 			var jwt = new JwtSecurityToken(
-				issuer: _jwtOptions.Issuer,
-				audience: _jwtOptions.Audience,
-				claims: claims,
-				notBefore: _jwtOptions.NotBefore,
-				expires: _jwtOptions.Expiration,
+				issuer:             _jwtOptions.Issuer,
+				audience:           _jwtOptions.Audience,
+				claims:             claims,
+				notBefore:          _jwtOptions.NotBefore,
+				expires:            _jwtOptions.Expiration,
 				signingCredentials: _jwtOptions.SigningCredentials);
 
 			return new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -57,11 +55,15 @@ namespace Bgc.Services
 
 		public ClaimsIdentity GenerateClaimsIdentity(string userName,string id)
 		{
-			return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
+			var claims = new[]
 			{
+				new Claim(JwtRegisteredClaimNames.UniqueName, userName),
 				new Claim(R.AuthTags.Id, id),
 				new Claim(R.AuthTags.Role, R.AuthTags.ApiAccess)
-			});
+			};
+			var ci = new ClaimsIdentity(claims, "token", JwtRegisteredClaimNames.UniqueName,
+				ClaimsIdentity.DefaultRoleClaimType);
+			return ci;
 		}
 
 		/// <returns>Date converted to seconds since Unix epoch (Jan 1, 1970, midnight UTC).</returns>

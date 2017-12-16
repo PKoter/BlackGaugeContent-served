@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Bgc.Services
 {
+	/// <summary>
+	/// Used to generate new antiforgery token each time used changes (login/logout/start) and validates all post requests. It is safe to not add validation attributes, as it may generate double validation which may affect performance.
+	/// </summary>
 	[UsedImplicitly]
 	public sealed class AntiforgeryMiddleware
 	{
@@ -32,10 +35,12 @@ namespace Bgc.Services
 			if (context.Request.Path.Value == "/" || IsLogin(context)|| IsLogout(context))
 			{
 				var tokens = _antiforgery.GetAndStoreTokens(context);
-				context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false, Secure = true});
+				context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
+					new CookieOptions() { HttpOnly = false, Secure = true});
 			}
 			var valid = await _antiforgery.IsRequestValidAsync(context);
-			await _next.Invoke(context);
+			if (valid)
+				await _next.Invoke(context);
 		}
 
 		private bool IsLogin(HttpContext context)
@@ -47,10 +52,8 @@ namespace Bgc.Services
 
 		private bool IsLogout(HttpContext context)
 		{
-			if(context.Request.Path.Value.Equals(AuthTransferRoute))
-				if (!context.User.Identity.IsAuthenticated)
-					return true;
-			return false;
+			return context.Request.Path.Value.Equals(AuthTransferRoute)
+				& !context.User.Identity.IsAuthenticated;
 		}
 	}
 }
