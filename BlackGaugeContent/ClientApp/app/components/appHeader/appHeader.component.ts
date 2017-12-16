@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiRoutesService, Routes } from '../../services/apiRoutes.service';
 import { UserService } from '../../services/user.service';
 import { UserImpulsesService} from '../../services/userImpulses.service';
-import { BgcQuickUserActionsControl, QuickActionItem} from '../../controls/bgcQuickUserActions/bgcQuickUserActions.control';
+import { QuickActionItem } from '../../controls/bgcQuickUserActions/bgcQuickUserActions.control';
 
 @Component({
 	selector: 'app-header',
@@ -16,36 +16,45 @@ export class AppHeaderComponent implements OnInit {
 	private readonly homeRoute     = [`/${Routes.Home}`];
 
 	private userName = '';
-	private notifications: number;
+	private notifications: number = 0;
 	private comradeRequests: number;
 
 	private userActions: QuickActionItem[] = [
 		new QuickActionItem('Find user', Routes.FindUsers),
-		new QuickActionItem('Compadres', Routes.Comrades),
+		new QuickActionItem('Comrades', Routes.Comrades),
 		new QuickActionItem('Messages', ''),
 		new QuickActionItem('Manage account', Routes.ManageAccount),
 		new QuickActionItem('Sign out', '/', this.logout.bind(this))
 	];
 
-	constructor(private userService: UserService, private userImpulses: UserImpulsesService) {
+	constructor(private userService: UserService, private impulseService: UserImpulsesService) {
 	}
 
 	ngOnInit() {
 		this.userService.logged.subscribe((input: any) => this.userLogged(input));
-		this.userImpulses.impulsed.subscribe(() => this.userNotification());
 		this.userName = this.userService.getUserIds().name;
+
+		this.impulseService.impulsed.subscribe(() => this.userNotification());
+		this.impulseService.comradeRequest.subscribe((value: any) => {
+			if (value && value != null) {
+				let badge: number = +this.userActions[1].badge;
+				this.userActions[1].badge = +badge + 1;
+				this.notifications += 1;
+			}
+		});
 	}
 
 	private get getAllImpulseCount(): number | string {
-		let impulses = this.userImpulses.getAllImpulseCount();
+		// impulses  = this.impulseService.getAllImpulseCount();
+		let impulses = this.notifications;
 		if (impulses === 0)
 			return '';
 		return impulses;
 	}
 
 	private userNotification() {
-		this.comradeRequests = this.userImpulses.getComradeRequestCount();
-		this.notifications = this.userImpulses.getAllImpulseCount();
+		this.comradeRequests = this.impulseService.getComradeRequestCount();
+		this.notifications = this.impulseService.getAllImpulseCount();
 		this.userActions[1].badge = this.comradeRequests;
 	}
 

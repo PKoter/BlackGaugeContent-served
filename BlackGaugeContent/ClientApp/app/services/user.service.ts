@@ -42,9 +42,12 @@ export class UserService extends AuthRequestHandler {
 	protected logIn(result: Response) {
 		this.auth.loggedIn(result);
 		this.authGet(ApiRoutes.EnsureAuth)
-			.subscribe(() => {}, errors => console.warn(errors));
-		this.router.redirect(Routes.Home);
-		this.logged.emit(true);
+			.subscribe(() => {
+				this.router.redirect(Routes.Home);
+				this.logged.emit(true);
+			}, errors => console.warn(errors));
+		//this.router.redirect(Routes.Home);
+		//this.logged.emit(true);
 	}
 
 	public logOut() {

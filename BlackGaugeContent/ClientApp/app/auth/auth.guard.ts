@@ -49,6 +49,12 @@ export class AuthGuard {
 		this.loginInfo = new LoginResult(0);
 	}
 
+	public getAuthorization(): { auth: string } {
+		if (this.hasActiveToken())
+			return { auth: this.loginInfo.auth_token };
+		return {} as { auth: string };
+	}
+
 	/**
 	 * Returns headers for authorized get using JwtBearer.
 	 */
@@ -67,14 +73,7 @@ export class AuthGuard {
 	 * Returns headers for authorized post using JwtBearer.
 	 */
 	public authPostHeaders(): RequestOptions {
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
-
-		if(this.hasActiveToken())
-			headers.append('Authorization', 'Bearer ' + this.loginInfo.auth_token);
-
-		let options = new RequestOptions({ headers: headers });
-		return options;
+		return this.authGetHeaders();
 	}
 }
 
