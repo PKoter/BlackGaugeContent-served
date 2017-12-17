@@ -1,5 +1,7 @@
-﻿using Bgc.Models;
+﻿using Bgc.Development;
+using Bgc.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Bgc.Data
 {
@@ -16,7 +18,16 @@ namespace Bgc.Data
 		public virtual DbSet<MemeRating>      MemeRatings       { get; set; }
 		public virtual DbSet<MemeUserSession> MemeUserSessions  { get; set; }
 
-		public BgcFullContext(DbContextOptions<BgcFullContext> options) : base(options) {}
+
+		public DatabaseProxy Proxy {get; private set;}
+
+		public BgcFullContext(DbContextOptions<BgcFullContext> options, IOptionsSnapshot<DatabaseProxy> proxy) : base(options)
+		{
+			if (proxy != null)
+				Proxy = proxy.Value ?? new DatabaseProxy();
+			else
+				Proxy = new DatabaseProxy();
+		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

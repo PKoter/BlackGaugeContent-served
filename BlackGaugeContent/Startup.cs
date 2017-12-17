@@ -4,6 +4,7 @@ using Bgc.Api;
 using Bgc.Data;
 using Bgc.Data.Contracts;
 using Bgc.Data.Implementations;
+using Bgc.Development;
 using Bgc.Extensions;
 using Bgc.Models;
 using Bgc.Services;
@@ -128,6 +129,8 @@ namespace Bgc
 		/// <param name="services"></param>
 		private void AddDataServices(IServiceCollection services)
 		{
+			services.Configure<DatabaseProxy>(Configuration.GetSection("DatabaseProxy"));
+
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDbContext<BgcFullContext>(options =>

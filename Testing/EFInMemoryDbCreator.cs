@@ -81,7 +81,7 @@ namespace Testing
 		private static BgcFullContext GetBgcContext(SqliteConnection connection)
 		{
 			var options = GetOptions<BgcFullContext>(connection);
-			return new BgcFullContext(options);
+			return new BgcFullContext(options, null);
 		}
 
 		public static void CloseConnection()

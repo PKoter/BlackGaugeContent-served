@@ -33,7 +33,7 @@ namespace Bgc.Data.Implementations
 					Since = DateTime.Now
 				};
 				_context.ComradeRequests.Add(request);
-				await _context.SaveChangesAsync();
+				await SaveChanges();
 			}
 			else if(createOnly)
 				throw new SyncException("comrade request already exists.");
@@ -150,7 +150,7 @@ namespace Bgc.Data.Implementations
 				Since    = DateTime.Now
 			};
 			_context.Comrades.Add(comrades);
-			await _context.SaveChangesAsync();
+			await SaveChanges();
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bgc.Api;
 using Bgc.Data.Contracts;
+using Bgc.Development;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bgc.Data.Implementations
@@ -10,14 +11,18 @@ namespace Bgc.Data.Implementations
 	public class BaseRepo : IDbRepository
 	{
 		protected readonly BgcFullContext _context;
+		private            DatabaseProxy  _proxy;
 
 		public BaseRepo(BgcFullContext context)
 		{
 			_context = context ?? throw new ArgumentNullException(nameof(context));
+			_proxy   = context.Proxy;
 		}
 
 		public async Task<int> SaveChanges()
 		{
+			if (_proxy.BlockSaving)
+				return 0;
 			return await _context.SaveChangesAsync();
 		}
 
