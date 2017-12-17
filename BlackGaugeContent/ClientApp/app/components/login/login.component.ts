@@ -45,7 +45,7 @@ export class LoginComponent {
 				this.error = feedback.message;
 			}
 			else {
-				this.userImpulses.digestState(<any>feedback);
+				//this.userImpulses.digestState(<any>feedback);
 			}
 		});
 	}

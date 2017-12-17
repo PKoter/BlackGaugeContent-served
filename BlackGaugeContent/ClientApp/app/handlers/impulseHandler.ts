@@ -21,7 +21,7 @@ export class ImpulseHandler implements IImpulseHandler {
 	public activeCounts:   EventEmitter<ICountImpulses>  = new EventEmitter();
 
 	protected hub:         HubConnection;
-	protected counts = {} as ImpulseCounts;
+	protected counts = new ImpulseCounts();
 
 	public getCounts(): ICountImpulses {
 		return this.counts;
@@ -39,8 +39,8 @@ export class ImpulseHandler implements IImpulseHandler {
 	protected set subscribe(hub: HubConnection) {
 		this.hub = hub;
 
-		hub.on(ImpulseTypes.Broadcast, this.onRumor);
-		hub.on(ImpulseTypes.ComradeRequest, this.onComradeRequest);
+		hub.on(ImpulseTypes.Broadcast, this.onRumor.bind(this));
+		hub.on(ImpulseTypes.ComradeRequest, this.onComradeRequest.bind(this));
 	}
 
 	private onRumor(name: string, message: string) {

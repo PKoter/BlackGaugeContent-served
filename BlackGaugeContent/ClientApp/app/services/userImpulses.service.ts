@@ -26,7 +26,7 @@ export class UserImpulsesService extends ImpulseHandler {
 			let aut = this.auth.getAuthorization();
 			this.subscribe = new HubConnection(
 				this.impulsesEndpoint + `?auth=${aut.auth}`);
-			
+
 			this.hub.start()
 				.then(() => {
 					this.connected = true;
@@ -36,6 +36,10 @@ export class UserImpulsesService extends ImpulseHandler {
 					this.connected = false;
 					console.warn(errors);
 				});
+		}
+		else if (!logged && this.connected) {
+			this.hub.stop();
+			this.connected = false;
 		}
 	}
 }

@@ -82,6 +82,10 @@ export class QuickActionItem {
 		this.name   = name;
 		this.route  = route;
 		this.action = action;
-		this.badge  = (badge && badge !== 0)? badge : '';
+		this.setBadge(badge);
+	}
+
+	public setBadge(badge: number | string| undefined) {
+		this.badge = (badge && badge !== 0) ? badge : '';
 	}
 }

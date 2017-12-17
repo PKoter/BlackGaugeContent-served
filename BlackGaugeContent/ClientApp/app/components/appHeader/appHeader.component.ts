@@ -35,12 +35,12 @@ export class AppHeaderComponent implements OnInit {
 		this.userService.logged.subscribe((input: any) => this.userLogged(input));
 		this.userName = this.userService.getUserIds().name;
 		// wait for notification count update
-		this.impulseService.activeCounts.subscribe(this.updateImpulseCount);
+		this.impulseService.activeCounts.subscribe(this.updateImpulseCount.bind(this));
 	}
 
 	private updateImpulseCount(counts: ICountImpulses) {
-		this.userActions[1].badge = counts.comradeRequestCount;
-		this.notifications        = counts.countAll;
+		this.userActions[1].setBadge(counts.comradeRequestCount);
+		this.notifications = counts.countAll;
 	}
 
 	/**
