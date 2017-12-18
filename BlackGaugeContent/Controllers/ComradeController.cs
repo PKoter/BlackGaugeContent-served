@@ -111,7 +111,7 @@ namespace Bgc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<Feedback> ConfirmComradeRequest([FromBody] ComradeRequestFeedback req)
 		{
-			if (req.Id <= 0 || req.ReceiverId <= 0)
+			if (!ModelState.IsValid)
 				return null;
 			var request = await _comrades.DrawComradeRequest(req.Id);
 			if (request == null || request.Agreed || request.ReceiverId != req.ReceiverId)
@@ -120,6 +120,23 @@ namespace Bgc.Controllers
 				throw new SecurityException();
 			}
 			await _comrades.MakeComradesFromRequest(request);
+			return Success;
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<Feedback> SeenComradeRequest([FromBody] SeenComradeRequest req)
+		{
+			if (!ModelState.IsValid || req.Seen == false)
+				return null;
+			var request = await _comrades.DrawComradeRequest(req.Id);
+			if (request == null || request.Agreed || request.Seen == req.Seen)
+			{
+				Debug.Fail("Security break: comrade request confirmation failed.");
+				throw new SecurityException();
+			}
+			request.Seen = req.Seen;
+			await _comrades.SaveChanges();
 			return Success;
 		}
 	}

@@ -11,5 +11,9 @@ namespace Bgc.Models
 		public int      ReceiverId {get; set;}
 		public DateTime Since      {get; set;}
 		public bool     Agreed     {get; set;}
+		/// <summary>
+		/// Turns off notification for request.
+		/// </summary>
+		public bool     Seen       {get; set;}
 	}
 }

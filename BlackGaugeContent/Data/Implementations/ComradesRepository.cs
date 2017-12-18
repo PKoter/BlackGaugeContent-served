@@ -115,7 +115,8 @@ namespace Bgc.Data.Implementations
 							OtherName = u1.UserName,
 							Agreed    = false,
 							Received  = true,
-							Since     = c.Since
+							Since     = c.Since,
+							Seen      = c.Seen
 						}).Union(
 						 from r in _context.ComradeRequests.AsNoTracking()
 						join u2 in _context.Users.AsNoTracking()
@@ -127,7 +128,8 @@ namespace Bgc.Data.Implementations
 							OtherName = u2.UserName,
 							Agreed    = false,
 							Received  = false,
-							Since     = r.Since
+							Since     = r.Since,
+							Seen      = r.Seen
 						})
 						.OrderBy(r => r.Since);
 			return await query.ToListAsync();
@@ -135,13 +137,14 @@ namespace Bgc.Data.Implementations
 
 		public async Task<ComradeRequest> DrawComradeRequest(int requestId)
 		{
-			return await _context.ComradeRequests
+			var request = await _context.ComradeRequests
 				.FirstOrDefaultAsync(r => r.Id == requestId);
+			_context.Attach(request);
+			return request;
 		}
 
 		public async Task MakeComradesFromRequest(ComradeRequest request)
 		{
-			_context.Attach(request);
 			request.Agreed = true;
 			var comrades = new Comrade()
 			{

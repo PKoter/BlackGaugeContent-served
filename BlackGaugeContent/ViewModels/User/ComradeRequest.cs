@@ -8,6 +8,7 @@ namespace Bgc.ViewModels.User
 	public class ComradeRequest
 	{
 		[Range(1, int.MaxValue)]
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public int? Id {get; set;}
 
 		[Required]
@@ -26,7 +27,13 @@ namespace Bgc.ViewModels.User
 		/// </summary>
 		[JsonIgnore]
 		public bool  Received {get; set;}
-		public bool?   Agreed {get; set;}
+
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+		public bool? Agreed   {get; set;}
+
+		[JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+		public bool? Seen     {get; set;}
+
 		[JsonIgnore]
 		public DateTime Since {get; set;}
 
@@ -34,12 +41,21 @@ namespace Bgc.ViewModels.User
 		public string TimeSpan {get; set;}
 	}
 
+	public class SeenComradeRequest
+	{
+		[Range(1, int.MaxValue)]
+		public int  Id   {get; set;}
+		public bool Seen {get; set;}
+	}
+
 	/// <summary>
 	/// Message from client side to accept request.
 	/// </summary>
 	public class ComradeRequestFeedback
 	{
+		[Range(1, int.MaxValue)]
 		public int Id         {get; set;}
+		[Range(1, int.MaxValue)]
 		public int ReceiverId {get; set;}
 	}
 }
