@@ -57,6 +57,7 @@ export class ApiRoutes {
 	public static SendComradeRequest    = 'api/Comrade/MakeComradeRequest';
 	public static GetComradeRelations   = 'api/Comrade/GetUserComradeRelations';
 	public static ConfirmComradeRequest = 'api/Comrade/ConfirmComradeRequest';
+	public static SeenComradeRequest    = 'api/Comrade/SeenComradeRequest';
 	public static MemeReaction          = 'api/MemeList/MemeReaction';
 	public static PageMemes             = 'api/MemeList/PageMemes';
 	public static CountNewMemes         = 'api/MemeList/CountNewMemes';

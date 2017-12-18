@@ -2,7 +2,7 @@
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
 import { GenderModel, AccountFeedback, FeedResult, IUserId, AccountDetails, LoginModel, RegistrationModel } from '../models/account';
-import { IUserInfo, ComradeRequest, IComradeRelations, ComradeRequestFeedback } from '../models/users';
+import { IUserInfo, ComradeRequest, IComradeRelations, ComradeRequestFeedback, SeenComradeRequest } from '../models/users';
 import { AuthRequestHandler } from '../handlers/requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
 import { Observable } from 'rxjs/Observable';
@@ -104,12 +104,21 @@ export class UserService extends AuthRequestHandler {
 		this.fireAuthGet<IComradeRelations>(ApiRoutes.GetComradeRelations, callback, id);
 	}
 
-	public confirmComradeRequest(requestId: number, callback: (r: { result: FeedResult }) => void) {
+	public confirmComradeRequest(requestId: number, callback: (r: { result: FeedResult }) => void)
+	{
 		if (this.isLoggedIn() === false)
 			return;
 		let id = this.getUserIds().id;
 		let request = new ComradeRequestFeedback(requestId, id);
 		this.fireAuthPost<ComradeRequestFeedback, { result: FeedResult }>
 			(ApiRoutes.ConfirmComradeRequest, request, callback);
+	}
+
+	public seenComradeRequest(requestId: number, callback: (r: { result: FeedResult }) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+		let request = new SeenComradeRequest(requestId, true);
+		this.fireAuthPost<SeenComradeRequest, { result: FeedResult }>
+			(ApiRoutes.SeenComradeRequest, request, callback);
 	}
 }

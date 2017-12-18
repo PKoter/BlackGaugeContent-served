@@ -13,6 +13,7 @@ export class ComradeRequest {
 	public timeSpan: string |null;
 	public agreed:   boolean|null;
 	public received: boolean|null;
+	public seen:     boolean|null;
 
 	constructor(
 		public senderId:  number,
@@ -29,6 +30,13 @@ export interface IComradeRelations {
 export interface IComradeEntry {
 	name: string;
 	interactions: number;
+}
+
+export class SeenComradeRequest {
+	constructor(
+		public id:   number,
+		public seen: boolean
+	) { }
 }
 
 export class ComradeRequestFeedback {

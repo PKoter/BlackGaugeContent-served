@@ -41,6 +41,11 @@
 				<button class="bgc-button bgc-button-affirm" (click)="onAgree(i)">
 					Agree
 				</button>
+				<button [disabled]="receivedRequest.seen === true"
+						[ngClass]="{'bgc-button-inform': !receivedRequest.seen}"
+						class="bgc-button" (click)="onDigest(i)">
+					Hide notification
+				</button>
 			</div>
 		</div>
 		<span [hidden]="received && received.length > 0">No pending received requests.</span>
