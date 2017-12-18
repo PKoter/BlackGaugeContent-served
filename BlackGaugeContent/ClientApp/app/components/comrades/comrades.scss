@@ -10,7 +10,7 @@
 
 	.list-item {
 		display: block;
-		width: 100%;
+		width: calc(100% - 24px);
 		line-height: 24px;
 		color: $inform-color;
 		font-size: 16px;
@@ -29,8 +29,8 @@
 		}
 
 		button {
-			width: calc(50% - 30px);
-			margin: 5px 15px;
+			width: calc(50% - 40px);
+			margin: 5px 18px;
 		}
 	}
 
@@ -40,5 +40,6 @@
 		background-color: aliceblue;
 		padding-left: 20px;
 		margin-left: -4px;
+		width: 100%;
 	}
 }
