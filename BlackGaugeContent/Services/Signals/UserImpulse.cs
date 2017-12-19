@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Bgc.Controllers;
+﻿using System.Threading.Tasks;
 using Bgc.Data.Contracts;
 using Bgc.ViewModels.Signals;
 
@@ -18,8 +16,10 @@ namespace Bgc.Services.Signals
 		public async Task<UserImpulseState> GetFullInteractionsState(int userId)
 		{
 			var state = new UserImpulseState();
-			await _comrades.FillRequestsInModel(state, userId);
-			state.NotifyCount = state.Agreed.Count() + state.Received.Count();
+			var requests = await _comrades.CountActiveRequests(userId);
+
+			state.NotifyCount         = requests;
+			state.ComradeRequestCount = requests;
 			return state;
 		}
 	}

@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using Bgc.ViewModels.User;
-
-namespace Bgc.ViewModels.Signals
+﻿namespace Bgc.ViewModels.Signals
 {
-	public class UserImpulseState : IComradeModel
+	public class UserImpulseState
 	{
 		public int NotifyCount {get; set;}
 
-		public IEnumerable<ComradeRequest> Received {get; set;}
-		public IEnumerable<ComradeRequest> Agreed {get; set;}
+		public int ComradeRequestCount {get; set;}
 	}
 }

@@ -15,12 +15,6 @@ namespace Bgc.Data.Contracts
 		Task<ComradeRequest> DrawComradeRequest(int requestId);
 
 		[ItemNotNull]
-		Task<IEnumerable<ViewModels.User.ComradeRequest>> GetReceivedComradeRequests(int userId);
-
-		[ItemNotNull]
-		Task<IEnumerable<ViewModels.User.ComradeRequest>> GetAgreedComradeRequests(int userId);
-
-		[ItemNotNull]
 		Task<IEnumerable<ComradeSlim>> GetComradeList(int userId);
 
 		[ItemNotNull]
@@ -32,5 +26,12 @@ namespace Bgc.Data.Contracts
 		/// <param name="request"></param>
 		/// <returns></returns>
 		Task MakeComradesFromRequest(ComradeRequest request);
+
+		/// <summary>
+		/// Counts received requests that are pending and not seen.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		Task<int> CountActiveRequests(int userId);
 	}
 }

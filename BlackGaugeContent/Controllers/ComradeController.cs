@@ -10,7 +10,6 @@ using Bgc.ViewModels;
 using Bgc.ViewModels.Account;
 using Bgc.ViewModels.Signals;
 using Bgc.ViewModels.User;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -138,15 +137,6 @@ namespace Bgc.Controllers
 			request.Seen = req.Seen;
 			await _comrades.SaveChanges();
 			return Success;
-		}
-	}
-
-	public static class _ComradeRequests
-	{
-		public static async Task FillRequestsInModel(this IComradeRepository comrades, [NotNull] IComradeModel model, int userId)
-		{
-			model.Received = await comrades.GetReceivedComradeRequests(userId);
-			model.Agreed   = await comrades.GetAgreedComradeRequests(userId);
 		}
 	}
 }

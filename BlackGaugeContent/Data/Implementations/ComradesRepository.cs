@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Bgc.Api;
 using Bgc.Data.Contracts;
 using Bgc.Models;
 using Bgc.ViewModels.User;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using ComradeRequest = Bgc.Models.ComradeRequest;
 
@@ -45,7 +43,7 @@ namespace Bgc.Data.Implementations
 			return _context.ComradeRequests
 				.FirstOrDefaultAsync(rq => rq.SenderId == s && rq.ReceiverId == r);
 		}
-
+		/*
 		public async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetReceivedComradeRequests
 		(int userId)
 		{
@@ -76,7 +74,7 @@ namespace Bgc.Data.Implementations
 						Agreed = r.Agreed,
 						Since = r.Since
 					}).ToListAsync();
-		}
+		}*/
 
 		public async Task<IEnumerable<ComradeSlim>> GetComradeList(int userId)
 		{
@@ -154,6 +152,13 @@ namespace Bgc.Data.Implementations
 			};
 			_context.Comrades.Add(comrades);
 			await SaveChanges();
+		}
+
+		public async Task<int> CountActiveRequests(int userId)
+		{
+			return await _context.ComradeRequests.AsNoTracking()
+				.Where(c => c.ReceiverId == userId && !c.Agreed && !c.Seen)
+				.CountAsync();
 		}
 	}
 }
