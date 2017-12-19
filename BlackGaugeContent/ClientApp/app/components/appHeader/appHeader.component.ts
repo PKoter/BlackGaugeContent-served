@@ -3,7 +3,7 @@ import { ApiRoutesService, Routes } from '../../services/apiRoutes.service';
 import { UserService } from '../../services/user.service';
 import { UserImpulsesService} from '../../services/userImpulses.service';
 import { QuickActionItem } from '../../controls/bgcQuickUserActions/bgcQuickUserActions.control';
-import { ICountImpulses} from '../../models/signals'
+import { IImpulsesState }  from '../../models/signals'
 
 @Component({
 	selector: 'app-header',
@@ -38,9 +38,9 @@ export class AppHeaderComponent implements OnInit {
 		this.impulseService.activeCounts.subscribe(this.updateImpulseCount.bind(this));
 	}
 
-	private updateImpulseCount(counts: ICountImpulses) {
-		this.userActions[1].setBadge(counts.comradeRequestCount);
-		this.notifications = counts.countAll;
+	private updateImpulseCount(counts: IImpulsesState) {
+		this.userActions[1].setBadge(counts.comradeRequestSum);
+		this.notifications = counts.notifySum;
 	}
 
 	/**

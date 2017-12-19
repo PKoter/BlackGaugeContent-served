@@ -1,34 +1,38 @@
 ﻿import { Output, EventEmitter } from '@angular/core';
 import { HubConnection } from '@aspnet/signalr-client';
-import { IComradeRequest, ImpulseCounts, ICountImpulses, ImpulseTypes } from '../models/signals';
+import { IComradeRequest, ImpulsesState, IImpulsesState as IImpulseState, ImpulseTypes } from '../models/signals';
 
 export interface IImpulseHandler {
 	comradeRequest: EventEmitter<IComradeRequest>;
 	broadcast:      EventEmitter<string>;
-	activeCounts:   EventEmitter<ICountImpulses>;
-	getCounts(): ICountImpulses;
+	activeCounts:   EventEmitter<IImpulseState>;
+
+	getCounts(): IImpulseState;
 	/**
 	 * sets updated active impulses count and emits its value;
 	 * @param counts 
 	 * @returns {} 
 	 */
-	setCounts(counts: ICountImpulses):void;
+	setCounts(counts: IImpulseState):void;
 }
 
 export class ImpulseHandler implements IImpulseHandler {
 	public comradeRequest: EventEmitter<IComradeRequest> = new EventEmitter();
 	public broadcast:      EventEmitter<string>          = new EventEmitter();
-	public activeCounts:   EventEmitter<ICountImpulses>  = new EventEmitter();
+	public activeCounts:   EventEmitter<IImpulseState>   = new EventEmitter();
 
 	protected hub:         HubConnection;
-	protected counts = new ImpulseCounts();
+	protected counts:      ImpulsesState;
 
-	public getCounts(): ICountImpulses {
+	public getCounts(): IImpulseState {
 		return this.counts;
 	}
-	public setCounts(counts: ICountImpulses): void {
-		this.counts = counts as ImpulseCounts;
-		this.activeCounts.emit(this.counts);
+	public setCounts(counts: IImpulseState): void {
+		let cs = counts as ImpulsesState;
+		if (!cs)
+			return;
+		this.counts = new ImpulsesState(cs.notifyCount, cs.comradeRequestCount);
+		this.activeCounts.emit(this.counts as IImpulseState);
 	}
 
 	/**

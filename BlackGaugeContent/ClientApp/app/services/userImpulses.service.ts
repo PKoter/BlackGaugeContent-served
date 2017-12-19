@@ -1,6 +1,6 @@
 ﻿import { Injectable, Inject, Output, EventEmitter } from '@angular/core';
 import { HubConnection } from '@aspnet/signalr-client';
-import { IImpulseState, IComradeRequest, IRuntimeImpulse } from '../models/signals';
+import { IUserImpulses, IImpulsesState, IComradeRequest, ImpulsesState } from '../models/signals';
 import { UserService } from './user.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { ImpulseHandler } from '../handlers/impulseHandler';
@@ -41,5 +41,12 @@ export class UserImpulsesService extends ImpulseHandler {
 			this.hub.stop();
 			this.connected = false;
 		}
+	}
+
+	public digestState(loginState: IUserImpulses) {
+		if (!loginState)
+			return;
+		let state = loginState.impulses as IImpulsesState;
+		this.setCounts(state);
 	}
 }

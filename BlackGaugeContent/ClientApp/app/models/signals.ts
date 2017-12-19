@@ -1,31 +1,19 @@
-﻿import { ComradeRequest } from './users';
-
-export class ImpulseTypes {
-	public static readonly Broadcast = 'notifyAll';
+﻿export class ImpulseTypes {
+	public static readonly Broadcast      = 'notifyAll';
 	public static readonly ComradeRequest = 'comradeRequest';
-	public static readonly Message = 'message';
+	public static readonly Message        = 'message';
 
 }
 
 export interface IUserImpulses {
-	impulses: IImpulseState;
+	impulses: IImpulsesState;
 }
 
-export interface IImpulseState {
-	notifyCount: number;
-	agreed:      ComradeRequest[];
-	received:    ComradeRequest[];
-}
-
-export interface ICountImpulses {
-	countAll: number;
-	comradeRequestCount: number;
+export interface IImpulsesState {
+	notifySum:         number;
+	comradeRequestSum: number;
 
 	popComradeRequest(): void;
-}
-
-export interface IRuntimeImpulse {
-	
 }
 
 export interface IComradeRequest {
@@ -33,27 +21,26 @@ export interface IComradeRequest {
 	agreed:    boolean;
 }
 
-export class ImpulseCounts implements ICountImpulses {
-	private count:   number;
-	private crCount: number;
+export class ImpulsesState implements IImpulsesState {
+	public notifyCount:         number = 0;
+	public comradeRequestCount: number = 0;
 
-	public constructor() {
-		this.count   = 0;
-		this.crCount = 0;
+	constructor(notifyCount: number, crCount: number) {
+		this.notifyCount = notifyCount;
+		this.comradeRequestCount = crCount;
 	}
 
+	public get notifySum(): number { return this.notifyCount; }
 
-	public get countAll(): number { return this.count; }
-
-	public get comradeRequestCount(): number { return this.crCount; }
+	public get comradeRequestSum(): number { return this.comradeRequestCount; }
 
 	public popComradeRequest(): void {
-		this.crCount--;
-		this.count--;
+		this.comradeRequestCount--;
+		this.notifyCount--;
 	}
 
 	public pushComradeRequest() {
-		this.crCount++;
-		this.count++;
+		this.comradeRequestCount++;
+		this.notifyCount++;
 	}
 }
