@@ -120,9 +120,21 @@ namespace Bgc.Controllers
 			if (request == null || request.Agreed || request.ReceiverId != req.ReceiverId)
 			{
 				Debug.Fail("Security break: comrade request confirmation failed.");
-				throw new SecurityException();
+				return null;
 			}
-			await _comrades.MakeComradesFromRequest(request);
+
+			request.Seen   = true;
+			request.Agreed = true;
+			var comrades   = await _comrades.MakeComradesFromRequest(request);
+			await _comrades.SaveChanges();
+
+			var answer = new ComradeRequest()
+			{
+				Id     = request.Id,
+				Agreed = true,
+			};
+			await _signalDispatcher
+				.PushImpulse(req.OtherName, R.ImpulseType.ComradeRequest, answer);
 			return Success;
 		}
 

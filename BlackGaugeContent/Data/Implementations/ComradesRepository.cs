@@ -6,6 +6,7 @@ using Bgc.Api;
 using Bgc.Data.Contracts;
 using Bgc.Models;
 using Bgc.ViewModels.User;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using ComradeRequest = Bgc.Models.ComradeRequest;
 
@@ -43,38 +44,6 @@ namespace Bgc.Data.Implementations
 			return _context.ComradeRequests
 				.FirstOrDefaultAsync(rq => rq.SenderId == s && rq.ReceiverId == r);
 		}
-		/*
-		public async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetReceivedComradeRequests
-		(int userId)
-		{
-			return await GetSpecificRequests(r => r.ReceiverId == userId && r.Agreed == false, 
-				request => request.SenderId);
-		}
-
-		public async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetAgreedComradeRequests
-		(int userId)
-		{
-			return await GetSpecificRequests(r => r.SenderId == userId && r.Agreed,
-				request => request.ReceiverId);
-		}
-
-		private async Task<IEnumerable<ViewModels.User.ComradeRequest>> GetSpecificRequests
-			([NotNull] Expression<Func<ComradeRequest, bool>> predicate,
-			 [NotNull] Expression<Func<ComradeRequest, int>> joinKeySelector)
-		{
-			return await _context.ComradeRequests.AsNoTracking()
-					.Where(predicate)
-					.Join(_context.Users,
-					joinKeySelector,
-					u => u.Id,
-					(r, u) => new ViewModels.User.ComradeRequest()
-					{
-						Id = r.Id,
-						OtherName = u.UserName,
-						Agreed = r.Agreed,
-						Since = r.Since
-					}).ToListAsync();
-		}*/
 
 		public async Task<IEnumerable<ComradeSlim>> GetComradeList(int userId)
 		{
@@ -111,7 +80,7 @@ namespace Bgc.Data.Implementations
 						{
 							Id        = c.Id,
 							OtherName = u1.UserName,
-							Agreed    = false,
+							// JSON ignored
 							Received  = true,
 							Since     = c.Since,
 							Seen      = c.Seen
@@ -124,10 +93,8 @@ namespace Bgc.Data.Implementations
 						{
 							Id        = r.Id,
 							OtherName = u2.UserName,
-							Agreed    = false,
 							Received  = false,
-							Since     = r.Since,
-							Seen      = r.Seen
+							Since     = r.Since
 						})
 						.OrderBy(r => r.Since);
 			return await query.ToListAsync();
@@ -136,7 +103,7 @@ namespace Bgc.Data.Implementations
 		public async Task<ComradeRequest> DrawComradeRequest(int requestId)
 		{
 			var request = await _context.ComradeRequests
-				.FirstOrDefaultAsync(r => r.Id == requestId);
+						.FirstOrDefaultAsync(r => r.Id == requestId);
 
 			_context.Attach(request);
 			return request;
