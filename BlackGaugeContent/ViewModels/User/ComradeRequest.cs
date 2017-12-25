@@ -12,7 +12,7 @@ namespace Bgc.ViewModels.User
 		public int? Id {get; set;}
 
 		[Required]
-		[StringLength(R.UserModelRules.MaxNameLength, MinimumLength = R.UserModelRules.MinNameLength)]
+		[StringLength(R.ModelRules.MaxNameLength, MinimumLength = R.ModelRules.MinNameLength)]
 		public string OtherName {get; set;}
 
 		/// <summary>
@@ -55,7 +55,12 @@ namespace Bgc.ViewModels.User
 	{
 		[Range(1, int.MaxValue)]
 		public int Id         {get; set;}
+
 		[Range(1, int.MaxValue)]
 		public int ReceiverId {get; set;}
+
+		[Required]
+		[StringLength(R.ModelRules.MaxNameLength, MinimumLength = R.ModelRules.MinNameLength)]
+		public string OtherName {get; set;}
 	}
 }

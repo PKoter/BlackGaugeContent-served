@@ -1,4 +1,5 @@
-﻿using Bgc.Development;
+﻿using Bgc.Api;
+using Bgc.Development;
 using Bgc.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -8,7 +9,7 @@ namespace Bgc.Data
 	public class BgcFullContext : ApplicationDbContext
 	{
 		public virtual DbSet<ComradeRequest>  ComradeRequests   { get; set; }
-		public virtual DbSet<Comrade>         Comrades          { get; set; }
+		public virtual DbSet<Comrades>         Comrades          { get; set; }
 		public virtual DbSet<Message>         Messages          { get; set; }
 		//public virtual DbSet<Blacklist>     Blacklists        { get; set; }
 		//public virtual DbSet<Exclusive>     Exclusive         { get; set; }
@@ -221,7 +222,7 @@ namespace Bgc.Data
 					.HasColumnName("Respek").IsRequired();
 
 				entity.Property(e => e.UserName)
-					.HasColumnType("nvarchar(128)")
+					.HasMaxLength(R.ModelRules.MaxNameLength)
 					.HasColumnName("Name").IsRequired();
 
 				entity.Property(e => e.Motto)
@@ -260,10 +261,10 @@ namespace Bgc.Data
 
 					entity.Property(e => e.Text)
 						.IsRequired()
-						.HasColumnType("nvarchar(2048)");
+						.HasMaxLength(R.ModelRules.MaxMessageLength);
 				});
 
-			modelBuilder.Entity<Comrade>(entity =>
+			modelBuilder.Entity<Comrades>(entity =>
 				{
 					if(isSqlServer)
 						entity.ToTable("Comrades", "Community");

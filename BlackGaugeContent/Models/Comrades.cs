@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bgc.Models
 {
-	public class Comrade
+	public class Comrades
 	{
 		[Key]
 		public int      Id               {get; set;}

@@ -6,12 +6,12 @@ namespace Bgc.ViewModels.Account
 	public class RegisterModel
 	{
 		[Required]
-		[StringLength(R.UserModelRules.MaxNameLength, MinimumLength = R.UserModelRules.MinNameLength)]
+		[StringLength(R.ModelRules.MaxNameLength, MinimumLength = R.ModelRules.MinNameLength)]
 		public string Name {get; set;}
 
 		[Required]
 		[EmailAddress]
-		[StringLength(R.UserModelRules.MaxEmailLength, MinimumLength = R.UserModelRules.MinEmailLength)]
+		[StringLength(R.ModelRules.MaxEmailLength, MinimumLength = R.ModelRules.MinEmailLength)]
 		public string Email { get; set; }
 
 		[Required]
