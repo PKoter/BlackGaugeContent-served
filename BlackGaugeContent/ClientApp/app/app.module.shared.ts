@@ -34,6 +34,8 @@ import { UserService}              from './services/user.service';
 import { AuthGuard}                from './auth/auth.guard';
 import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 import { UserImpulsesService}      from './services/userImpulses.service';
+import { MessageService}           from './services/message.service';
+
 
 @NgModule({
 	declarations: [
@@ -85,7 +87,8 @@ import { UserImpulsesService}      from './services/userImpulses.service';
 		UserService,
 		ApiRoutesService,
 		AuthGuard,
-		UserImpulsesService
+		UserImpulsesService,
+		MessageService
 	]
 })
 export class AppModuleShared {

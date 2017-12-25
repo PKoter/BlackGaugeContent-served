@@ -39,6 +39,7 @@ export class Routes {
 	public static ManageAccount   = 'manageAccount';
 	public static FindUsers       = 'findUsers';
 	public static Comrades        = 'comrades';
+	public static Messages        = 'messages';
 }
 
 /**
@@ -56,8 +57,11 @@ export class ApiRoutes {
 	public static GetUserInfo           = 'api/User/GetUserInfo';
 	public static SendComradeRequest    = 'api/Comrade/MakeComradeRequest';
 	public static GetComradeRelations   = 'api/Comrade/GetUserComradeRelations';
+	public static GetComrades           = 'api/Comrade/GetUserComrades';
 	public static ConfirmComradeRequest = 'api/Comrade/ConfirmComradeRequest';
 	public static SeenComradeRequest    = 'api/Comrade/SeenComradeRequest';
+	public static GetLastMessages       = 'api/Message/GetSurroundingLastMessages';
+	public static SendMessages          = 'api/Message/SendMessage';
 	public static MemeReaction          = 'api/MemeList/MemeReaction';
 	public static PageMemes             = 'api/MemeList/PageMemes';
 	public static CountNewMemes         = 'api/MemeList/CountNewMemes';
