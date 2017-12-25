@@ -14,11 +14,14 @@ export class ComradeRequest {
 	public agreed:   boolean|null;
 	public received: boolean|null;
 	public seen:     boolean|null;
+	public senderId: number |null;
 
 	constructor(
-		public senderId:  number,
+		senderId: number,
 		public otherName: string
-	) { }
+	) {
+		this.senderId = senderId;
+	}
 }
 
 export interface IComradeRelations {
@@ -42,6 +45,7 @@ export class SeenComradeRequest {
 export class ComradeRequestFeedback {
 	constructor(
 		public id: number,
-		public receiverId: number
+		public receiverId: number,
+		public otherName:  string
 	) { }
 }

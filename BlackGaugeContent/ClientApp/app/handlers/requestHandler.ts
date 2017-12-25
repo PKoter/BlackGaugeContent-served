@@ -113,4 +113,8 @@ export class AuthRequestHandler extends RequestHandler {
 		this.authGet<T>(route)
 			.subscribe(r => callback(r), errors => console.warn(errors));
 	}
+
+	public isLoggedIn(): boolean {
+		return this.auth.hasActiveToken();
+	}
 }

@@ -27,10 +27,6 @@ export class UserService extends AuthRequestHandler {
 		this.firePost<RegistrationModel, AccountFeedback>(ApiRoutes.Register, model, callback);
 	}
 
-	public isLoggedIn(): boolean {
-		return this.auth.hasActiveToken();
-	}
-
 	public loginRequest(model: LoginModel, callback: (r: AccountFeedback) => void) {
 		this.firePost<LoginModel, any>(ApiRoutes.Login, model, r => {
 			callback(r as AccountFeedback);
@@ -104,12 +100,13 @@ export class UserService extends AuthRequestHandler {
 		this.fireAuthGet<IComradeRelations>(ApiRoutes.GetComradeRelations, callback, id);
 	}
 
-	public confirmComradeRequest(requestId: number, callback: (r: { result: FeedResult }) => void)
+	public confirmComradeRequest(requestId: number, otherName: string, 
+		callback: (r: { result: FeedResult }) => void)
 	{
 		if (this.isLoggedIn() === false)
 			return;
 		let id = this.getUserIds().id;
-		let request = new ComradeRequestFeedback(requestId, id);
+		let request = new ComradeRequestFeedback(requestId, id, otherName);
 		this.fireAuthPost<ComradeRequestFeedback, { result: FeedResult }>
 			(ApiRoutes.ConfirmComradeRequest, request, callback);
 	}
