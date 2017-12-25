@@ -23,7 +23,7 @@ export class AppHeaderComponent implements OnInit {
 	private userActions: QuickActionItem[] = [
 		new QuickActionItem('Find user', Routes.FindUsers),
 		new QuickActionItem('Comrades', Routes.Comrades),
-		new QuickActionItem('Messages', ''),
+		new QuickActionItem('Messages', Routes.Messages),
 		new QuickActionItem('Manage account', Routes.ManageAccount),
 		new QuickActionItem('Sign out', '/', this.logout.bind(this))
 	];
@@ -40,6 +40,7 @@ export class AppHeaderComponent implements OnInit {
 
 	private updateImpulseCount(counts: IImpulsesState) {
 		this.userActions[1].setBadge(counts.comradeRequestSum);
+		this.userActions[2].setBadge(counts.messageSum);
 		this.notifications = counts.notifySum;
 	}
 

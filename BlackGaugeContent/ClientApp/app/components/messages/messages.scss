@@ -1,0 +1,20 @@
+﻿@import '../../controls/_bgcColors.scss';
+
+p {
+	min-height: 40px;
+	width: 90%;
+	padding: 10px;
+	font-size: 16px;
+	//background-color: aliceblue;
+	border: 1px $inform-darker-color solid;
+	border-radius: 2px;
+}
+
+p.sent {
+	margin-left: 10%;
+}
+
+.message-list {
+	height: 100%;
+	overflow-y: hidden;
+}

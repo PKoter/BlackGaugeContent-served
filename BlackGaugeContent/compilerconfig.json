@@ -62,5 +62,9 @@
   {
     "outputFile": "ClientApp/app/components/comrades/comrades.css",
     "inputFile": "ClientApp/app/components/comrades/comrades.scss"
+  },
+  {
+    "outputFile": "ClientApp/app/components/messages/messages.css",
+    "inputFile": "ClientApp/app/components/messages/messages.scss"
   }
 ]

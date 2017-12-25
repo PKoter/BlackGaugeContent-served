@@ -1,0 +1,56 @@
+﻿<h3>Messages</h3>
+
+<bgc-loading-spinner [hidden]="!loading"></bgc-loading-spinner>
+
+<div class="main-view">
+	<div class="topic main-topic dual-topic">
+		<h4>{{title}}</h4>
+		<hr />
+
+		<div [hidden]="comrade != '' ">
+			<span>No messages yet. Maybe start, greeting your comrade?</span>
+		</div>
+
+		<div [hidden]="comrade == '' ">
+			<div [hidden]="!currentMessages || currentMessages.length == 0"
+				 class="message-list">
+				<div *ngFor="let msg of currentMessages; let i = index">
+					<p [ngClass]="{'sent' : msg.sent}">{{msg.text}}</p>
+				</div>
+			</div>
+
+			<form #form="ngForm" class="">
+				<input type="text" class="form-control" name="typeMsg"
+					   [(ngModel)]="typedMessage" #typeMsg="ngModel" [maxlength]="2048" 
+					   placeholder="Type a message..." autofocus=""/>
+
+				<button type="button" (click)="sendMessage()"
+						class="input-right-sticker input-right-button">
+					<span class="glyphicon glyphicon-arrow-up"></span>
+				</button>
+			</form>
+		</div>
+	</div>
+
+	<div *ngIf="comrades"
+		 class="topic secondary-topic">
+		<h4>Comrades</h4>
+		<hr [hidden]="comrades && comrades.length > 0"/>
+
+		<div [hidden]="!comrades || comrades.length == 0"
+			 class="list-container">
+			<div class="list-item"
+				 *ngFor="let comrad of comrades; let i = index"
+				 (click)="selectComradeToChat(i)">
+				<span>{{comrad.name}}</span>
+				<span class="glyphicon glyphicon-comment"></span>
+			</div>
+		</div>
+		<!--
+		<nav class="direct-link form-element" style="width: 90%;"
+			 *ngIf="model.requestReceived">
+			<a>Go to <i>Comrades</i> to agree.</a>
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</nav>-->
+	</div>
+</div>

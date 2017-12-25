@@ -46,6 +46,7 @@
     <None Remove="ClientApp\app\components\comrades\comrades.component.ts" />
     <None Remove="ClientApp\app\components\findUsers\findUsers.component.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
+    <None Remove="ClientApp\app\components\messages\messages.component.ts" />
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\handlers\impulseHandler.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
@@ -70,6 +71,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\findUsers\findUsers.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\manageAccount\manageAccount.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\messages\messages.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\registerMessage\registerMessage.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcMessageModal\bgcMessageModal.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcQuickUserActions\bgcQuickUserActions.control.ts" />
