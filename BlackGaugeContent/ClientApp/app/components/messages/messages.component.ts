@@ -46,13 +46,6 @@ export class MessagesComponent implements OnInit {
 			return;
 		let messages = this.messages[senderName];
 		messages.push(message);
-
-		// message is immediately read
-		if (this.comrade === senderName) {
-			let counts = this.impulses.getCounts();
-			counts.popMessage();
-			this.impulses.setCounts(counts);
-		}
 	}
 
 	private selectComradeToChat(index: number) {
@@ -67,6 +60,23 @@ export class MessagesComponent implements OnInit {
 			this.messages[this.comrade] = r;
 			this.currentMessages        = r;
 		});
+	}
+
+	/**
+	 * Occurs when user clicks on typing field - they may read all messages and are preparing to answer - better to have this kind of indication that message is read than nothing.
+	 */
+	private readAndReady() {
+		if (this.comrade === '')
+			return;
+		if (!this.currentMessages || this.currentMessages.length === 0)
+			return;
+
+		let msg = this.currentMessages[this.currentMessages.length - 1];
+		if (!msg.sent && msg.seen !== true && msg.id) {
+
+			msg.seen = true;
+			this.messageService.readMessage(msg.id, r => {});
+		}
 	}
 
 	private sendMessage() {

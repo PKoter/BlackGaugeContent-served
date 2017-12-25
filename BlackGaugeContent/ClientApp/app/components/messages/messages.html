@@ -22,7 +22,7 @@
 			<form #form="ngForm" class="">
 				<input type="text" class="form-control" name="typeMsg"
 					   [(ngModel)]="typedMessage" #typeMsg="ngModel" [maxlength]="2048" 
-					   placeholder="Type a message..." autofocus=""/>
+					   placeholder="Type a message..." (click)="readAndReady()"/>
 
 				<button type="button" (click)="sendMessage()"
 						class="input-right-sticker input-right-button">

@@ -61,7 +61,8 @@ export class ApiRoutes {
 	public static ConfirmComradeRequest = 'api/Comrade/ConfirmComradeRequest';
 	public static SeenComradeRequest    = 'api/Comrade/SeenComradeRequest';
 	public static GetLastMessages       = 'api/Message/GetSurroundingLastMessages';
-	public static SendMessages          = 'api/Message/SendMessage';
+	public static SendMessage           = 'api/Message/SendMessage';
+	public static SeenMessage           = 'api/Message/SeenMessage';
 	public static MemeReaction          = 'api/MemeList/MemeReaction';
 	public static PageMemes             = 'api/MemeList/PageMemes';
 	public static CountNewMemes         = 'api/MemeList/CountNewMemes';

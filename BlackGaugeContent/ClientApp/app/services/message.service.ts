@@ -36,6 +36,14 @@ export class MessageService extends AuthRequestHandler {
 
 		message.userId = this.auth.getLoggedUserIds().id;
 		this.fireAuthPost<Message, { result: any }>
-			(ApiRoutes.SendMessages, message, callback);
+			(ApiRoutes.SendMessage, message, callback);
 	}
+
+	public readMessage(messageId: number, callback: (r: { result: any }) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+
+		this.fireAuthPost<{id: number}, { result: any }>
+			(ApiRoutes.SeenMessage, {id: messageId}, callback);
+	} 
 }
