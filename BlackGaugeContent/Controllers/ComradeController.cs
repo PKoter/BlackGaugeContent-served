@@ -21,7 +21,7 @@ namespace Bgc.Controllers
 	{
 		private readonly IUserRepository    _users;
 		private readonly IComradeRepository _comrades;
-		private readonly ISignalDispatcher _signalDispatcher;
+		private readonly ISignalDispatcher  _signalDispatcher;
 
 		public ComradeController(IUserRepository users, IComradeRepository comrades, ISignalDispatcher signalDispatcher)
 		{
@@ -43,7 +43,7 @@ namespace Bgc.Controllers
 				return null;
 			
 			var otherName = req.OtherName;
-			var request = await 
+			var request   = await 
 				_comrades.FetchComradeRequest(req.SenderId.Value, otherName, createOnly: true);
 
 			var userName = await _comrades.GetUserName(req.SenderId.Value);
@@ -83,6 +83,15 @@ namespace Bgc.Controllers
 				Comrades = comrades
 			};
 			return set;
+		}
+
+		[HttpGet("{userId}")]
+		public async Task<IEnumerable<ComradeSlim>> GetUserComrades(int userId)
+		{
+			if(userId <= 0)
+				return null;
+			var comrades = await _comrades.GetComradeList(userId);
+			return comrades;
 		}
 
 		/// <summary>

@@ -141,6 +141,7 @@ namespace Bgc
 			services.AddTransient<IUserRepository, UserRepo>();
 			services.AddTransient<IComradeRepository, ComradesRepository>();
 			services.AddTransient<IUserImpulse, UserImpulse>();
+			services.AddTransient<IMessageRepository, MessagesRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
