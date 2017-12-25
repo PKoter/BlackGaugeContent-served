@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace Bgc.Data.Contracts
 {
-	public interface IMessageRepository
+	public interface IMessageRepository : IDbRepository
 	{
 		/// <summary>
 		/// Retrieves 10 messages surrounding last user message or last seen message, or first mesages sent by other.
@@ -26,5 +26,8 @@ namespace Bgc.Data.Contracts
 
 		[ItemNotNull]
 		Task<IList<IdAndName>> GetUsersIdAndName(string otherName, int userId);
+
+		[ItemNotNull]
+		Task<Message> DrawMessage(long messageId);
 	}
 }

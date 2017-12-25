@@ -154,5 +154,12 @@ namespace Bgc.Data.Implementations
 				   }).Take(2).ToListAsync();
 		}
 
+
+		public async Task<Message> DrawMessage(long messageId)
+		{
+			var message = await _context.Messages.FirstAsync(m => m.Id == messageId);
+			_context.Attach(message);
+			return message;
+		}
 	}
 }

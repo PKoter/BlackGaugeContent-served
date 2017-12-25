@@ -64,6 +64,7 @@ export class Message {
 	public id:     number |null;
 	public userId: number |null;
 	public sent:   boolean|null;
+	public seen:   boolean|null;
 
 	public otherName: string|null;
 	public text:      string;

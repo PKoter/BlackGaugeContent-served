@@ -85,5 +85,21 @@ namespace Bgc.Controllers
 			// if we get this far then there's solid chance everthing is ok.
 			return new Feedback() {Result = FeedResult.Success};
 		}
+
+
+		[HttpPost]
+		public async Task<Feedback> SeenMessage([FromBody] MessageState state)
+		{
+			if (ModelState.IsValid == false)
+				return null;
+
+			var message = await _messages.DrawMessage(state.Id);
+			if (message.Seen)
+				return null;
+
+			message.Seen = true;
+			await _messages.SaveChanges();
+			return new Feedback() { Result = FeedResult.Success };
+		}
 	}
 }
