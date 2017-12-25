@@ -1,4 +1,6 @@
-﻿.form-topic {
+﻿@import '_bgcColors.scss';
+
+.form-topic {
 	border:none !important;
 }
 
@@ -52,4 +54,46 @@ form {
 		border-bottom: 1px goldenrod solid;
 		padding: 10px 5px 5px 5px;
 	}
+}
+
+/* displays indication that ie. value is valid and unique (name, email)*/
+.input-right-sticker {
+	display: block;
+	width: 34px;
+	height: 34px;
+	float: right;
+	top: -34px;
+	border: 1px lightblue hidden;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	position: relative;
+	padding-left: 10px;
+	padding-top: 8px;
+	background-color: #b0c4de;
+	opacity: 0.35;
+}
+
+/* displays indication that ie. value is valid and unique (name, email)*/
+.input-right-sticker.input-right-mark {
+	width: 34px;
+	height: 34px;
+	top: -34px;
+	border: 1px lightblue hidden;
+	padding-left: 10px;
+	padding-top: 8px;
+	background-color: #b0c4de;
+	opacity: 0.35;
+}
+
+.input-right-sticker.input-right-button {
+	width: 50px;
+	height: 30px;
+	top: -32px;
+	background-color: $inform-color;
+	border: 1px $inform-darker-color solid;
+	padding-left: 6px;
+	padding-top: 4px;
+	margin-right: 2px;
+	color: aliceblue;
+	opacity: 0.9;
 }

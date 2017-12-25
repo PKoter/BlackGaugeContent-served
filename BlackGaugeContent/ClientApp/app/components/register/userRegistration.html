@@ -12,8 +12,10 @@
 					<span *ngIf="!name.valid || name.pristine" style="color: red;">*</span>
 					<input type="text" class="form-control" name="name" required
 						   [(ngModel)]="model.name" #name="ngModel" minlength="5" maxlength="128" (blur)="onCompleteUniqueCheck(name.value, 'name')"/>
+
 					<!-- shows that name is valid and unique -->
-					<span class="form-value-info" *ngIf="name.valid && nameUnique">
+					<span class="input-right-sticker input-right-mark" 
+						  *ngIf="name.valid && nameUnique">
 						<span class="glyphicon glyphicon-ok"></span>
 					</span>
 				</label>
@@ -37,8 +39,10 @@
 					<span *ngIf="!email.valid || email.pristine" style="color: red;">*</span>
 					<input type="email" class="form-control" name="email" required 
 						   [(ngModel)]="model.email" #email="ngModel" [email]="true" maxlength="256" (blur)="onCompleteUniqueCheck(email.value, 'email')"/>
+
 					<!-- shows that email is valid and unique -->
-					<span class="form-value-info" *ngIf="email.valid && emailUnique">
+					<span class="input-right-sticker input-right-mark" 
+						  *ngIf="email.valid && emailUnique">
 						<span class="glyphicon glyphicon-ok"></span>
 					</span>
 				</label>
