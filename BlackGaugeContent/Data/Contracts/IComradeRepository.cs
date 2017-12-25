@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bgc.Models;
 using Bgc.ViewModels.User;
 using JetBrains.Annotations;
 using ComradeRequest = Bgc.Models.ComradeRequest;
@@ -21,11 +22,11 @@ namespace Bgc.Data.Contracts
 		Task<IEnumerable<ViewModels.User.ComradeRequest>> GetAllComradeRequests(int userId);
 
 		/// <summary>
-		/// Works only on prefetched request, marks agreed, creates comrades, then saves changes.
+		/// Works only on prefetched request, which is used to create comrades.
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
-		Task MakeComradesFromRequest(ComradeRequest request);
+		Task<Comrades> MakeComradesFromRequest(ComradeRequest request);
 
 		/// <summary>
 		/// Counts received requests that are pending and not seen.
@@ -33,5 +34,7 @@ namespace Bgc.Data.Contracts
 		/// <param name="userId"></param>
 		/// <returns></returns>
 		Task<int> CountActiveRequests(int userId);
+
+		Task<string> GetUserName(int userId);
 	}
 }

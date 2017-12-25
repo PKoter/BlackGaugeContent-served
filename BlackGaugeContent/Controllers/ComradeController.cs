@@ -8,7 +8,6 @@ using Bgc.Data.Contracts;
 using Bgc.Services.Signals;
 using Bgc.ViewModels;
 using Bgc.ViewModels.Account;
-using Bgc.ViewModels.Signals;
 using Bgc.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,18 +39,23 @@ namespace Bgc.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<Feedback> MakeComradeRequest([FromBody] ComradeRequest req)
 		{
-			if (ModelState.IsValid == false)
+			if (ModelState.IsValid == false || req.SenderId == null)
 				return null;
-			Debug.Assert(req.SenderId != null, "req.SenderId != null"); 
-			var name = req.OtherName;
+			
+			var otherName = req.OtherName;
 			var request = await 
-				_comrades.FetchComradeRequest(req.SenderId.Value, name, createOnly: true);
-			var answer = new ComradeRequestImpulse()
-			{
-				RequestId = request.Id
-			};
+				_comrades.FetchComradeRequest(req.SenderId.Value, otherName, createOnly: true);
 
-			await _signalDispatcher.PushImpulse(name, R.ImpulseType.ComradeRequest, answer);
+			var userName = await _comrades.GetUserName(req.SenderId.Value);
+
+			var answer = new ComradeRequest()
+			{
+				Id        = request.Id,
+				OtherName = userName,
+				TimeSpan  = TimeSpan(request.Since)
+			};
+			await _signalDispatcher.PushImpulse(otherName, R.ImpulseType.ComradeRequest, answer);
+
 			return Success;
 		}
 

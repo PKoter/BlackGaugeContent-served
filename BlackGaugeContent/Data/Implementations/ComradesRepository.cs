@@ -137,21 +137,21 @@ namespace Bgc.Data.Implementations
 		{
 			var request = await _context.ComradeRequests
 				.FirstOrDefaultAsync(r => r.Id == requestId);
+
 			_context.Attach(request);
 			return request;
 		}
 
-		public async Task MakeComradesFromRequest(ComradeRequest request)
+		public async Task<Comrades> MakeComradesFromRequest([NotNull] ComradeRequest request)
 		{
-			request.Agreed = true;
-			var comrades = new Comrade()
+			var comrades = new Comrades()
 			{
 				FirstId  = request.SenderId,
 				SecondId = request.ReceiverId,
 				Since    = DateTime.Now
 			};
 			_context.Comrades.Add(comrades);
-			await SaveChanges();
+			return comrades;
 		}
 
 		public async Task<int> CountActiveRequests(int userId)

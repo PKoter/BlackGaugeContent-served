@@ -41,6 +41,20 @@ namespace Bgc.Data.Implementations
 		}
 
 		/// <summary>
+		/// Returns username for id. Valid only for existing users.
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <exception cref="Exception">user does not exist</exception>
+		/// <returns></returns>
+		public async Task<string> GetUserName(int userId)
+		{
+			return await _context.Users.AsNoTracking()
+				.Where(u => u.Id == userId)
+				.Select(u => u.UserName)
+				.FirstAsync();
+		}
+
+		/// <summary>
 		/// Returns if user exists.
 		/// </summary>
 		/// <param name="userId"></param>
