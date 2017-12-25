@@ -20,8 +20,7 @@ export class ComradesComponent implements OnInit {
 	private received: ComradeRequest[];
 	private sent:     ComradeRequest[];
 	private loading:  boolean = true;
-	private userName: string = '';
-	private tempRequest: ComradeRequest|null = null;
+	private tempIndex: number|null = null;
 
 	constructor(titleService: Title, private userService: UserService,
 		private router: ApiRoutesService, private impulses: UserImpulsesService
@@ -40,8 +39,32 @@ export class ComradesComponent implements OnInit {
 		this.impulses.comradeRequest.subscribe(this.comradeRequestUpdate.bind(this));
 	}
 
-	private comradeRequestUpdate(request: IComradeRequest) {
+	private comradeRequestUpdate(request: ComradeRequest) {
+		if (!request.id)
+			return;
 		
+		if (request.agreed !== true) {
+			this.received.unshift(request);
+		}
+		else {
+			let index = this.sent.findIndex(r => r.id === request.id);
+			if (index < 0) {
+				console.log('probaby bug');
+				return;
+			}
+			this.makeComradeFrom(this.sent, index);
+		}
+	}
+
+	/**
+	 * removes request from given array and appends comrade model to list.
+	 * @param requests
+	 * @param index
+	 */
+	private makeComradeFrom(requests: ComradeRequest[], index: number) {
+		let removedRequest = requests.splice(index, 1);
+		this.comrades.push(
+			{ name: removedRequest[0].otherName, interactions: 0 } as IComradeEntry);
 	}
 
 	/**
@@ -52,16 +75,17 @@ export class ComradesComponent implements OnInit {
 		let request = this.received[index];
 		if (!request.id)
 			return;
-		this.tempRequest = request;
-		this.received.splice(index, 1);
-		this.loading = true;
-		this.userService.confirmComradeRequest(request.id, r => {
-			if (r.result !== FeedResult.success)
+
+		request.seen = true;
+		this.reduceComradeNotifies();
+
+		this.tempIndex = index;
+		this.loading   = true;
+
+		this.userService.confirmComradeRequest(request.id, request.otherName, r => {
+			if (r.result !== FeedResult.success || this.tempIndex == null)
 				return;
-			if (this.tempRequest == null)
-				return;
-			this.comrades.push(
-				{ name: this.tempRequest.otherName, interactions: 0 } as IComradeEntry);
+			this.makeComradeFrom(this.received, this.tempIndex);
 			this.loading = false;
 		});
 	}
@@ -74,9 +98,14 @@ export class ComradesComponent implements OnInit {
 		let request = this.received[index];
 		if (!request.id || request.seen)
 			return;
+
 		request.seen = true;
 		this.userService.seenComradeRequest(request.id, r => {});
 
+		this.reduceComradeNotifies();
+	}
+
+	private reduceComradeNotifies() {
 		let counts = this.impulses.getCounts();
 		counts.popComradeRequest();
 		this.impulses.setCounts(counts);
