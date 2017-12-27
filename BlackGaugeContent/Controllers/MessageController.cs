@@ -8,6 +8,7 @@ using Bgc.Services.Signals;
 using Bgc.ViewModels;
 using Bgc.ViewModels.Account;
 using Bgc.ViewModels.Signals;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -116,7 +117,31 @@ namespace Bgc.Controllers
 				return null;
 
 			var messages = await _messages.GetPreviousMessages(chat);
+
+			return PreprareModels(messages, userId);
+		}
+		[HttpGet("{msgId}/{userId}/{otherName}")]
+		public async Task<IEnumerable<Message>> GetNextMessages(long msgId,
+			int userId, string otherName)
+		{
+			var chat = new ChatState()
+			{
+				MessageId = msgId,
+				UserId    = userId,
+				OtherName = otherName
+			};
+			if(TryValidateModel(chat) == false)
+				return null;
+
+			var messages = await _messages.GetNextMessages(chat);
+
+			return PreprareModels(messages, userId);
+		}
+
+		private IList<Message> PreprareModels([NotNull] IList<Models.Message> messages, int userId)
+		{
 			var msgs = new List<Message>(messages.Count);
+
 			msgs.AddRange(messages.Select(m => new Message()
 			{
 				Sent = m.SenderId == userId,
@@ -128,7 +153,6 @@ namespace Bgc.Controllers
 				msgs[0].Id = messages.First().Id;
 				msgs[msgs.Count - 1].Id = messages.Last().Id;
 			}
-
 			return msgs;
 		}
 	}

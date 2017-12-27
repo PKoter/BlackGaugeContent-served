@@ -197,5 +197,18 @@ namespace Bgc.Data.Implementations
 			list.Sort((a, b) => a.Id.CompareTo(b.Id));
 			return list;
 		}
+
+		public async Task<IList<Message>> GetNextMessages([NotNull] ChatState chat)
+		{
+			// messages sent before last message
+			var query = (from m in _context.Messages.AsNoTracking()
+						let otherId = (GetUsersIdFromName(chat.OtherName)).First()
+						where m.Id > chat.MessageId
+							  && m.SenderId == otherId && m.ReceiverId == chat.UserId
+						orderby m.Id
+						select m).Take(PageSize);
+
+			return await query.ToListAsync();
+		}
 	}
 }
