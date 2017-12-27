@@ -1,7 +1,7 @@
 ﻿import { Inject, Injectable, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
-import { Message } from '../models/signals';
+import { Message } from '../models/chatData';
 import { IComradeEntry } from '../models/users';
 import { AuthRequestHandler } from '../handlers/requestHandler';
 import { AuthGuard } from '../auth/auth.guard';

@@ -14,7 +14,7 @@ export interface IImpulsesState {
 	comradeRequestSum: number;
 
 	popComradeRequest(): void;
-	popMessage(): void;
+	popMessages(number: number): void;
 }
 
 export interface IComradeRequest {
@@ -26,6 +26,7 @@ export class ImpulsesState implements IImpulsesState {
 	public notifyCount:         number = 0;
 	public messageCount:        number = 0;
 	public comradeRequestCount: number = 0;
+	public chatImpulses:        ChatImpulse[];
 
 	constructor(notifyCount: number, crCount: number, msgCount: number) {
 		this.notifyCount         = notifyCount;
@@ -49,9 +50,9 @@ export class ImpulsesState implements IImpulsesState {
 		this.notifyCount++;
 	}
 
-	public popMessage(): void {
-		this.messageCount--;
-		this.notifyCount--;
+	public popMessages(number: number): void {
+		this.messageCount -= number;
+		this.notifyCount -= number;
 	}
 
 	public pushMessage() {
@@ -60,13 +61,7 @@ export class ImpulsesState implements IImpulsesState {
 	}
 }
 
-export class Message {
-	public id:     number |null;
-	public userId: number |null;
-	public sent:   boolean|null;
-	public seen:   boolean|null;
-
-	public otherName: string|null;
-	public text:      string;
-	
+export class ChatImpulse {
+	public comrade:  string;
+	public impulses: number;
 }

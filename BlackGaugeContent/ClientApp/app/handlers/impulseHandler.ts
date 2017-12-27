@@ -1,6 +1,7 @@
 ﻿import { EventEmitter } from '@angular/core';
 import { HubConnection } from '@aspnet/signalr-client';
-import { ImpulsesState, IImpulsesState, ImpulseTypes, Message } from '../models/signals';
+import { ImpulsesState, IImpulsesState, ImpulseTypes, ChatImpulse } from '../models/signals';
+import { Message, ChatData } from '../models/chatData';
 import { ComradeRequest } from '../models/users';
 
 export interface IImpulseHandler {
@@ -28,6 +29,8 @@ export class ImpulseHandler implements IImpulseHandler {
 
 	protected hub:         HubConnection;
 	protected counts:      ImpulsesState;
+	// chat data is persistent throughout live of app to reduce server requests and data transfer.
+	protected chatData:    ChatData;
 
 	constructor() {
 		this.counts = new ImpulsesState(0, 0, 0);
@@ -36,12 +39,25 @@ export class ImpulseHandler implements IImpulseHandler {
 	public getCounts(): IImpulsesState {
 		return this.counts;
 	}
+
+	public getChatters(): ChatData {
+		if (!this.chatData)
+			this.chatData = new ChatData([] as ChatImpulse[]);
+		return this.chatData;
+	}
+
 	public setCounts(counts: IImpulsesState): void {
 		let cs = counts as ImpulsesState;
 		if (!cs)
 			return;
 		this.counts = new ImpulsesState(cs.notifyCount, cs.comradeRequestCount, cs.messageCount);
 		this.activeCounts.emit(this.counts as IImpulsesState);
+
+		// this should happen only at digest state after login
+		if (cs.chatImpulses ) {
+			this.chatData = new ChatData(cs.chatImpulses);
+			delete cs.chatImpulses;
+		}
 	}
 
 	/**
@@ -58,18 +74,24 @@ export class ImpulseHandler implements IImpulseHandler {
 	}
 
 	private onRumor(name: string, message: string) {
-		console.log(`broadcast message from ${name}: ${message}`);
+		alert(`broadcast message from ${name}: ${message}`);
 	}
 
 	private onComradeRequest(request: ComradeRequest) {
-		console.log('comrade requests updated');
 		this.counts.pushComradeRequest();
 		this.activeCounts.emit(this.counts);
 		this.comradeRequest.emit(request);
 	}
 
 	private onMessage(message: Message) {
-		console.log('messages updated');
+		// update impulses here comrades component may not be created, and we would lose data.
+		if (this.chatData && message.otherName) {
+			let msg = this.chatData.getChatter(message.otherName);
+			msg.impulses     += 1;
+			msg.interactions += 1;
+			msg.messages.push(message);
+		}
+
 		this.counts.pushMessage();
 		this.activeCounts.emit(this.counts);
 		this.message.emit(message);
