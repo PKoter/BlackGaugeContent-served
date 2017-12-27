@@ -33,6 +33,7 @@ import { BgcEqualValidator}        from './directives/bgcEqual.validator';
 import { DataFlowService}          from './services/dataFlow.service';
 import { UserService}              from './services/user.service';
 import { AuthGuard}                from './auth/auth.guard';
+import { AuthorizeRouteGuard}      from './auth/authorizeRoute.guard';
 import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 import { UserImpulsesService}      from './services/userImpulses.service';
 import { MessageService}           from './services/message.service';
@@ -78,10 +79,14 @@ import { MessageService}           from './services/message.service';
 			{ path: Routes.Login,                 component: LoginComponent },
 			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
 			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
-			{ path: Routes.ManageAccount,         component: ManageAccountComponent },
-			{ path: Routes.FindUsers,             component: FindUsersComponent },
-			{ path: Routes.Comrades,              component: ComradesComponent },
-			{ path: Routes.Messages,              component: MessagesComponent },
+			{ path: Routes.ManageAccount,         component: ManageAccountComponent,
+				canActivate: [AuthorizeRouteGuard] },
+			{ path: Routes.FindUsers,             component: FindUsersComponent,
+				canActivate: [AuthorizeRouteGuard] },
+			{ path: Routes.Comrades,              component: ComradesComponent,
+				canActivate: [AuthorizeRouteGuard] },
+			{ path: Routes.Messages,              component: MessagesComponent, 
+				canActivate: [AuthorizeRouteGuard] },
 			{ path: '**', redirectTo: Routes.Home }
 		]  /*{enableTracing:true}*/)
 	],
@@ -90,6 +95,7 @@ import { MessageService}           from './services/message.service';
 		UserService,
 		ApiRoutesService,
 		AuthGuard,
+		AuthorizeRouteGuard,
 		UserImpulsesService,
 		MessageService
 	]
