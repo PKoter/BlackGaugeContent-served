@@ -89,7 +89,13 @@ export class ImpulseHandler implements IImpulseHandler {
 			let msg = this.chatData.getChatter(message.otherName);
 			msg.impulses     += 1;
 			msg.interactions += 1;
-			msg.messages.push(message);
+			let messages = msg.messages;
+			// either there's no messages or last is from signal, which means there's no gap between loaded from server and from signals.
+			if (messages.length === 0 || messages[messages.length - 1].fromSignal || msg.impulses === 1) 
+			{
+				messages.push(message);
+				message.fromSignal = true;
+			}
 		}
 
 		this.counts.pushMessage();

@@ -79,7 +79,6 @@ export class MessagesComponent implements OnInit {
 			this.loading  = false;
 			let data      = this.chatters.getChatter(this.chatterName);
 			data.messages = r;
-			data.impulses = 0;
 
 			this.currentMessages = r;
 		});
@@ -96,10 +95,14 @@ export class MessagesComponent implements OnInit {
 
 		// delete impulses for that chatter
 		let chatter = this.chatters.getChatter(this.chatterName);
-		if (chatter.impulses > 0)
+		if (chatter.impulses > 0 )
 		{
-			this.reduceMessageNotifies(chatter.impulses);
-			chatter.impulses = 0;
+			if (!this.currentMessages[this.currentMessages.length - 1].fromSignal) {
+				this.loadNext();
+				return;
+			}
+
+			this.reduceMessageNotifies(chatter);
 		}
 
 		let msg = this.currentMessages[this.currentMessages.length - 1];
@@ -135,14 +138,16 @@ export class MessagesComponent implements OnInit {
 		this.comrades = this.chatters.list;
 	}
 
-	private reduceMessageNotifies(by: number) {
+	private reduceMessageNotifies(chatter: Chatter) {
+		let by = chatter.impulses;
+		chatter.impulses = 0;
+
 		let counts = this.impulses.getCounts();
 		counts.popMessages(by);
 		this.impulses.setCounts(counts);
 	}
 
 	private loadPrevious() {
-		console.log('dupa');
 		if (this.currentMessages.length === 0 || this.msgLoad)
 			return;
 
@@ -166,6 +171,35 @@ export class MessagesComponent implements OnInit {
 	}
 
 	private loadNext() {
-		
+		if (this.currentMessages.length === 0 || this.msgLoad)
+			return;
+
+		let last = this.currentMessages[this.currentMessages.length -1];
+		let chatter = this.chatters.getChatter(this.chatterName);
+
+
+		if (last.fromSignal) {
+			this.reduceMessageNotifies(chatter);
+			return;
+		}
+		if (!last.id || chatter.impulses === 0)
+			return;
+
+		this.msgLoad = true;
+		this.messageService.getNextMessages(last.id, this.chatterName, ms => {
+			this.msgLoad = false;
+
+			let chatter = this.chatters.getChatter(this.chatterName);
+			for (let i = 0; i < ms.length; i++) {
+				chatter.messages.push(ms[i]);
+			}
+
+			this.currentMessages = chatter.messages;
+			if (ms.length < this.pageSize) {
+				this.currentMessages[this.currentMessages.length - 1].fromSignal = true;
+
+				this.reduceMessageNotifies(chatter);
+			}
+		});
 	}
 }
