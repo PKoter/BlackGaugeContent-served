@@ -50,6 +50,7 @@
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\handlers\impulseHandler.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
+    <None Remove="ClientApp\app\models\chatData.ts" />
     <None Remove="ClientApp\app\models\memes.ts" />
     <None Remove="ClientApp\app\models\signals.ts" />
     <None Remove="ClientApp\app\models\users.ts" />
@@ -76,6 +77,7 @@
     <TypeScriptCompile Include="ClientApp\app\controls\bgcMessageModal\bgcMessageModal.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcQuickUserActions\bgcQuickUserActions.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\handlers\impulseHandler.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\chatData.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\signals.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\users.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\appMeta.service.ts" />
