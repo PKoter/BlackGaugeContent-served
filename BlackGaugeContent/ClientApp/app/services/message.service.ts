@@ -53,4 +53,11 @@ export class MessageService extends AuthRequestHandler {
 		let id = this.auth.getLoggedUserIds().id;
 		this.fireAuthGet<Message[]>(ApiRoutes.GetPreviousMessages, callback, msgId, id, otherName);
 	}
+
+	public getNextMessages(msgId: number, otherName: string, callback: (r: Message[]) => void) {
+		if (this.isLoggedIn() === false)
+			return;
+		let id = this.auth.getLoggedUserIds().id;
+		this.fireAuthGet<Message[]>(ApiRoutes.GetNextMessages, callback, msgId, id, otherName);
+	}
 }
