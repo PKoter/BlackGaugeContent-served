@@ -32,5 +32,7 @@ namespace Bgc.Data.Contracts
 		Task<Message> DrawMessage(long messageId);
 
 		Task<IList<ChatImpulse>> GetChatImpulses(int userId);
+
+		Task<IList<Message>> GetPreviousMessages([NotNull] ChatState chat);
 	}
 }

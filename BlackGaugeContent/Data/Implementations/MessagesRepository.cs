@@ -14,8 +14,8 @@ namespace Bgc.Data.Implementations
 {
 	public class MessagesRepository : BaseRepo, IMessageRepository
 	{
-		private const int MessagesAhead  = 5;
-		private const int MessagesBefore = 4;
+		private const int MessagesAhead  = 9;
+		private const int MessagesBefore = 9;
 		private const int PageSize       = 10;
 
 		public MessagesRepository(BgcFullContext context) : base(context)
@@ -180,6 +180,22 @@ namespace Bgc.Data.Implementations
 								where m.Id > mId
 								select m).Count()
 				};*/
+		}
+
+		public async Task<IList<Message>> GetPreviousMessages([NotNull] ChatState chat)
+		{
+			// messages sent before last message
+			var query = (from m in _context.Messages.AsNoTracking()
+						let otherId = (GetUsersIdFromName(chat.OtherName)).First()
+						where m.Id < chat.MessageId 
+						&& (m.SenderId == chat.UserId && m.ReceiverId == otherId
+						||  m.SenderId == otherId && m.ReceiverId == chat.UserId)
+						orderby m.Id descending
+						select m).Take(PageSize);
+			var list = await query.ToListAsync();
+
+			list.Sort((a, b) => a.Id.CompareTo(b.Id));
+			return list;
 		}
 	}
 }
