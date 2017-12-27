@@ -80,6 +80,7 @@ export class Message {
 	public userId: number |null;
 	public sent:   boolean|null;
 	public seen:   boolean|null;
+	public first:  boolean|null;
 
 	public otherName: string|null;
 	public text:      string;

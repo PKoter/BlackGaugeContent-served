@@ -101,5 +101,35 @@ namespace Bgc.Controllers
 			_messages.SaveChanges();
 			return new Feedback() { Result = FeedResult.Success };
 		}
+
+		[HttpGet("{msgId}/{userId}/{otherName}")]
+		public async Task<IEnumerable<Message>> GetPreviousMessages(long msgId,
+			int userId, string otherName)
+		{
+			var chat = new ChatState()
+			{
+				MessageId = msgId,
+				UserId    = userId,
+				OtherName = otherName
+			};
+			if (TryValidateModel(chat) == false)
+				return null;
+
+			var messages = await _messages.GetPreviousMessages(chat);
+			var msgs = new List<Message>(messages.Count);
+			msgs.AddRange(messages.Select(m => new Message()
+			{
+				Sent = m.SenderId == userId,
+				Text = m.Text
+			}));
+			// only last and first messages need to have id
+			if(msgs.Count > 0)
+			{
+				msgs[0].Id = messages.First().Id;
+				msgs[msgs.Count - 1].Id = messages.Last().Id;
+			}
+
+			return msgs;
+		}
 	}
 }
