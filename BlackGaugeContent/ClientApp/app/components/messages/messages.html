@@ -7,11 +7,15 @@
 		<h4>{{title}}</h4>
 		<hr />
 
-		<div [hidden]="comrade != '' ">
+		<div [hidden]="chatterName != '' || currentMessages && currentMessages.length === 0">
 			<span>No messages yet. Maybe start, greeting your comrade?</span>
 		</div>
 
-		<div [hidden]="comrade == '' ">
+		<div [hidden]="chatterName == '' ">
+			<div class="load-indication-section" (mouseenter)="loadPrevious()">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</div>
+
 			<div [hidden]="!currentMessages || currentMessages.length == 0"
 				 class="message-list">
 				<div *ngFor="let msg of currentMessages; let i = index">
@@ -19,10 +23,14 @@
 				</div>
 			</div>
 
+			<div class="load-indication-section" (hover)="loadNext()">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</div>
+
 			<form #form="ngForm" class="">
 				<input type="text" class="form-control" name="typeMsg"
-					   [(ngModel)]="typedMessage" #typeMsg="ngModel" [maxlength]="2048" 
-					   placeholder="Type a message..." (click)="readAndReady()"/>
+					   [(ngModel)]="typedMessage" #typeMsg="ngModel" [maxlength]="2048"
+					   placeholder="Type a message..." (click)="readAndReady()" />
 
 				<button type="button" (click)="sendMessage()"
 						class="input-right-sticker input-right-button">
@@ -35,14 +43,15 @@
 	<div *ngIf="comrades"
 		 class="topic secondary-topic">
 		<h4>Comrades</h4>
-		<hr [hidden]="comrades && comrades.length > 0"/>
+		<hr [hidden]="comrades.length > 0"/>
 
-		<div [hidden]="!comrades || comrades.length == 0"
+		<div *ngIf="comrades.length > 0"
 			 class="list-container">
 			<div class="list-item"
-				 *ngFor="let comrad of comrades; let i = index"
+				 *ngFor="let com of comrades; let i = index"
 				 (click)="selectComradeToChat(i)">
-				<span>{{comrad.name}}</span>
+				<span>{{com.comrade}}</span>
+				<span [hidden]="com.impulses === 0">{{com.impulses}}</span>
 				<span class="glyphicon glyphicon-comment"></span>
 			</div>
 		</div>

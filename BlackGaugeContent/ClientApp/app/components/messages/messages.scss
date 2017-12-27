@@ -11,10 +11,52 @@ p {
 }
 
 p.sent {
-	margin-left: 10%;
+	margin-left: 9%;
 }
 
 .message-list {
-	height: 100%;
-	overflow-y: hidden;
+	height: 400px;
+	overflow-y: scroll;
+	margin-bottom: 20px;
+}
+
+
+.load-indication-section {
+	width: 80%;
+	margin:auto;
+	height: 25px;
+	position: relative;
+	z-index: 20;
+
+	>span{
+		display: block;
+		width: 16px;
+		height: 16px;
+		margin: auto;
+		opacity: 0.5;
+		color:grey;
+		font-size: 17px;
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotateZ(0);
+	}
+	50% {
+		transform: rotateZ(180deg);
+	}
+
+	to {
+		transform: rotateZ(360deg);
+	}
+}
+
+.load-indication-section:hover {
+	>span{
+		animation-name: spin;
+		animation-duration: 2s;
+		color: black;
+		opacity: 0.6;
+	}
 }
