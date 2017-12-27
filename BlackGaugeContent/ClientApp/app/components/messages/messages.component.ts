@@ -14,7 +14,10 @@ import { UserImpulsesService } from '../../services/userImpulses.service';
 })
 
 export class MessagesComponent implements OnInit {	
+	private readonly pageSize = 10;
+
 	private loading:  boolean = false;
+	private msgLoad:  boolean = false;
 	private title:    string  = "Messages";
 	private comrades: Chatter[] = [];
 
@@ -59,6 +62,9 @@ export class MessagesComponent implements OnInit {
 	}
 
 	private selectComradeToChat(index: number) {
+		if (this.msgLoad || this.loading)
+			return;
+
 		let chatter = this.chatters.list[index];
 		this.chatterName = chatter.comrade;
 		this.title       = this.chatterName;
@@ -133,5 +139,33 @@ export class MessagesComponent implements OnInit {
 		let counts = this.impulses.getCounts();
 		counts.popMessages(by);
 		this.impulses.setCounts(counts);
+	}
+
+	private loadPrevious() {
+		console.log('dupa');
+		if (this.currentMessages.length === 0 || this.msgLoad)
+			return;
+
+		let first = this.currentMessages[0];
+		if (first.first || !first.id)
+			return;
+
+		this.msgLoad = true;
+		this.messageService.getPreviousMessages(first.id, this.chatterName, ms => {
+			this.msgLoad = false;
+
+			let chatter = this.chatters.getChatter(this.chatterName);
+			for (let i = ms.length - 1; i >= 0; i--) {
+				chatter.messages.unshift(ms[i]);
+			}
+
+			this.currentMessages = chatter.messages;
+			if (ms.length < this.pageSize)
+				this.currentMessages[0].first = true;
+		});
+	}
+
+	private loadNext() {
+		
 	}
 }
