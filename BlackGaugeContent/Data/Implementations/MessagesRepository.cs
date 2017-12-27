@@ -23,7 +23,7 @@ namespace Bgc.Data.Implementations
 		}
 
 		//todo: security against ie. sql injection
-		public async Task<long> SaveMessage([NotNull] MessageData msg)
+		public long SaveMessage([NotNull] MessageData msg)
 		{
 			var message = new Message()
 			{
@@ -33,7 +33,7 @@ namespace Bgc.Data.Implementations
 				Text       = msg.Text
 			};
 			_context.Messages.Add(message);
-			await SaveChanges();
+			SaveChanges();
 			return message.Id;
 		}
 

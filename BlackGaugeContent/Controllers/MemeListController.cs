@@ -47,7 +47,7 @@ namespace Bgc.Controllers
 		{
 			session.LastMemeId  = memes.Last().Core.Id;
 			session.FirstMemeId = memes.First().Core.Id;
-			await _sessions.SaveChanges();
+			_sessions.SaveChanges();
 		}
 
 		[HttpGet("{pageIndex}/{firstMemeId}")]
@@ -87,7 +87,7 @@ namespace Bgc.Controllers
 				_repo.DeleteRating(earlierRating);
 			}
 
-			await _repo.SaveChanges();
+			_repo.SaveChanges();
 
 			return new MemeState()
 			{

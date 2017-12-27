@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-
-namespace Bgc.Data.Contracts
+﻿namespace Bgc.Data.Contracts
 {
 	public interface IDbRepository
 	{
-		Task<int> SaveChanges();
+		int SaveChanges();
 	}
 }

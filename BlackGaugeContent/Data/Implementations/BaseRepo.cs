@@ -24,11 +24,11 @@ namespace Bgc.Data.Implementations
 			_proxy   = context.Proxy;
 		}
 
-		public async Task<int> SaveChanges()
+		public int SaveChanges()
 		{
 			if (_proxy.BlockSaving)
 				return 0;
-			return await _context.SaveChangesAsync();
+			return _context.SaveChanges();
 		}
 
 		/// <summary>

@@ -26,7 +26,7 @@ namespace Bgc.Data.Contracts
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
-		Task<Comrades> MakeComradesFromRequest(ComradeRequest request);
+		Comrades MakeComradesFromRequest(ComradeRequest request);
 
 		/// <summary>
 		/// Counts received requests that are pending and not seen.

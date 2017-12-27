@@ -32,7 +32,7 @@ namespace Bgc.Data.Implementations
 					Since = DateTime.Now
 				};
 				_context.ComradeRequests.Add(request);
-				await SaveChanges();
+				SaveChanges();
 			}
 			else if(createOnly)
 				throw new SyncException("comrade request already exists.");
@@ -109,7 +109,7 @@ namespace Bgc.Data.Implementations
 			return request;
 		}
 
-		public async Task<Comrades> MakeComradesFromRequest([NotNull] ComradeRequest request)
+		public Comrades MakeComradesFromRequest([NotNull] ComradeRequest request)
 		{
 			var comrades = new Comrades()
 			{

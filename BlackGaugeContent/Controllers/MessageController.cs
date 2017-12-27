@@ -70,7 +70,7 @@ namespace Bgc.Controllers
 				OtherId = otherId,
 				Text    = message.Text
 			};
-			var messageId = await _messages.SaveMessage(saveData);
+			var messageId = _messages.SaveMessage(saveData);
 
 			// send message to receiver with right data
 			var passedMessage = new Message()
@@ -98,7 +98,7 @@ namespace Bgc.Controllers
 				return null;
 
 			message.Seen = true;
-			await _messages.SaveChanges();
+			_messages.SaveChanges();
 			return new Feedback() { Result = FeedResult.Success };
 		}
 	}

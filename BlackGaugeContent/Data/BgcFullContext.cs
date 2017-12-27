@@ -3,6 +3,7 @@ using Bgc.Development;
 using Bgc.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Message = Bgc.Models.Message;
 
 namespace Bgc.Data
 {

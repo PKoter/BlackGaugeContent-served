@@ -23,7 +23,7 @@ namespace Bgc.Data.Contracts
 		/// </summary>
 		/// <param name="message"></param>
 		/// <returns></returns>
-		Task<long> SaveMessage([NotNull] MessageData message);
+		long SaveMessage([NotNull] MessageData message);
 
 		[ItemNotNull]
 		Task<IList<IdAndName>> GetUsersIdAndName(string otherName, int userId);

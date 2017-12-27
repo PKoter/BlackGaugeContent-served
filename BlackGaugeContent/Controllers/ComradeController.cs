@@ -134,8 +134,8 @@ namespace Bgc.Controllers
 
 			request.Seen   = true;
 			request.Agreed = true;
-			var comrades   = await _comrades.MakeComradesFromRequest(request);
-			await _comrades.SaveChanges();
+			var comrades   = _comrades.MakeComradesFromRequest(request);
+			_comrades.SaveChanges();
 
 			var answer = new ComradeRequest()
 			{
@@ -160,7 +160,7 @@ namespace Bgc.Controllers
 				throw new SecurityException();
 			}
 			request.Seen = req.Seen;
-			await _comrades.SaveChanges();
+			_comrades.SaveChanges();
 			return Success;
 		}
 	}

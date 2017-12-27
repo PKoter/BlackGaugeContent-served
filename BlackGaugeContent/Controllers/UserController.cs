@@ -86,7 +86,7 @@ namespace Bgc.Controllers
 				return null;
 			user.GenderId = (byte)details.GenderId;
 			user.Motto = details.Motto;
-			await _users.SaveChanges();
+			_users.SaveChanges();
 			return new AccountFeedback(){Result = FeedResult.Success};
 		}
 
