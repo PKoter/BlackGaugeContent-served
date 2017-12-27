@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bgc.Models;
 using Bgc.Models.QueryReady;
+using Bgc.ViewModels.Signals;
 using JetBrains.Annotations;
+using Message = Bgc.Models.Message;
 
 namespace Bgc.Data.Contracts
 {
@@ -29,5 +30,7 @@ namespace Bgc.Data.Contracts
 
 		[ItemNotNull]
 		Task<Message> DrawMessage(long messageId);
+
+		Task<IList<ChatImpulse>> GetChatImpulses(int userId);
 	}
 }
