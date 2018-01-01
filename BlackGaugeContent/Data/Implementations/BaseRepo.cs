@@ -15,10 +15,12 @@ namespace Bgc.Data.Implementations
 	public class BaseRepo : IDbRepository
 	{
 		protected readonly BgcFullContext _context;
+		protected readonly MappingManager _mappingManager;
 		private            DatabaseProxy  _proxy;
 
-		public BaseRepo(BgcFullContext context)
+		public BaseRepo(BgcFullContext context, MappingManager mappingManager)
 		{
+			_mappingManager = mappingManager;
 			_context = context ?? throw new ArgumentNullException(nameof(context));
 			_proxy   = context.Proxy;
 		}

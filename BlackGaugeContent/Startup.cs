@@ -3,6 +3,7 @@ using System.Text;
 using Bgc.Api;
 using Bgc.Data;
 using Bgc.Data.Contracts;
+using Bgc.Data.Extensions;
 using Bgc.Data.Implementations;
 using Bgc.Development;
 using Bgc.Extensions;
@@ -135,6 +136,8 @@ namespace Bgc
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDbContext<BgcFullContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddSingleton<MappingManager>();
 
 			services.AddTransient<IBgcMemeRepository, BgcMemeRepo>();
 			services.AddTransient<IBgcSessionsRepository, BgcSessionsRepo>();

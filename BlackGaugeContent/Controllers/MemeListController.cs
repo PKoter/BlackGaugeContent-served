@@ -39,11 +39,11 @@ namespace Bgc.Controllers
 			{
 				memes = await _repo.PageMemesAfter(userId, session.LastMemeId);
 			}
-			await UpdateMemeSessionAsync(memes, session);
+			UpdateMemeSessionAsync(memes, session);
 			return memes;
 		}
 
-		private async Task UpdateMemeSessionAsync(IEnumerable<MemeModel> memes, MemeUserSession session)
+		private void UpdateMemeSessionAsync(IEnumerable<MemeModel> memes, MemeUserSession session)
 		{
 			session.LastMemeId  = memes.Last().Core.Id;
 			session.FirstMemeId = memes.First().Core.Id;

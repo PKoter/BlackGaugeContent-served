@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Bgc.Data.Contracts;
+using Bgc.Data.Extensions;
 using Bgc.Models.QueryReady;
 using Bgc.ViewModels.Signals;
 using JetBrains.Annotations;
@@ -18,7 +19,7 @@ namespace Bgc.Data.Implementations
 		private const int MessagesBefore = 9;
 		private const int PageSize       = 10;
 
-		public MessagesRepository(BgcFullContext context) : base(context)
+		public MessagesRepository(BgcFullContext context, MappingManager mapper) : base(context, mapper)
 		{
 		}
 
@@ -154,8 +155,7 @@ namespace Bgc.Data.Implementations
 			param.ParameterName = "@userId";
 
 			cmd.Parameters.Add(param);
-
-			return await cmd.ToListAsync<ChatImpulse>();
+			return await cmd.ToListAsync<ChatImpulse>(_mappingManager);
 
 			/*var query = 
 				from u in _context.Users

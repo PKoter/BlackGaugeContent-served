@@ -13,7 +13,7 @@ namespace Bgc.Data.Implementations
 {
 	public class UserRepo : BaseRepo, IUserRepository
 	{
-		public UserRepo(BgcFullContext context) : base(context) {}
+		public UserRepo(BgcFullContext context) : base(context, null) {}
 
 		public async Task<IEnumerable<Gender>> GetGenders()
 		{
