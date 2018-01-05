@@ -134,17 +134,6 @@ namespace Bgc.Data.Implementations
 			return message;
 		}
 
-
-		private IQueryable<long> GetLastSeenOrSentId(int userId, int otherId)
-		{
-			var query = (from m in _context.Messages
-						where (m.SenderId == userId && m.ReceiverId == otherId) 
-						   || (m.SenderId == otherId && m.ReceiverId == userId && m.Seen)
-						orderby m.Id descending
-						select m.Id);//.Take(1);
-			return query;
-		}
-
 		public async Task<IList<ChatImpulse>> GetChatImpulses(int userId)
 		{
 			var cmd = BuildSpCommand("GetChatImpulses");

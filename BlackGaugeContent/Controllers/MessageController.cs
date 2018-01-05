@@ -120,6 +120,7 @@ namespace Bgc.Controllers
 
 			return PreprareModels(messages, userId);
 		}
+
 		[HttpGet("{msgId}/{userId}/{otherName}")]
 		public async Task<IEnumerable<Message>> GetNextMessages(long msgId,
 			int userId, string otherName)
