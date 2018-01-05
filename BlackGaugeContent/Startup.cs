@@ -138,6 +138,7 @@ namespace Bgc
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddSingleton<MappingManager>();
+			services.AddTransient<IGenerateMapping, MappingGenerator>();
 
 			services.AddTransient<IBgcMemeRepository, BgcMemeRepo>();
 			services.AddTransient<IBgcSessionsRepository, BgcSessionsRepo>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -6,10 +7,10 @@ using JetBrains.Annotations;
 
 namespace Bgc.Data.Extensions
 {
-	public class MappingGenerator
+	public class MappingGenerator : IGenerateMapping
 	{
 		[NotNull]
-		public Action<DbDataReader, T> CreatePropertyMapping<T>([NotNull] DbDataReader reader)
+		public Action<DbDataReader, T> CreatePropertyMapping<T>([NotNull] IDataRecord reader)
 		{
 			var type = typeof(T);
 			var dynMethod = IlGenPropertyMapping(reader, type);
@@ -17,11 +18,11 @@ namespace Bgc.Data.Extensions
 		}
 
 		[NotNull]
-		private DynamicMethod IlGenPropertyMapping([NotNull] DbDataReader reader, [NotNull] Type t)
+		private DynamicMethod IlGenPropertyMapping([NotNull] IDataRecord reader, [NotNull] Type t)
 		{
 			var readerType = typeof(DbDataReader);
-			var mapMethod = new DynamicMethod("_sqlMap", null, new[] { readerType, t });
-			var ilGen = mapMethod.GetILGenerator();
+			var mapMethod  = new DynamicMethod("_sqlMap", null, new[] { readerType, t });
+			var ilGen      = mapMethod.GetILGenerator();
 			var indexer    = readerType
 				.GetProperty("Item", typeof(object), new[] {typeof(int)}).GetMethod;
 
@@ -46,11 +47,12 @@ namespace Bgc.Data.Extensions
 			ilGen.Emit(OpCodes.Ldarg_1);
 			ilGen.Emit(OpCodes.Ldarg_0);
 			ilGen.Emit(OpCodes.Ldc_I4, columnIndex);
+				// load object from reader indexer
 			ilGen.EmitCall(OpCodes.Callvirt, readerIndexer, null);
-
+				// cast object to property type
 			var setterType = objProperty.PropertyType;
 			ilGen.Emit(setterType.IsClass ? OpCodes.Castclass : OpCodes.Unbox_Any, setterType);
-
+				// assign object to property
 			var setter = objProperty.SetMethod;
 			ilGen.EmitCall(OpCodes.Callvirt, setter, null);
 		}
