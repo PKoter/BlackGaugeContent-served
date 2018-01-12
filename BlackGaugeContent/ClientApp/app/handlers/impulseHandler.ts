@@ -3,6 +3,7 @@ import { HubConnection } from '@aspnet/signalr-client';
 import { ImpulsesState, IImpulsesState, ImpulseTypes, ChatImpulse } from '../models/signals';
 import { Message, ChatData } from '../models/chatData';
 import { ComradeRequest } from '../models/users';
+import { MessagingLogic } from '../logic/messagingLogic';
 
 export interface IImpulseHandler {
 	comradeRequest: EventEmitter<ComradeRequest>;
@@ -85,18 +86,7 @@ export class ImpulseHandler implements IImpulseHandler {
 
 	private onMessage(message: Message) {
 		// update impulses here comrades component may not be created, and we would lose data.
-		if (this.chatData && message.otherName) {
-			let msg = this.chatData.getChatter(message.otherName);
-			msg.impulses     += 1;
-			msg.interactions += 1;
-			let messages = msg.messages;
-			// either there's no messages or last is from signal, which means there's no gap between loaded from server and from signals.
-			if (messages.length === 0 || messages[messages.length - 1].fromSignal || msg.impulses === 1) 
-			{
-				messages.push(message);
-				message.fromSignal = true;
-			}
-		}
+		MessagingLogic.addMessage(this.chatData, message);
 
 		this.counts.pushMessage();
 		this.activeCounts.emit(this.counts);

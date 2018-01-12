@@ -1,10 +1,10 @@
 ﻿import { Component, NgModule, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { IComradeEntry } from '../../models/users';
+import { SiteTitleService } from '../../services/title.service';
 import { ChatData, Message, Chatter } from '../../models/chatData';
 import { MessageService } from '../../services/message.service';
 import { ApiRoutes, ApiRoutesService } from '../../services/apiRoutes.service';
 import { UserImpulsesService } from '../../services/userImpulses.service';
+import { MessagingLogic } from '../../logic/messagingLogic';
 
 
 @Component({
@@ -14,19 +14,19 @@ import { UserImpulsesService } from '../../services/userImpulses.service';
 })
 
 export class MessagesComponent implements OnInit {	
-	private readonly pageSize = 10;
+	logic:    MessagingLogic;
 
-	private loading:  boolean = false;
-	private msgLoad:  boolean = false;
-	private title:    string  = "Messages";
-	private comrades: Chatter[] = [];
+	loading:  boolean = false;
+	msgLoad:  boolean = false;
+	title:    string  = "Messages";
+	comrades: Chatter[] = [];
 
-	private chatters:        ChatData;
-	private chatterName:     string = "";
-	private currentMessages: Message[];
-	private typedMessage:    string;
+	chatters:        ChatData;
+	chatterName:     string = "";
+	currentMessages: Message[];
+	typedMessage:    string;
 
-	constructor(titleService: Title, private messageService: MessageService,
+	constructor(titleService: SiteTitleService, private messageService: MessageService,
 		private router: ApiRoutesService, private impulses: UserImpulsesService
 	) {
 		titleService.setTitle("BGC Messages");
@@ -34,6 +34,7 @@ export class MessagesComponent implements OnInit {
 
 	ngOnInit() {
 		this.chatters = this.impulses.getChatters();
+		this.logic = new MessagingLogic(this.impulses, this.chatters);
 
 		// get comrades
 		if (this.chatters.comradesLoaded() !== true) {
@@ -48,6 +49,14 @@ export class MessagesComponent implements OnInit {
 		this.impulses.message.subscribe(this.messageUpdate.bind(this));
 	}
 
+	private anySelectedOrMessages(): boolean {
+		if (this.chatterName === '')
+			return false;
+		if (!this.currentMessages || this.currentMessages.length == 0)
+			return false;
+		return true;
+	}
+
 	/**
 	 * moved message/impulse handling to impulseHandler
 	 * @param message
@@ -57,12 +66,12 @@ export class MessagesComponent implements OnInit {
 		if (!senderName)
 			return;
 
-		if (senderName === this.chatterName) 
-			this.orderByInteractions();
+		//if (senderName === this.chatterName) 
+		this.orderByInteractions();
 	}
 
 	private selectComradeToChat(index: number) {
-		if (this.msgLoad || this.loading)
+		if (this.loading)
 			return;
 
 		let chatter = this.chatters.list[index];
@@ -76,10 +85,9 @@ export class MessagesComponent implements OnInit {
 
 		this.loading = true;
 		this.messageService.getLastMessages(this.chatterName, (r : Message[]) => {
-			this.loading  = false;
-			let data      = this.chatters.getChatter(this.chatterName);
-			data.messages = r;
-
+			this.loading = false;
+			let chatter1      = this.chatters.getChatter(this.chatterName);
+			chatter1.messages = r;
 			this.currentMessages = r;
 		});
 	}
@@ -87,33 +95,21 @@ export class MessagesComponent implements OnInit {
 	/**
 	 * Occurs when user clicks on typing field - they may read all messages and are preparing to answer - better to have this kind of indication that message is read than nothing.
 	 */
-	private readAndReady() {
-		if (this.chatterName === '')
-			return;
-		if (!this.currentMessages || this.currentMessages.length === 0)
+	readAndReady() {
+		if (! this.anySelectedOrMessages())
 			return;
 
 		// delete impulses for that chatter
 		let chatter = this.chatters.getChatter(this.chatterName);
-		if (chatter.impulses > 0 )
-		{
-			if (!this.currentMessages[this.currentMessages.length - 1].fromSignal) {
-				this.loadNext();
-				return;
-			}
-
-			this.reduceMessageNotifies(chatter);
+		if (! this.logic.tryReduceImpulsesHavingLast(chatter)) {
+			this.loadNext();
+			return;
 		}
 
-		let msg = this.currentMessages[this.currentMessages.length - 1];
-		if (!msg.sent && msg.seen !== true && msg.id) {
-
-			msg.seen = true;
-			this.messageService.readMessage(msg.id, r => {});
-		}
+		this.logic.markLastSeen(this.currentMessages, this.messageService);
 	}
 
-	private sendMessage() {
+	sendMessage() {
 		if (!this.typedMessage || this.typedMessage.length === 0)
 			return;
 
@@ -138,68 +134,25 @@ export class MessagesComponent implements OnInit {
 		this.comrades = this.chatters.list;
 	}
 
-	private reduceMessageNotifies(chatter: Chatter) {
-		let by = chatter.impulses;
-		chatter.impulses = 0;
+	loadPrevious() {
+		if (!this.anySelectedOrMessages() || this.msgLoad)
+			return;
 
-		let counts = this.impulses.getCounts();
-		counts.popMessages(by);
-		this.impulses.setCounts(counts);
+		if (!this.logic.tryLoadPreviousMessages(this.chatterName, this.messageService, 
+			(r: any) => {this.msgLoad = false;})
+		)
+			return;
+		this.msgLoad = true;
 	}
 
-	private loadPrevious() {
-		if (this.currentMessages.length === 0 || this.msgLoad)
+	loadNext() {
+		if (!this.anySelectedOrMessages() || this.msgLoad)
 			return;
 
-		let first = this.currentMessages[0];
-		if (first.first || !first.id)
+		if (!this.logic.tryLoadNextMessages(this.chatterName, this.messageService, 
+			(r: any) => {this.msgLoad = false;})
+		)
 			return;
-
 		this.msgLoad = true;
-		this.messageService.getPreviousMessages(first.id, this.chatterName, ms => {
-			this.msgLoad = false;
-
-			let chatter = this.chatters.getChatter(this.chatterName);
-			for (let i = ms.length - 1; i >= 0; i--) {
-				chatter.messages.unshift(ms[i]);
-			}
-
-			this.currentMessages = chatter.messages;
-			if (ms.length < this.pageSize)
-				this.currentMessages[0].first = true;
-		});
-	}
-
-	private loadNext() {
-		if (this.currentMessages.length === 0 || this.msgLoad)
-			return;
-
-		let last = this.currentMessages[this.currentMessages.length -1];
-		let chatter = this.chatters.getChatter(this.chatterName);
-
-
-		if (last.fromSignal) {
-			this.reduceMessageNotifies(chatter);
-			return;
-		}
-		if (!last.id || chatter.impulses === 0)
-			return;
-
-		this.msgLoad = true;
-		this.messageService.getNextMessages(last.id, this.chatterName, ms => {
-			this.msgLoad = false;
-
-			let chatter = this.chatters.getChatter(this.chatterName);
-			for (let i = 0; i < ms.length; i++) {
-				chatter.messages.push(ms[i]);
-			}
-
-			this.currentMessages = chatter.messages;
-			if (ms.length < this.pageSize) {
-				this.currentMessages[this.currentMessages.length - 1].fromSignal = true;
-
-				this.reduceMessageNotifies(chatter);
-			}
-		});
 	}
 }
