@@ -1,7 +1,7 @@
 ﻿import { Inject, Injectable, Output, EventEmitter } from '@angular/core';
 import { Http } from '@angular/http';
 import { ApiRoutesService, Routes, ApiRoutes } from './apiRoutes.service';
-import { Message } from '../models/chatData';
+import { Message, MessageCollection } from '../models/chatData';
 import { IComradeEntry } from '../models/users';
 import { AuthRequestHandler } from '../handlers/requestHandler';
 import { AuthGuard } from '../auth/auth.guard';
@@ -47,17 +47,22 @@ export class MessageService extends AuthRequestHandler {
 			(ApiRoutes.SeenMessage, {id: messageId}, callback);
 	} 
 
-	public getPreviousMessages(msgId: number, otherName: string, callback: (r: Message[]) => void) {
+	public getPreviousMessages(msgId: number, otherName: string, 
+	 callback: (r: MessageCollection) => void) 
+	{
 		if (this.isLoggedIn() === false)
 			return;
 		let id = this.auth.getLoggedUserIds().id;
-		this.fireAuthGet<Message[]>(ApiRoutes.GetPreviousMessages, callback, msgId, id, otherName);
+		this.fireAuthGet<MessageCollection>(ApiRoutes.GetPreviousMessages, 
+			callback, msgId, id, otherName);
 	}
 
-	public getNextMessages(msgId: number, otherName: string, callback: (r: Message[]) => void) {
+	public getNextMessages(msgId: number, otherName: string, callback: (r: MessageCollection) => void)
+	{
 		if (this.isLoggedIn() === false)
 			return;
 		let id = this.auth.getLoggedUserIds().id;
-		this.fireAuthGet<Message[]>(ApiRoutes.GetNextMessages, callback, msgId, id, otherName);
+		this.fireAuthGet<MessageCollection>(ApiRoutes.GetNextMessages,
+			callback, msgId, id, otherName);
 	}
 }
