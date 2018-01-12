@@ -23,7 +23,6 @@ namespace Bgc.Data.Implementations
 		{
 		}
 
-		//todo: security against ie. sql injection
 		public long SaveMessage([NotNull] MessageData msg)
 		{
 			var message = new Message()

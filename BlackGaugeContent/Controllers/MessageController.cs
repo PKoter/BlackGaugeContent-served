@@ -104,7 +104,7 @@ namespace Bgc.Controllers
 		}
 
 		[HttpGet("{msgId}/{userId}/{otherName}")]
-		public async Task<IEnumerable<Message>> GetPreviousMessages(long msgId,
+		public async Task<MessageCollection> GetPreviousMessages(long msgId,
 			int userId, string otherName)
 		{
 			var chat = new ChatState()
@@ -118,11 +118,11 @@ namespace Bgc.Controllers
 
 			var messages = await _messages.GetPreviousMessages(chat);
 
-			return PreprareModels(messages, userId);
+			return PrepareModels(messages, userId, otherName);
 		}
 
 		[HttpGet("{msgId}/{userId}/{otherName}")]
-		public async Task<IEnumerable<Message>> GetNextMessages(long msgId,
+		public async Task<MessageCollection> GetNextMessages(long msgId,
 			int userId, string otherName)
 		{
 			var chat = new ChatState()
@@ -136,10 +136,11 @@ namespace Bgc.Controllers
 
 			var messages = await _messages.GetNextMessages(chat);
 
-			return PreprareModels(messages, userId);
+			return PrepareModels(messages, userId, otherName);
 		}
 
-		private IList<Message> PreprareModels([NotNull] IList<Models.Message> messages, int userId)
+		[NotNull]
+		private static MessageCollection PrepareModels([NotNull] IList<Models.Message> messages, int userId, [NotNull] string otherName)
 		{
 			var msgs = new List<Message>(messages.Count);
 
@@ -148,13 +149,18 @@ namespace Bgc.Controllers
 				Sent = m.SenderId == userId,
 				Text = m.Text
 			}));
-			// only last and first messages need to have id
+			// only last and first messages need to have id or name
 			if(msgs.Count > 0)
 			{
-				msgs[0].Id = messages.First().Id;
-				msgs[msgs.Count - 1].Id = messages.Last().Id;
+				msgs[0].Id            = messages.First().Id;
+				msgs.Last().Id        = messages.Last().Id;
 			}
-			return msgs;
+
+			return new MessageCollection()
+			{
+				ChatterName = otherName,
+				Messages = msgs
+			};
 		}
 	}
 }
