@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent}             from './components/app/app.component';
 import { AppHeaderComponent}       from './components/appHeader/appHeader.component';
-import { NavMenuComponent}         from './components/navmenu/navmenu.component';
 import { HomeComponent}            from './components/home/home.component';
 import { MemeListComponent}        from './components/memeList/memeList.component';
 import { MemeComponent}            from './components/meme/meme.component';
@@ -34,6 +33,7 @@ import { DataFlowService}          from './services/dataFlow.service';
 import { UserService}              from './services/user.service';
 import { AuthGuard}                from './auth/auth.guard';
 import { AuthorizeRouteGuard}      from './auth/authorizeRoute.guard';
+import { AnonymousRouteGuard}      from './auth/anonymousRoute.guard';
 import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 import { UserImpulsesService}      from './services/userImpulses.service';
 import { MessageService}           from './services/message.service';
@@ -43,7 +43,6 @@ import { MessageService}           from './services/message.service';
 	declarations: [
 		AppComponent,
 		AppHeaderComponent,
-		NavMenuComponent,
 		HomeComponent,
 		MemeListComponent,
 		MemeComponent,
@@ -75,10 +74,14 @@ import { MessageService}           from './services/message.service';
 			{ path: Routes.Home,                  component: HomeComponent },
 			{ path: Routes.MemeList,              component: MemeListComponent },
 			{ path: Routes.MemeList+"/:page",     component: MemeListComponent},
-			{ path: Routes.Register,              component: RegisterComponent },
-			{ path: Routes.Login,                 component: LoginComponent },
-			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
-			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
+			{ path: Routes.Register,              component: RegisterComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.Login,                 component: LoginComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent, 
+				canActivate: [AnonymousRouteGuard] },
 			{ path: Routes.ManageAccount,         component: ManageAccountComponent,
 				canActivate: [AuthorizeRouteGuard] },
 			{ path: Routes.FindUsers,             component: FindUsersComponent,
@@ -96,6 +99,7 @@ import { MessageService}           from './services/message.service';
 		ApiRoutesService,
 		AuthGuard,
 		AuthorizeRouteGuard,
+		AnonymousRouteGuard,
 		UserImpulsesService,
 		MessageService
 	]

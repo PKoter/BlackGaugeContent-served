@@ -1,0 +1,18 @@
+﻿import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { ApiRoutesService, Routes } from '../services/apiRoutes.service';
+
+@Injectable() 
+export class AnonymousRouteGuard implements CanActivate {
+
+	constructor(private routes: ApiRoutesService, private auth: AuthGuard) {}
+
+	canActivate(route: Object, state: Object): boolean {
+		if (this.auth.hasActiveToken()) {
+			this.routes.redirect(Routes.Home);
+			return false;
+		}
+		return true;
+	}
+}
