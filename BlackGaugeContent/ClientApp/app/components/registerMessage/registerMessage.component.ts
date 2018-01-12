@@ -26,9 +26,9 @@ import { Http } from '@angular/http';
 })
 
 export class RegisterMessageComponent implements OnInit {
-	private message: string = 'Wait...';
-	private data: AccountFeedback;
-	private posting: boolean = true;
+	message: string = 'Wait...';
+	data: AccountFeedback;
+	posting: boolean = true;
 
 	constructor(private router: Router, private route: ActivatedRoute,
 		private userService: UserService, private dataService: DataFlowService, private http: Http)

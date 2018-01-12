@@ -16,10 +16,10 @@ import { ApiRoutes, Routes, ApiRoutesService } from '../../services/apiRoutes.se
 
 export class LoginComponent {
 
-	private model: LoginModel;
-	private error: string = '';
-	private submitted:   boolean = false;
-	private redirecting: boolean = false;
+	model: LoginModel;
+	error: string = '';
+	submitted:   boolean = false;
+	redirecting: boolean = false;
 
 	constructor(titleService: Title,
 		private userService:  UserService,

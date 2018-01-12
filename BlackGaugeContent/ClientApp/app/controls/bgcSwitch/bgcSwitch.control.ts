@@ -37,8 +37,8 @@ export class BgcSwitchControl {
 	@Input() public checkClass:  string;
 	//@Input() public switchOrCheckbox: () => boolean;
 
-	private value: boolean;
-	private buttonState: string;
+	value: boolean;
+	buttonState: string;
 
 	constructor() {
 		this.value = this.startValue;
