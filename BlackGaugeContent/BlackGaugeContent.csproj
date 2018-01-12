@@ -7,6 +7,7 @@
 	<IsPackable>false</IsPackable>
 	  <UserSecretsId>a283c3a8-0f71-4c9a-8684-a533173791ce</UserSecretsId>
 	  <RootNamespace>Bgc</RootNamespace>
+	  <StartupObject>Bgc.Program</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -18,7 +19,7 @@
   <ItemGroup>
 	  <PackageReference Include="BuildWebCompiler" Version="1.11.375" />
 	  <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+	  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
@@ -30,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+	<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
 	<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 
@@ -40,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\auth\anonymousRoute.guard.ts" />
     <None Remove="ClientApp\app\auth\auth.guard.ts" />
     <None Remove="ClientApp\app\auth\authorizeRoute.guard.ts" />
     <None Remove="ClientApp\app\commonTypes.api.ts" />
@@ -49,6 +51,8 @@
     <None Remove="ClientApp\app\components\messages\messages.component.ts" />
     <None Remove="ClientApp\app\controls\bgcSidePanel\bgcSidePanel.control.ts" />
     <None Remove="ClientApp\app\handlers\impulseHandler.ts" />
+    <None Remove="ClientApp\app\logic\messagingExtensions.ts" />
+    <None Remove="ClientApp\app\logic\messagingLogic.ts" />
     <None Remove="ClientApp\app\models\account.ts" />
     <None Remove="ClientApp\app\models\chatData.ts" />
     <None Remove="ClientApp\app\models\memes.ts" />
@@ -59,12 +63,14 @@
     <None Remove="ClientApp\app\services\bgcMeme.service.ts" />
     <None Remove="ClientApp\app\services\dataFlow.service.ts" />
     <None Remove="ClientApp\app\services\message.service.ts" />
+    <None Remove="ClientApp\app\services\title.service.ts" />
     <None Remove="ClientApp\app\services\user.service.ts" />
     <None Remove="ClientApp\app\services\userImpulses.service.ts" />
-    <None Remove="ClientApp\app\viewApi\stringSelect.ts" />
+    <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\auth\anonymousRoute.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\auth\auth.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\auth\authorizeRoute.guard.ts" />
     <TypeScriptCompile Include="ClientApp\app\commonTypes.api.ts" />
@@ -77,6 +83,8 @@
     <TypeScriptCompile Include="ClientApp\app\controls\bgcMessageModal\bgcMessageModal.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\bgcQuickUserActions\bgcQuickUserActions.control.ts" />
     <TypeScriptCompile Include="ClientApp\app\handlers\impulseHandler.ts" />
+    <TypeScriptCompile Include="ClientApp\app\logic\messagingExtensions.ts" />
+    <TypeScriptCompile Include="ClientApp\app\logic\messagingLogic.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\chatData.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\signals.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\users.ts" />
@@ -91,10 +99,14 @@
     <TypeScriptCompile Include="ClientApp\app\services\bgcMeme.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\dataFlow.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\message.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\title.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\user.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\userImpulses.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\viewApi\localStorage.ts" />
-    <TypeScriptCompile Include="ClientApp\app\viewApi\stringSelect.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

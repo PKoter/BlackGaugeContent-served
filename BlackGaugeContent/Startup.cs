@@ -37,7 +37,8 @@ namespace Bgc
 		{
 			Configuration  = configuration;
 			_loggerFactory = loggerFactory;
-			_signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["SymmetricSecurityKey"]));
+			var key = configuration["SymmetricSecurityKey"];
+			_signinKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
 		}
 
 		public IConfiguration Configuration { get; }
@@ -82,34 +83,39 @@ namespace Bgc
 				options.SlidingExpiration = true;
 			});
 
+			var useSsl = string.Equals(Configuration["SetSSL"], "true");
+			var secure = CookieSecurePolicy.Always;
+			if(! useSsl)
+				secure = CookieSecurePolicy.SameAsRequest;
 
 			services.AddAntiforgery(options =>
-				{
-					options.HeaderName = "X-XSRF-TOKEN";
-					options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-					options.SuppressXFrameOptionsHeader = false;
-					options.Cookie.HttpOnly = false;
-				});
+			{
+				options.HeaderName                  = "X-XSRF-TOKEN";
+				options.Cookie.SecurePolicy         = secure;
+				options.SuppressXFrameOptionsHeader = false;
+				options.Cookie.HttpOnly             = false;
+			});
 			
 			services.AddMvc(options =>
-				{
-					//options.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
-				})
-				.AddRazorPagesOptions(options =>
-				{
-					options.Conventions.AuthorizeFolder("/Account/Manage");
-					options.Conventions.AuthorizePage("/Account/Logout");
-				});
+			{
+				//options.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
+			})
+			.AddRazorPagesOptions(options =>
+			{
+				options.Conventions.AuthorizeFolder("/Account/Manage");
+				options.Conventions.AuthorizePage("/Account/Logout");
+			});
 
 			//services.AddTransient<AntiforgeryCookieResultFilter>();
 
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.Configure<MvcOptions>(options =>
-				{
+			{
+				if(useSsl)
 					options.Filters.Add(new RequireHttpsAttribute());
-					//options.Filters.Add(new ValidateAntiForgeryTokenAttribute());
-					options.Filters.Add(new ExceptionFilter(_loggerFactory));
-				});
+				//options.Filters.Add(new ValidateAntiForgeryTokenAttribute());
+				options.Filters.Add(new ExceptionFilter(_loggerFactory));
+			});
 			services.Configure<AuthMessageSenderOptions>(Configuration);
 
 			services.AddAuthorization(options => 
@@ -137,8 +143,8 @@ namespace Bgc
 			services.AddDbContext<BgcFullContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddSingleton<MappingManager>();
 			services.AddTransient<IGenerateMapping, MappingGenerator>();
+			services.AddSingleton<MappingManager>();
 
 			services.AddTransient<IBgcMemeRepository, BgcMemeRepo>();
 			services.AddTransient<IBgcSessionsRepository, BgcSessionsRepo>();
@@ -151,6 +157,7 @@ namespace Bgc
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery, ILoggerFactory loggingFactory)
 		{
+			
 			var options = new RewriteOptions().AddRedirectToHttps();
 			
 			app.UseRewriter(options);
