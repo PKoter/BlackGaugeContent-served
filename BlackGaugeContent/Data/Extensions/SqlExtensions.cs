@@ -82,7 +82,8 @@ namespace Bgc.Data.Extensions
 		}
 
 		/// <summary>
-		/// Executes stored procedure command and builds list of DTO. Caution: names of columns and fields must match. Uses cached mapping.
+		/// Executes stored procedure command and builds list of DTO. 
+		/// Caution: names of columns and fields must match. Uses cached mapping.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="command"></param>
@@ -109,6 +110,36 @@ namespace Bgc.Data.Extensions
 				}
 			}
 			return list;
+		}
+
+		/// <summary>
+		/// Executes stored procedure command and returns first DTO or null.
+		/// Caution: names of columns and fields must match. Uses cached mapping.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="command"></param>
+		/// <param name="mapper"></param>
+		/// <returns></returns>
+		[ItemCanBeNull]
+		internal static async Task<T> FirstOrDefault<T>([NotNull] this DbCommand command, MappingManager mapper) where T : class, new()
+		{
+			using(command)
+			{
+				if((command.Connection.State & ConnectionState.Open) == 0)
+					command.Connection.Open();
+
+				using(var reader = await command.ExecuteReaderAsync())
+				{
+					if(reader.Read())
+					{
+						var map = mapper.GetSpMappingFor<T>(reader, command.CommandText);
+						var obj = new T();
+						map(reader, obj);
+						return obj;
+					}
+				}
+			}
+			return null;
 		}
 	}
 }
