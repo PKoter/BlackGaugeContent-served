@@ -1,5 +1,5 @@
 ﻿import { Component, NgModule, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { SiteTitleService } from '../../services/title.service';
 import { LoginModel, GenderModel, AccountFeedback, AccountDetails, FeedResult } from '../../models/account';
 import { ListEntry }      from '../../commonTypes.api';
 import { UserService}     from '../../services/user.service';
@@ -13,21 +13,21 @@ import { ApiRoutes, ApiRoutesService} from '../../services/apiRoutes.service';
 })
 
 export class ManageAccountComponent implements OnInit {
-	private readonly MaxMottoLength: number = 255;
+	readonly MaxMottoLength: number = 255;
 
-	private genders: GenderModel[] = [];
-	private model: AccountDetails;
-	private modelCopy: AccountDetails;
-	private loadLevel: number = 0;
+	genders: GenderModel[] = [];
+	model: AccountDetails;
+	modelCopy: AccountDetails;
+	loadLevel: number = 0;
 
-	private genderToString = (model: GenderModel) => model.genderName;
-	private error: string = '';
-	private submitted: boolean = false;
-	private redirecting: boolean = false;
+	genderToString = (model: GenderModel) => model.genderName;
+	error: string = '';
+	submitted: boolean = false;
+	redirecting: boolean = false;
 
-	private deathRequest: boolean = false;
+	deathRequest: boolean = false;
 
-	constructor(titleService: Title, private userService: UserService, private router: ApiRoutesService
+	constructor(titleService: SiteTitleService, private userService: UserService, private router: ApiRoutesService
 	) {
 		this.model = new AccountDetails(0, '', '', 0, true);
 		titleService.setTitle("BGC Manage account");

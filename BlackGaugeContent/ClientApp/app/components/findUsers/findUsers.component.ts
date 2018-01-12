@@ -1,6 +1,6 @@
 ﻿import { Component, NgModule, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { LoginModel, GenderModel, AccountFeedback, AccountDetails, FeedResult } from '../../models/account';
+import { SiteTitleService } from '../../services/title.service';
+import { FeedResult } from '../../models/account';
 import { IUserInfo } from '../../models/users'
 import { ListEntry } from '../../commonTypes.api';
 import { UserService } from '../../services/user.service';
@@ -14,14 +14,14 @@ import { ApiRoutes, ApiRoutesService } from '../../services/apiRoutes.service';
 })
 
 export class FindUsersComponent {
-	private model: IUserInfo;
-	private userName:           string = '';
-	private comradeRequestSent: boolean = false;
-	private found:              boolean = false;
-	private searching:          boolean = false;
-	private success:            number  = 0; // 0 1 2
+	model: IUserInfo;
+	userName:           string  = '';
+	comradeRequestSent: boolean = false;
+	found:              boolean = false;
+	searching:          boolean = false;
+	success:            number  = 0; // 0 1 2
 
-	constructor(titleService: Title, private userService: UserService,
+	constructor(titleService: SiteTitleService, private userService: UserService,
 		private router: ApiRoutesService)
 	{
 		titleService.setTitle("BGC Find User");
@@ -49,7 +49,7 @@ export class FindUsersComponent {
 		return false;
 	}
 
-	private findUser() {
+	findUser() {
 		if (this.checkUserNotSearchingHimself()) return;
 		// blocks view and sends request.
 		this.searching = true;
@@ -60,6 +60,7 @@ export class FindUsersComponent {
 			if (r.userName && r.userName !== '') {
 				this.model = r;
 				result     = true;
+				this.userName = r.userName;
 				this.comradeRequestSent = r.comradeRequestSent || r.isComrade || r.requestReceived;
 			}
 			this.found   = result;

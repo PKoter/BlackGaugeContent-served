@@ -1,5 +1,5 @@
 ﻿import { Component, NgModule, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { SiteTitleService } from '../../services/title.service';
 import { IComradeRelations, IComradeEntry, ComradeRequest } from '../../models/users';
 import { IComradeRequest } from '../../models/signals';
 import { FeedResult } from '../../models/account';
@@ -16,13 +16,13 @@ import { UserImpulsesService } from '../../services/userImpulses.service';
 })
 
 export class ComradesComponent implements OnInit {
-	private comrades: IComradeEntry [];
-	private received: ComradeRequest[];
-	private sent:     ComradeRequest[];
-	private loading:  boolean = true;
-	private tempIndex: number|null = null;
+	comrades: IComradeEntry [];
+	received: ComradeRequest[];
+	sent:     ComradeRequest[];
+	loading:  boolean = true;
+	tempIndex: number|null = null;
 
-	constructor(titleService: Title, private userService: UserService,
+	constructor(titleService: SiteTitleService, private userService: UserService,
 		private router: ApiRoutesService, private impulses: UserImpulsesService
 	) {
 		titleService.setTitle("BGC Comrade relations");
@@ -47,7 +47,15 @@ export class ComradesComponent implements OnInit {
 			this.received.unshift(request);
 		}
 		else {
-			let index = this.sent.findIndex(r => r.id === request.id);
+			let index = this.sent.findIndex(r => r.id === request.id); //doesn't work in es5
+			/*
+			for (let i = 0; i < this.sent.length; i++) 
+			{
+				if (this.sent[i].id == request.id) {
+					index = i;
+					break;
+				}
+			}*/
 			if (index < 0) {
 				console.log('probaby bug');
 				return;
@@ -82,7 +90,7 @@ export class ComradesComponent implements OnInit {
 		this.tempIndex = index;
 		this.loading   = true;
 
-		this.userService.confirmComradeRequest(request.id, request.otherName, r => {
+		this.userService.confirmComradeRequest(request.id, request.otherName, (r: any) => {
 			if (r.result !== FeedResult.success || this.tempIndex == null)
 				return;
 			this.makeComradeFrom(this.received, this.tempIndex);
@@ -100,7 +108,7 @@ export class ComradesComponent implements OnInit {
 			return;
 
 		request.seen = true;
-		this.userService.seenComradeRequest(request.id, r => {});
+		this.userService.seenComradeRequest(request.id, (r: any) => {});
 
 		this.reduceComradeNotifies();
 	}

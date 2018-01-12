@@ -37,7 +37,7 @@ import { AnonymousRouteGuard}      from './auth/anonymousRoute.guard';
 import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 import { UserImpulsesService}      from './services/userImpulses.service';
 import { MessageService}           from './services/message.service';
-
+import { SiteTitleService }        from './services/title.service';
 
 @NgModule({
 	declarations: [
@@ -101,7 +101,8 @@ import { MessageService}           from './services/message.service';
 		AuthorizeRouteGuard,
 		AnonymousRouteGuard,
 		UserImpulsesService,
-		MessageService
+		MessageService,
+		SiteTitleService
 	]
 })
 export class AppModuleShared {

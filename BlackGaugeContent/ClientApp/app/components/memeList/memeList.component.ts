@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { SiteTitleService } from '../../services/title.service';
 import { BgcMemeService } from '../../services/bgcMeme.service';
 import { ActivatedRoute } from '@angular/router/'
 
@@ -14,12 +14,12 @@ import { MemeModel } from '../../models/memes';
 
 export class MemeListComponent implements OnInit {
 	public memes: MemeModel[];
-	private page: number;
-	private memeCount: number;
-	private newMemeCount: number;
+	page: number;
+	memeCount: number;
+	newMemeCount: number;
 
 	constructor(private memeService: BgcMemeService, private routes: ActivatedRoute,
-		titleService: Title)
+		titleService: SiteTitleService)
 	{
 		titleService.setTitle("BGC official memes");
 		this.page = +(this.routes.snapshot.paramMap.get('page') || 0);
