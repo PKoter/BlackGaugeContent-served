@@ -18,25 +18,25 @@ import { AppMetaService } from '../../services/appMeta.service';
 
 export class RegisterComponent implements OnInit {
 
-	private model:            RegistrationModel;
-	private submitted:        boolean = false;
-	private passwordStrength: number;
-	private notMatch:         boolean = true;
+	model:            RegistrationModel;
+	submitted:        boolean = false;
+	passwordStrength: number;
+	notMatch:         boolean = true;
 
-	private nameUnique:  boolean = false;
-	private emailUnique: boolean = false;
-	private nameDone:    boolean;
-	private emailDone:   boolean;
+	nameUnique:  boolean = false;
+	emailUnique: boolean = false;
+	nameDone:    boolean;
+	emailDone:   boolean;
 
-	private genders: GenderModel[];
-	private genderToString = (item: GenderModel) => item.genderName;
+	genders: GenderModel[];
+	genderToString = (item: GenderModel) => item.genderName;
 
-	private openedTerms:    boolean;
-	private hideTerms:      boolean = true;
-	private agreedToTerms:  boolean = false;
-	private termsOfService: string;
+	openedTerms:    boolean;
+	hideTerms:      boolean = true;
+	agreedToTerms:  boolean = false;
+	termsOfService: string;
 
-	private redirecting: boolean = false;
+	redirecting: boolean = false;
 
 	constructor(private router: ApiRoutesService,
 		titleService: Title,

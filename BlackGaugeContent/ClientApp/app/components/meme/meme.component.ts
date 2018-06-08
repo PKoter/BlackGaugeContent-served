@@ -13,13 +13,13 @@ import { MemeModel, Meme, MemeState, MemeReaction } from '../../models/memes'
 })
 
 export class MemeComponent {
-	private meme: Meme;
-	private memeState: MemeState;
-	private voteUnit = 1;
-	private vote: number;
-	private hasVoted = false;
-	private lastVote: boolean;
-	private blockVote: boolean = false;
+	meme: Meme;
+	memeState: MemeState;
+	voteUnit = 1;
+	vote: number;
+	hasVoted = false;
+	lastVote: boolean;
+	blockVote: boolean = false;
 
 	@Input()
 	public set Meme(meme: MemeModel) {
@@ -41,7 +41,7 @@ export class MemeComponent {
 		return this._sanitizer.bypassSecurityTrustUrl(this.meme.base64);
 	}
 
-	private voted(nicey: boolean) {
+	voted(nicey: boolean) {
 		if (this.userService.isLoggedIn() === false || this.blockVote)
 			return;
 

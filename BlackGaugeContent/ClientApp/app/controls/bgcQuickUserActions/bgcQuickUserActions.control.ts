@@ -44,8 +44,8 @@ export class BgcQuickUserActionsControl {
 	@Input() public userName: string;
 	@Input() public notifications: number | string | undefined;
 	@Input() public tabIndex: number;
-	private rolledOut: boolean = false;
-	private listState: string = 'hidden';
+	rolledOut: boolean = false;
+	listState: string = 'hidden';
 
 	constructor(private router: ApiRoutesService) {
 		

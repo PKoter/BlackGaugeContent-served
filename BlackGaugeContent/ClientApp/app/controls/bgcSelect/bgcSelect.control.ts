@@ -23,10 +23,10 @@ export class BgcSelectControl {
 	@Input() public require: boolean;
 	@ContentChild(TemplateRef) itemTemplate: TemplateRef<any>;
 
-	private selecting: boolean = false;
+	selecting: boolean = false;
 
 
-	private get ShowValue(): string {
+	get ShowValue(): string {
 		if (this.item == null) {
 			if (this.preselectedItem)
 				this.item = this.preselectedItem;

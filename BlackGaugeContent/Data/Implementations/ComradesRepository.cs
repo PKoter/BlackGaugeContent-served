@@ -14,7 +14,7 @@ namespace Bgc.Data.Implementations
 {
 	public class ComradesRepository : BaseRepo, IComradeRepository
 	{
-		public ComradesRepository(BgcFullContext context) : base(context) {}
+		public ComradesRepository(BgcFullContext context) : base(context, null) {}
 
 		public async Task<ComradeRequest> FetchComradeRequest(int senderId, string receiverName, bool createOnly = false)
 		{

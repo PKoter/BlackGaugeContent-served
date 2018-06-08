@@ -7,7 +7,7 @@ namespace Bgc.Data.Implementations
 {
 	public class BgcSessionsRepo : BaseRepo, IBgcSessionsRepository
 	{
-		public BgcSessionsRepo(BgcFullContext context): base(context)
+		public BgcSessionsRepo(BgcFullContext context): base(context, null)
 		{
 		}
 

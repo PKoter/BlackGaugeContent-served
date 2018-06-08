@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Bgc.Data.Contracts;
+using Bgc.Data.Extensions;
 using Bgc.Models;
 using Bgc.Models.QueryReady;
 using Bgc.ViewModels.User;
@@ -13,7 +15,7 @@ namespace Bgc.Data.Implementations
 {
 	public class UserRepo : BaseRepo, IUserRepository
 	{
-		public UserRepo(BgcFullContext context) : base(context) {}
+		public UserRepo(BgcFullContext context, MappingManager mapping) : base(context, mapping) {}
 
 		public async Task<IEnumerable<Gender>> GetGenders()
 		{
@@ -73,6 +75,7 @@ namespace Bgc.Data.Implementations
 
 		public async Task<UserInfo> GetUserInfo(int id, string userName)
 		{
+			/*
 			var query = from user in _context.Users
 						join gender in _context.Genders
 						on user.GenderId equals gender.Id
@@ -96,12 +99,27 @@ namespace Bgc.Data.Implementations
 						};
 			try
 			{
-				return await query.SingleOrDefaultAsync(u => u.UserName.Contains(userName));
+				return await query.SingleOrDefaultAsync(u => u.UserName.StartsWith(userName));
 			}
 			catch (Exception)
 			{
 				return null;
-			}
+			}*/
+			var cmd = BuildSpCommand("GetFoundUserInfo");
+
+			var param = cmd.CreateParameter();
+			param.Value = id;
+			param.DbType = DbType.Int32;
+			param.ParameterName = "@userId";
+			cmd.Parameters.Add(param);
+
+			param = cmd.CreateParameter();
+			param.Value = userName;
+			param.DbType = DbType.String;
+			param.ParameterName = "@userName";
+			cmd.Parameters.Add(param);
+
+			return await cmd.FirstOrDefault<UserInfo>(_mappingManager);
 		}
 	}
 }

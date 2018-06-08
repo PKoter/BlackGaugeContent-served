@@ -40,8 +40,8 @@ export class BgcSidePanelControl {
 	/** determines whether called events raised by Draw are welcomed */
 	@Input() public notifyOnDraw: boolean = false;
 
-	private drawn: boolean = false;
-	private shelfState: string = 'hidden';
+	drawn: boolean = false;
+	shelfState: string = 'hidden';
 
 	@Input() set Draw(value: boolean) {
 		this.setState(value);
@@ -49,7 +49,7 @@ export class BgcSidePanelControl {
 			this.called.emit(value);
 	}
 
-	private hide() {
+	hide() {
 		this.setState(false);
 		this.called.emit(false);
 	}

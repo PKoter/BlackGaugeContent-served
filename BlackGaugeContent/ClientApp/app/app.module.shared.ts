@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent}             from './components/app/app.component';
 import { AppHeaderComponent}       from './components/appHeader/appHeader.component';
-import { NavMenuComponent}         from './components/navmenu/navmenu.component';
 import { HomeComponent}            from './components/home/home.component';
 import { MemeListComponent}        from './components/memeList/memeList.component';
 import { MemeComponent}            from './components/meme/meme.component';
@@ -33,16 +32,17 @@ import { BgcEqualValidator}        from './directives/bgcEqual.validator';
 import { DataFlowService}          from './services/dataFlow.service';
 import { UserService}              from './services/user.service';
 import { AuthGuard}                from './auth/auth.guard';
+import { AuthorizeRouteGuard}      from './auth/authorizeRoute.guard';
+import { AnonymousRouteGuard}      from './auth/anonymousRoute.guard';
 import { Routes, ApiRoutesService} from './services/apiRoutes.service';
 import { UserImpulsesService}      from './services/userImpulses.service';
 import { MessageService}           from './services/message.service';
-
+import { SiteTitleService }        from './services/title.service';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		AppHeaderComponent,
-		NavMenuComponent,
 		HomeComponent,
 		MemeListComponent,
 		MemeComponent,
@@ -74,14 +74,22 @@ import { MessageService}           from './services/message.service';
 			{ path: Routes.Home,                  component: HomeComponent },
 			{ path: Routes.MemeList,              component: MemeListComponent },
 			{ path: Routes.MemeList+"/:page",     component: MemeListComponent},
-			{ path: Routes.Register,              component: RegisterComponent },
-			{ path: Routes.Login,                 component: LoginComponent },
-			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent },
-			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent },
-			{ path: Routes.ManageAccount,         component: ManageAccountComponent },
-			{ path: Routes.FindUsers,             component: FindUsersComponent },
-			{ path: Routes.Comrades,              component: ComradesComponent },
-			{ path: Routes.Messages,              component: MessagesComponent },
+			{ path: Routes.Register,              component: RegisterComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.Login,                 component: LoginComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.RegisterMessage,       component: RegisterMessageComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.ConfirmEmail,          component: RegisterMessageComponent, 
+				canActivate: [AnonymousRouteGuard] },
+			{ path: Routes.ManageAccount,         component: ManageAccountComponent,
+				canActivate: [AuthorizeRouteGuard] },
+			{ path: Routes.FindUsers,             component: FindUsersComponent,
+				canActivate: [AuthorizeRouteGuard] },
+			{ path: Routes.Comrades,              component: ComradesComponent,
+				canActivate: [AuthorizeRouteGuard] },
+			{ path: Routes.Messages,              component: MessagesComponent, 
+				canActivate: [AuthorizeRouteGuard] },
 			{ path: '**', redirectTo: Routes.Home }
 		]  /*{enableTracing:true}*/)
 	],
@@ -90,8 +98,11 @@ import { MessageService}           from './services/message.service';
 		UserService,
 		ApiRoutesService,
 		AuthGuard,
+		AuthorizeRouteGuard,
+		AnonymousRouteGuard,
 		UserImpulsesService,
-		MessageService
+		MessageService,
+		SiteTitleService
 	]
 })
 export class AppModuleShared {

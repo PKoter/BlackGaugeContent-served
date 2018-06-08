@@ -87,3 +87,25 @@ export class Message {
 	public text:      string;
 	
 }
+
+export class MessageCollection {
+	public messages: Message[];
+	public chatterName: string;
+
+	constructor(mc: MessageCollection) {
+		this.messages = mc.messages;
+		this.chatterName = mc.chatterName;
+	}
+
+	public appendTo(msgs: Message[]) {
+		for (let i = 0; i < this.messages.length; i++) {
+			msgs.push(this.messages[i]);
+		}
+	}
+
+	public precedeFirst(msgs: Message[]) {
+		for (let i = this.messages.length - 1; i >= 0; i--) {
+			msgs.unshift(this.messages[i]);
+		}
+	}
+}

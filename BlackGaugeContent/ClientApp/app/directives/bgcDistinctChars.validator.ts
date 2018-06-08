@@ -17,7 +17,7 @@ export class BgcDistinctValidator implements Validator {
 		if (value.length < this.bgcDistinctChars)
 			return { 'bgcDistinctChars': { value: value.length } };
 
-		const hashmap = new Map<string, number>();
+		const hashmap = new Map<string, any>();
 		let count = 0;
 		
 		for (var i = 0; i < value.length; i++) {

@@ -51,12 +51,19 @@
 				[ngClass]="{'bgc-button-affirm ': !comradeRequestSent}"
 				style="width: 90%;" (click)="onComradeRequest()">
 			{{comradeRequestTitle}}
-		</button><br/>
-		<nav class="direct-link form-element" style="width: 90%;" 
-			 *ngIf="model.requestReceived"
+		</button><br />
+		<nav class="direct-link form-element" style="width: 90%;"
+			 *ngIf="model.requestReceived && !model.isComrade"
 			 [routerLinkActive]="['link-active']"
 			 [routerLink]="['/comrades']">
-			<a >Go to <i>Comrades</i> to agree.</a>
+			<a>Go to <i>Comrades</i> to agree.</a>
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</nav>
+		<nav class="direct-link form-element" style="width: 90%;"
+			 *ngIf="model.isComrade"
+			 [routerLinkActive]="['link-active']"
+			 [routerLink]="['/messages']">
+			<a>Go to <i>Messages</i>.</a>
 			<span class="glyphicon glyphicon-chevron-right"></span>
 		</nav>
 	</div>

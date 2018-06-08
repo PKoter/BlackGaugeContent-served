@@ -15,7 +15,7 @@ namespace Bgc.Data.Implementations
 	{
 		public int PageMemeCount {private get; set;} = R.MemesOnPageCount;
 
-		public BgcMemeRepo(BgcFullContext context): base(context)
+		public BgcMemeRepo(BgcFullContext context): base(context, null)
 		{
 		}
 

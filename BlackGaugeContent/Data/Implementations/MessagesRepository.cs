@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Bgc.Data.Contracts;
+using Bgc.Data.Extensions;
 using Bgc.Models.QueryReady;
 using Bgc.ViewModels.Signals;
 using JetBrains.Annotations;
@@ -18,11 +19,10 @@ namespace Bgc.Data.Implementations
 		private const int MessagesBefore = 9;
 		private const int PageSize       = 10;
 
-		public MessagesRepository(BgcFullContext context) : base(context)
+		public MessagesRepository(BgcFullContext context, MappingManager mapper) : base(context, mapper)
 		{
 		}
 
-		//todo: security against ie. sql injection
 		public long SaveMessage([NotNull] MessageData msg)
 		{
 			var message = new Message()
@@ -133,17 +133,6 @@ namespace Bgc.Data.Implementations
 			return message;
 		}
 
-
-		private IQueryable<long> GetLastSeenOrSentId(int userId, int otherId)
-		{
-			var query = (from m in _context.Messages
-						where (m.SenderId == userId && m.ReceiverId == otherId) 
-						   || (m.SenderId == otherId && m.ReceiverId == userId && m.Seen)
-						orderby m.Id descending
-						select m.Id);//.Take(1);
-			return query;
-		}
-
 		public async Task<IList<ChatImpulse>> GetChatImpulses(int userId)
 		{
 			var cmd = BuildSpCommand("GetChatImpulses");
@@ -154,8 +143,7 @@ namespace Bgc.Data.Implementations
 			param.ParameterName = "@userId";
 
 			cmd.Parameters.Add(param);
-
-			return await cmd.ToListAsync<ChatImpulse>();
+			return await cmd.ToListAsync<ChatImpulse>(_mappingManager);
 
 			/*var query = 
 				from u in _context.Users
